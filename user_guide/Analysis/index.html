@@ -1,0 +1,395 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analysis &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="Demo Notebook on Reading and Exploring the Studentlife Dataset" href="../../demo/student_life_example/" />
+    <link rel="prev" title="Exploration" href="../Exploration/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Exploration/">Exploration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Social-Signature">Social Signature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Rythms">Rythms</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Analysis</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user_guide/Analysis.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Analysis">
+<h1>Analysis<a class="headerlink" href="#Analysis" title="Link to this heading"></a></h1>
+<section id="Social-Signature">
+<h2>Social Signature<a class="headerlink" href="#Social-Signature" title="Link to this heading"></a></h2>
+<p>We can calculate a social signature from email activity. First we’ll load the example email data from the sample data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">GOOGLE_TAKEOUT_DIR</span><span class="p">,</span> <span class="s2">&quot;Takeout&quot;</span><span class="p">,</span> <span class="s2">&quot;Mail&quot;</span><span class="p">,</span> <span class="s2">&quot;All mail Including Spam and Trash.mbox&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">reading</span><span class="o">.</span><span class="n">google_takeout</span><span class="o">.</span><span class="n">email_activity</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sentiment</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/u/24/rantahj1/unix/src/niimpy/niimpy/reading/google_takeout.py:491: UserWarning: Could not parse message timestamp: 2023-12-15 12:19:43+00:00
+  warnings.warn(f&#34;Could not parse message timestamp: {received}&#34;)
+/u/24/rantahj1/unix/src/niimpy/niimpy/reading/google_takeout.py:505: UserWarning: Failed to format received time: Sat, 15 DeNot a timec 2023 12:19:43 0000
+  warnings.warn(f&#34;Failed to format received time: {received}&#34;)
+</pre></div></div>
+</div>
+<p>Email data contains a “to” and and a “from” column. This data is pseudonymized: the email addresses are replaced by integer ids. The user is represented as ID 0.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[[</span><span class="s2">&quot;from&quot;</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>from</th>
+      <th>to</th>
+    </tr>
+    <tr>
+      <th>timestamp</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-12-15 12:19:43+00:00</th>
+      <td>0</td>
+      <td>[6]</td>
+    </tr>
+    <tr>
+      <th>2023-12-15 12:29:43+00:00</th>
+      <td>0</td>
+      <td>[2, 6]</td>
+    </tr>
+    <tr>
+      <th>2023-12-15 12:29:43+00:00</th>
+      <td>0</td>
+      <td>[2, 6]</td>
+    </tr>
+    <tr>
+      <th>2023-12-15 12:39:43+00:00</th>
+      <td>2</td>
+      <td>[0]</td>
+    </tr>
+    <tr>
+      <th>2023-12-15 12:39:43+00:00</th>
+      <td>2</td>
+      <td>[0]</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">niimpy.analysis.social_signature</span>
+
+<span class="n">niimpy</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">social_signature</span><span class="o">.</span><span class="n">social_signature</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+to
+2    0.4
+6    0.6
+dtype: float64
+</pre></div></div>
+</div>
+</section>
+<section id="Rythms">
+<h2>Rythms<a class="headerlink" href="#Rythms" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">rythm</span></code> function in <code class="docutils literal notranslate"><span class="pre">niimpy.analysis.rhythms</span></code> calculates general rhythms from different types of input data. It</p>
+<ul class="simple">
+<li><p>Resamples the data into bins. For example, if the bin is 1 day, each row will represent a day.</p></li>
+<li><p>Accumulates the binned historical data to a certain time period. For example, if the period is a week and the bin is a day, the first row will be the sum of data for the first day of the week, the second row the sum for the second day of the week and so on.</p></li>
+<li><p>Calculate the percentage each bin represents of a third period, frequency. In the above example, if the frequency is 2 days, the data of the first two rows is scaled to sum to 1.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MULTIUSER_AWARE_CALLS_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;iGyXetHE3S8u&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>call_type</th>
+      <th>call_duration</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-08 22:32:25.256999969+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565293e+09</td>
+      <td>incoming</td>
+      <td>1217</td>
+      <td>2019-08-08 22:32:25.256999969+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-08 22:53:35.107000113+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565294e+09</td>
+      <td>incoming</td>
+      <td>383</td>
+      <td>2019-08-08 22:53:35.107000113+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-08 22:31:34.539999962+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565293e+09</td>
+      <td>incoming</td>
+      <td>1142</td>
+      <td>2019-08-08 22:31:34.539999962+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-08 22:43:45.834000111+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565293e+09</td>
+      <td>incoming</td>
+      <td>1170</td>
+      <td>2019-08-08 22:43:45.834000111+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-08 22:55:33.053999901+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565294e+09</td>
+      <td>incoming</td>
+      <td>497</td>
+      <td>2019-08-08 22:55:33.053999901+03:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.analysis.rhythms</span><span class="w"> </span><span class="kn">import</span> <span class="n">rhythm</span>
+
+<span class="n">duration_rhythm</span> <span class="o">=</span> <span class="n">rhythm</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;call_duration&quot;</span><span class="p">],</span> <span class="n">period</span><span class="o">=</span><span class="s2">&quot;1D&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;12h&quot;</span><span class="p">,</span> <span class="nb">bin</span><span class="o">=</span><span class="s2">&quot;1h&quot;</span><span class="p">)</span>
+<span class="n">duration_rhythm</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Axes: &gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Analysis_8_1.png" src="../../_images/user_guide_Analysis_8_1.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../Exploration/" class="btn btn-neutral float-left" title="Exploration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../demo/student_life_example/" class="btn btn-neutral float-right" title="Demo Notebook on Reading and Exploring the Studentlife Dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,395 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.reading.database module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.reading.mhealth module" href="../niimpy.reading.mhealth/" />
+    <link rel="prev" title="niimpy.reading package" href="../niimpy.reading/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.reading/">niimpy.reading package</a></li>
+      <li class="breadcrumb-item active">niimpy.reading.database module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.reading.database.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.reading.database">
+<span id="niimpy-reading-database-module"></span><h1>niimpy.reading.database module<a class="headerlink" href="#module-niimpy.reading.database" title="Link to this heading"></a></h1>
+<p>Read data from sqlite3 databases.</p>
+<p><strong>Direct use of this module is mostly deprecated.</strong></p>
+<p>Read data from sqlite3 databases, both into pandas.DataFrame:s (Database.raw(),
+among other functions), and Database objects.  The Database object does not
+immediately load data, but provides some methods to load data on demand later,
+possibly doing various filtering and preprocessing already at the loading
+stage.  This can save memory and processing time, but is much more complex.</p>
+<p>This module is mostly out-of-use now: read.read_sqlite is used instead, which
+wraps the .raw() method and reads all data into memory.</p>
+<section id="database-format">
+<h2>Database format<a class="headerlink" href="#database-format" title="Link to this heading"></a></h2>
+<p>When reading data, a table name must be specified (which allows multiple
+datasets to be put in one file).  Table column names map to dataframe column
+names, with various standard processing (for example the ‘time’ column being
+converted to the index)</p>
+</section>
+<section id="quick-usage">
+<h2>Quick usage<a class="headerlink" href="#quick-usage" title="Link to this heading"></a></h2>
+<p>db = database.open(FILE_NAME, tz=TZ)
+df = db.raw(TABLE_NAME, user=database.ALL)</p>
+<p>Recommend usage:</p>
+<p>df = niimpy.read_sqlite(FILE_NAME, TABLE_NAME, tz=TZ)</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<p>niimpy.reading.read_*: currently recommended functions to access all types of
+data, including databases.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="niimpy.reading.database.ALL">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">niimpy.reading.database.</span></span><span class="sig-name descname"><span class="pre">ALL</span></span><a class="reference internal" href="../../_modules/niimpy/reading/database/#ALL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.ALL" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sentinel value for all users</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">niimpy.reading.database.</span></span><span class="sig-name descname"><span class="pre">Data1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Database wrapper for niimpy data.</p>
+<p>This opens a database and provides methods to do common operations.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.count" title="niimpy.reading.database.Data1.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Return the number of rows</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.execute" title="niimpy.reading.database.Data1.execute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">execute</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Execute rauw SQL code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.exists" title="niimpy.reading.database.Data1.exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exists</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Returns True if any data exists</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.first" title="niimpy.reading.database.Data1.first"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first</span></code></a>(table, user[, start, end, offset, ...])</p></td>
+<td><p>Return earliest data point.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.get_survey_score" title="niimpy.reading.database.Data1.get_survey_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_survey_score</span></code></a>(table, user, survey[, ...])</p></td>
+<td><p>Get the survey results, summing scores.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.last" title="niimpy.reading.database.Data1.last"><code class="xref py py-obj docutils literal notranslate"><span class="pre">last</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Return the latest timestamp.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.raw" title="niimpy.reading.database.Data1.raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw</span></code></a>(table, user[, limit, offset, start, end])</p></td>
+<td><p>Read all data in a table and return it as a DataFrame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.tables" title="niimpy.reading.database.Data1.tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tables</span></code></a>()</p></td>
+<td><p>List all tables that are inside of this database.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.user_table_counts" title="niimpy.reading.database.Data1.user_table_counts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">user_table_counts</span></code></a>()</p></td>
+<td><p>Return table of number of data points per user, per table.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.users" title="niimpy.reading.database.Data1.users"><code class="xref py py-obj docutils literal notranslate"><span class="pre">users</span></code></a>([table])</p></td>
+<td><p>Return set of all users in all tables</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#niimpy.reading.database.Data1.validate_username" title="niimpy.reading.database.Data1.validate_username"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_username</span></code></a>(user)</p></td>
+<td><p>Validate a username, for single/multiuser database and so on.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>hourly</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>occurrence</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>timestamps</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.count" title="Link to this definition"></a></dt>
+<dd><p>Return the number of rows</p>
+<p>See the “first” for more information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.execute" title="Link to this definition"></a></dt>
+<dd><p>Execute rauw SQL code.</p>
+<p>Execute raw SQL.  Smply proxy all arguments to
+self.conn.execute().  This is simply a convenience shortcut.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.exists">
+<span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.exists" title="Link to this definition"></a></dt>
+<dd><p>Returns True if any data exists</p>
+<p>Follows the same syntax as .first(), .last(), and .count(), but
+the limit argument is not used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.first">
+<span class="sig-name descname"><span class="pre">first</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_aggregate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'min'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.first"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.first" title="Link to this definition"></a></dt>
+<dd><p>Return earliest data point.</p>
+<p>Return None if there is no data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.get_survey_score">
+<span class="sig-name descname"><span class="pre">get_survey_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">survey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.get_survey_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.get_survey_score" title="Link to this definition"></a></dt>
+<dd><p>Get the survey results, summing scores.</p>
+<p>survey: The servey prefix in the ‘id’ column, e.g. ‘PHQ9’.  An ‘_’ is appended.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.hourly">
+<span class="sig-name descname"><span class="pre">hourly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.hourly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.hourly" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.last">
+<span class="sig-name descname"><span class="pre">last</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.last"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.last" title="Link to this definition"></a></dt>
+<dd><p>Return the latest timestamp.</p>
+<p>See the “first” for more information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.occurrence">
+<span class="sig-name descname"><span class="pre">occurrence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">720</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.occurrence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.occurrence" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.raw">
+<span class="sig-name descname"><span class="pre">raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.raw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.raw" title="Link to this definition"></a></dt>
+<dd><p>Read all data in a table and return it as a DataFrame.</p>
+<p>This reads all data (subject to several possible filters) and
+returns it as a DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.tables">
+<span class="sig-name descname"><span class="pre">tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.tables" title="Link to this definition"></a></dt>
+<dd><p>List all tables that are inside of this database.</p>
+<p>Returns a set.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.timestamps">
+<span class="sig-name descname"><span class="pre">timestamps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.timestamps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.timestamps" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.user_table_counts">
+<span class="sig-name descname"><span class="pre">user_table_counts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.user_table_counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.user_table_counts" title="Link to this definition"></a></dt>
+<dd><p>Return table of number of data points per user, per table.</p>
+<p>Return a dataframe of row=table, column=user, value=number of
+counts of that user in that table.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.users">
+<span class="sig-name descname"><span class="pre">users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.users" title="Link to this definition"></a></dt>
+<dd><p>Return set of all users in all tables</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.Data1.validate_username">
+<span class="sig-name descname"><span class="pre">validate_username</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#Data1.validate_username"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.Data1.validate_username" title="Link to this definition"></a></dt>
+<dd><p>Validate a username, for single/multiuser database and so on.</p>
+<p>This function considers if the database is single or multi-user,
+and ensures a valid username or ALL.</p>
+<p>It returns a valid username, so can be used as a wrapper, to handle
+future special cases, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">validate_username</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.reading.database.open">
+<span class="sig-prename descclassname"><span class="pre">niimpy.reading.database.</span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.open" title="Link to this definition"></a></dt>
+<dd><p>Open a database and return a Data1 object</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="niimpy.reading.database.sqlite3_stdev">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">niimpy.reading.database.</span></span><span class="sig-name descname"><span class="pre">sqlite3_stdev</span></span><a class="reference internal" href="../../_modules/niimpy/reading/database/#sqlite3_stdev"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.sqlite3_stdev" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sqlite sample standard deviation function in pure Python.</p>
+<p>With <cite>conn.create_aggregate(“stdev”, 1, sqlite3_stdev)</cite>, this adds a
+stdev function to sqlite.</p>
+<p>Edge cases:</p>
+<ul class="simple">
+<li><p>Empty list = nan (different than C function, which is zero)</p></li>
+<li><p>Ignores nan input values (does not count them).  (different than
+numpy: returns nan)</p></li>
+<li><p>ignores non-numeric types (no conversion)</p></li>
+</ul>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>finalize</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>step</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.sqlite3_stdev.finalize">
+<span class="sig-name descname"><span class="pre">finalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#sqlite3_stdev.finalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.sqlite3_stdev.finalize" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="niimpy.reading.database.sqlite3_stdev.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/database/#sqlite3_stdev.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.database.sqlite3_stdev.step" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.reading/" class="btn btn-neutral float-left" title="niimpy.reading package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.reading.mhealth/" class="btn btn-neutral float-right" title="niimpy.reading.mhealth module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

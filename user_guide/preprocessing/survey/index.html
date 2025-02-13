@@ -1,0 +1,1163 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Survey Data &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+    <link rel="next" title="Tracker Data" href="../tracker/" />
+    <link rel="prev" title="Screen On/Off Data" href="../screen/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">Preprocessing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../location/">Location Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../application/">Application data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/">Audio Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../battery/">Battery Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/">Call and Message Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../screen/">Screen On/Off Data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Survey Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Load-data">Load data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Preprocessing">Preprocessing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Survey-score-sums">Survey score sums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Survey-statistics">Survey statistics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tracker/">Tracker Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../">Preprocessing</a></li>
+      <li class="breadcrumb-item active">Survey Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user_guide/preprocessing/survey.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Survey-Data">
+<h1>Survey Data<a class="headerlink" href="#Survey-Data" title="Link to this heading"></a></h1>
+<p>Survey single survey row can contain answers to multiple questions. The survey dataframe should contain a <code class="docutils literal notranslate"><span class="pre">user</span></code> column containing the user ID. In addition, multiple columns with anwers to survey questions should be provided (see example below for clarification). Each column title represents the question and the value on a given row represents the answer. As usual, the DataFrame index is the timestamp of the answer.</p>
+<p>Question titles should be converted into a string with a questionaire prefix and a question number. For example, the first question in “PHQ2” would be “PHQ2_1”. We provide utilities for converting some common questionaires to this format, as shown below. Similarly, answers should be converted into numerical values.</p>
+<section id="Load-data">
+<h2>Load data<a class="headerlink" href="#Load-data" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Artificial example survey data</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy.preprocessing.survey</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">survey</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing.survey</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">SURVEY_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>age</th>
+      <th>gender</th>
+      <th>Little interest or pleasure in doing things.</th>
+      <th>Feeling down; depressed or hopeless.</th>
+      <th>Feeling nervous; anxious or on edge.</th>
+      <th>Not being able to stop or control worrying.</th>
+      <th>In the last month; how often have you felt that you were unable to control the important things in your life?</th>
+      <th>In the last month; how often have you felt confident about your ability to handle your personal problems?</th>
+      <th>In the last month; how often have you felt that things were going your way?</th>
+      <th>In the last month; how often have you been able to control irritations in your life?</th>
+      <th>In the last month; how often have you felt that you were on top of things?</th>
+      <th>In the last month; how often have you been angered because of things that were outside of your control?</th>
+      <th>In the last month; how often have you felt difficulties were piling up so high that you could not overcome them?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>20</td>
+      <td>Male</td>
+      <td>several-days</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>nearly-every-day</td>
+      <td>almost-never</td>
+      <td>sometimes</td>
+      <td>fairly-often</td>
+      <td>never</td>
+      <td>sometimes</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>32</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>never</td>
+      <td>never</td>
+      <td>very-often</td>
+      <td>sometimes</td>
+      <td>never</td>
+      <td>fairly-often</td>
+      <td>never</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>15</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>not-at-all</td>
+      <td>never</td>
+      <td>very-often</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+      <td>never</td>
+      <td>never</td>
+      <td>almost-never</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>35</td>
+      <td>Female</td>
+      <td>not-at-all</td>
+      <td>nearly-every-day</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+      <td>very-often</td>
+      <td>never</td>
+      <td>sometimes</td>
+      <td>never</td>
+      <td>fairly-often</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>23</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>more-than-half-the-days</td>
+      <td>several-days</td>
+      <td>almost-never</td>
+      <td>very-often</td>
+      <td>almost-never</td>
+      <td>sometimes</td>
+      <td>sometimes</td>
+      <td>very-often</td>
+      <td>never</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Preprocessing">
+<h2>Preprocessing<a class="headerlink" href="#Preprocessing" title="Link to this heading"></a></h2>
+<p>Currently the dataframe columns are raw questions and answers from the survey. We will use <code class="docutils literal notranslate"><span class="pre">Niimpy</span></code> to convert them to a numerical format, but first the dataframe should follow the general <code class="docutils literal notranslate"><span class="pre">Niimpy</span></code> Schema. The rows should be indexed by a datetime index, rather than a number.</p>
+<p>Since the data does not contain a timestamp, we must assume that each user has only completed the survey once. If the surveys were completed on January 1st 2020, for example, we would replace the index with this date.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assign the same time index to all survey responses</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s2">&quot;1.1.2020&quot;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)]</span><span class="o">*</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>Next we will convert the questions to a standard identifier format <code class="docutils literal notranslate"><span class="pre">Niimpy</span></code> will understand. The questions are from PHQ2, GAD2 and PSS10 standard surveys. <code class="docutils literal notranslate"><span class="pre">Niimpy</span></code> provides mappings from raw question text to question ids for these surveys. The identifiers is constructed from a prefix (the questionnaire category: GAD, PHQ, PSQI etc.), followed by the question number (1,2,3). You can define your own identifiers or use the ones provided by <code class="docutils literal notranslate"><span class="pre">Niimpy</span></code>.</p>
+<p>Before applying the mapping, the column names should be cleaned using the <code class="docutils literal notranslate"><span class="pre">clean_survey_column_names</span></code> function. This removes punctuation in the question text.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For example, the mapping dictionary for PHQ2 is</span>
+<span class="n">PHQ2_MAP</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;Little interest or pleasure in doing things&#39;: &#39;PHQ2_1&#39;,
+ &#39;Feeling down depressed or hopeless&#39;: &#39;PHQ2_2&#39;}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert column name to id, based on provided mappers from niimpy</span>
+<span class="n">column_map</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">PHQ2_MAP</span><span class="p">,</span> <span class="o">**</span><span class="n">PSS10_MAP</span><span class="p">,</span> <span class="o">**</span><span class="n">GAD2_MAP</span><span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">survey</span><span class="o">.</span><span class="n">clean_survey_column_names</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">column_map</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>age</th>
+      <th>gender</th>
+      <th>PHQ2_1</th>
+      <th>PHQ2_2</th>
+      <th>GAD2_1</th>
+      <th>GAD2_2</th>
+      <th>PSS10_2</th>
+      <th>PSS10_4</th>
+      <th>PSS10_5</th>
+      <th>PSS10_6</th>
+      <th>PSS10_7</th>
+      <th>PSS10_8</th>
+      <th>PSS10_9</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>1</td>
+      <td>20</td>
+      <td>Male</td>
+      <td>several-days</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>nearly-every-day</td>
+      <td>almost-never</td>
+      <td>sometimes</td>
+      <td>fairly-often</td>
+      <td>never</td>
+      <td>sometimes</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>2</td>
+      <td>32</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>never</td>
+      <td>never</td>
+      <td>very-often</td>
+      <td>sometimes</td>
+      <td>never</td>
+      <td>fairly-often</td>
+      <td>never</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>3</td>
+      <td>15</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>not-at-all</td>
+      <td>never</td>
+      <td>very-often</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+      <td>never</td>
+      <td>never</td>
+      <td>almost-never</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>4</td>
+      <td>35</td>
+      <td>Female</td>
+      <td>not-at-all</td>
+      <td>nearly-every-day</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+      <td>very-often</td>
+      <td>never</td>
+      <td>sometimes</td>
+      <td>never</td>
+      <td>fairly-often</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>5</td>
+      <td>23</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>more-than-half-the-days</td>
+      <td>several-days</td>
+      <td>almost-never</td>
+      <td>very-often</td>
+      <td>almost-never</td>
+      <td>sometimes</td>
+      <td>sometimes</td>
+      <td>very-often</td>
+      <td>never</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Now the dataframe follows the <code class="docutils literal notranslate"><span class="pre">Niimpy</span></code> standard schema. Next we will use <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> to convert the raw answers to numerical values for further analysis. For this, we need a mapping <code class="docutils literal notranslate"><span class="pre">{raw_answer:</span> <span class="pre">numerical_answer}</span></code>, which <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> provides within the <code class="docutils literal notranslate"><span class="pre">survey</span></code> module. You can also use your own mapping.</p>
+<p>Based on the question’s id, <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> maps the raw answers to their numerical presentation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The mapping dictionary included in Niimpy is</span>
+<span class="n">ID_MAP_PREFIX</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;PSS&#39;: {&#39;never&#39;: 0,
+  &#39;almost never&#39;: 1,
+  &#39;sometimes&#39;: 2,
+  &#39;fairly often&#39;: 3,
+  &#39;very often&#39;: 4},
+ &#39;PHQ2&#39;: {&#39;not at all&#39;: 0,
+  &#39;several days&#39;: 1,
+  &#39;more than half the days&#39;: 2,
+  &#39;nearly every day&#39;: 3},
+ &#39;GAD2&#39;: {&#39;not at all&#39;: 0,
+  &#39;several days&#39;: 1,
+  &#39;more than half the days&#39;: 2,
+  &#39;nearly every day&#39;: 3}}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Transform raw answers to numerical values</span>
+<span class="n">transformed_df</span> <span class="o">=</span> <span class="n">survey</span><span class="o">.</span><span class="n">convert_survey_to_numerical_answer</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">id_map</span><span class="o">=</span><span class="n">ID_MAP_PREFIX</span><span class="p">,</span> <span class="n">use_prefix</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">transformed_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>age</th>
+      <th>gender</th>
+      <th>PHQ2_1</th>
+      <th>PHQ2_2</th>
+      <th>GAD2_1</th>
+      <th>GAD2_2</th>
+      <th>PSS10_2</th>
+      <th>PSS10_4</th>
+      <th>PSS10_5</th>
+      <th>PSS10_6</th>
+      <th>PSS10_7</th>
+      <th>PSS10_8</th>
+      <th>PSS10_9</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>1</td>
+      <td>20</td>
+      <td>Male</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>0</td>
+      <td>2</td>
+      <td>4</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>2</td>
+      <td>32</td>
+      <td>Male</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>3</td>
+      <td>15</td>
+      <td>Male</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>4</td>
+      <td>35</td>
+      <td>Female</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1</td>
+      <td>4</td>
+      <td>3</td>
+      <td>4</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>5</td>
+      <td>23</td>
+      <td>Male</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4</td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Survey-score-sums">
+<h2>Survey score sums<a class="headerlink" href="#Survey-score-sums" title="Link to this heading"></a></h2>
+<p>Next we can calucate the sum of each survey using the survey ID in the column name.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sum_df</span> <span class="o">=</span> <span class="n">sum_survey_scores</span><span class="p">(</span><span class="n">transformed_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;PHQ2&quot;</span><span class="p">,</span> <span class="s2">&quot;PSS10&quot;</span><span class="p">,</span> <span class="s2">&quot;GAD2&quot;</span><span class="p">])</span>
+<span class="n">sum_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>PHQ2</th>
+      <th>PSS10</th>
+      <th>GAD2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>1</td>
+      <td>3</td>
+      <td>15</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>2</td>
+      <td>4</td>
+      <td>9</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>3</td>
+      <td>2</td>
+      <td>12</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>4</td>
+      <td>3</td>
+      <td>16</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>5</td>
+      <td>2</td>
+      <td>14</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Survey-statistics">
+<h2>Survey statistics<a class="headerlink" href="#Survey-statistics" title="Link to this heading"></a></h2>
+<p>Another common preprocessing step is to resample results to reduce noise or simplify the data. The <code class="docutils literal notranslate"><span class="pre">survey.survey_statistic</span></code> function split the results by time intervals and return relevant statistics of each survey sum or each question column over that interval.</p>
+<p>Note that since the example data contains a single time for each participant, the standard deviation is <code class="docutils literal notranslate"><span class="pre">NaN</span></code> and the other statistics are predictable.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">survey</span><span class="o">.</span><span class="n">survey_statistic</span><span class="p">(</span><span class="n">sum_df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PHQ2&quot;</span><span class="p">,</span> <span class="s2">&quot;PSS10&quot;</span><span class="p">,</span> <span class="s2">&quot;GAD2&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>PHQ2_mean</th>
+      <th>PHQ2_min</th>
+      <th>PHQ2_max</th>
+      <th>PHQ2_std</th>
+      <th>PSS10_mean</th>
+      <th>PSS10_min</th>
+      <th>PSS10_max</th>
+      <th>PSS10_std</th>
+      <th>GAD2_mean</th>
+      <th>GAD2_min</th>
+      <th>GAD2_max</th>
+      <th>GAD2_std</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>1</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>NaN</td>
+      <td>15.0</td>
+      <td>15.0</td>
+      <td>15.0</td>
+      <td>NaN</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>2</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>9.0</td>
+      <td>9.0</td>
+      <td>9.0</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>3</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>12.0</td>
+      <td>12.0</td>
+      <td>12.0</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>4</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>NaN</td>
+      <td>16.0</td>
+      <td>16.0</td>
+      <td>16.0</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>5</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>14.0</td>
+      <td>14.0</td>
+      <td>14.0</td>
+      <td>NaN</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>996</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>NaN</td>
+      <td>17.0</td>
+      <td>17.0</td>
+      <td>17.0</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>997</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>13.0</td>
+      <td>13.0</td>
+      <td>13.0</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>998</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>13.0</td>
+      <td>13.0</td>
+      <td>13.0</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>999</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>21.0</td>
+      <td>21.0</td>
+      <td>21.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>1000</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>14.0</td>
+      <td>14.0</td>
+      <td>14.0</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>1000 rows × 13 columns</p>
+</div></div>
+</div>
+<p>survey_statistic also works for indidual questions. You can specify the questionnaire that you want statistics of by passing a value into the <code class="docutils literal notranslate"><span class="pre">prefix</span></code> parameter or pass a list of questions as the <code class="docutils literal notranslate"><span class="pre">columns</span></code> parameter.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">survey</span><span class="o">.</span><span class="n">survey_statistic</span><span class="p">(</span><span class="n">transformed_df</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">=</span><span class="s1">&#39;PHQ&#39;</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>PHQ2_1_mean</th>
+      <th>PHQ2_1_min</th>
+      <th>PHQ2_1_max</th>
+      <th>PHQ2_1_std</th>
+      <th>PHQ2_2_mean</th>
+      <th>PHQ2_2_min</th>
+      <th>PHQ2_2_max</th>
+      <th>PHQ2_2_std</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>1</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>2</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>3</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>4</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>5</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>996</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>997</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>998</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>999</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-01 00:00:00+02:00</th>
+      <td>1000</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>1000 rows × 9 columns</p>
+</div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../screen/" class="btn btn-neutral float-left" title="Screen On/Off Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../tracker/" class="btn btn-neutral float-right" title="Tracker Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

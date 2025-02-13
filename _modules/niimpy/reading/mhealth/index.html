@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.reading.mhealth &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.reading.mhealth</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.reading.mhealth</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Read data from various formats, user entery point.</span>
+
+<span class="sd">This module contains various functions `read_*` which load data from different</span>
+<span class="sd">formats into pandas.DataFrame:s.  As a side effect, it provides the</span>
+<span class="sd">authoritative information on how incoming data is converted to dataframes.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+
+<span class="n">mHealth_duration_units</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ps&quot;</span><span class="p">:</span> <span class="s2">&quot;picoseconds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ns&quot;</span><span class="p">:</span> <span class="s2">&quot;nanoseconds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;us&quot;</span><span class="p">:</span> <span class="s2">&quot;microseconds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ms&quot;</span><span class="p">:</span> <span class="s2">&quot;milliseconds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;seconds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="s2">&quot;minutes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="s2">&quot;hours&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="s2">&quot;days&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wk&quot;</span><span class="p">:</span> <span class="s2">&quot;weeks&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Mo&quot;</span><span class="p">:</span> <span class="s2">&quot;months&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;yr&quot;</span><span class="p">:</span> <span class="s2">&quot;years&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="format_part_of_day">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.mhealth/#niimpy.reading.mhealth.format_part_of_day">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">format_part_of_day</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Format columns with mHealth formatted part of day. Returns a dataframe</span>
+<span class="sd">    with date stored in the column &quot;date&quot; and &quot;part_of_day&quot;. Options for</span>
+<span class="sd">    part of day are &quot;morning&quot;, &quot;afternoon&quot;, &quot;evening&quot;, &quot;night&quot;.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">date_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">.date&#39;</span>
+    <span class="n">part_of_day_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">.part_of_day&#39;</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="n">date_col</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+        <span class="n">part_of_day_col</span><span class="p">:</span> <span class="s2">&quot;part_of_day&quot;</span><span class="p">,</span>
+    <span class="p">})</span>
+
+    <span class="n">rows</span> <span class="o">=</span> <span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;part_of_day&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">],</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="duration_to_timedelta">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.mhealth/#niimpy.reading.mhealth.duration_to_timedelta">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">duration_to_timedelta</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">duration_col</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Format a duration entry in the mHealth format. Duration</span>
+<span class="sd">    is a dictionary that contains a value and a unit. The </span>
+<span class="sd">    dataframe should contain two columns, DURATION_COL_NAME.value</span>
+<span class="sd">    and DURATION_COL_NAME.unit.</span>
+
+<span class="sd">    Returns a dataframe with a DURATION_COL_NAME column containing a</span>
+<span class="sd">    a timedelta object. The original columns will be dropped.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">duration_value_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">duration_col</span><span class="si">}</span><span class="s1">.value&#39;</span>
+    <span class="n">duration_unit_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">duration_col</span><span class="si">}</span><span class="s1">.unit&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_duration_row</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="n">mHealth_duration_units</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">duration_unit_col</span><span class="p">]]</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">duration_value_col</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;picoseconds&quot;</span><span class="p">:</span> <span class="c1"># DateOffset doesn&#39;t support picoseconds</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;nanoseconds&quot;</span>
+            <span class="n">value</span> <span class="o">*=</span> <span class="mf">0.001</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">duration_value_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="c1"># Format duration as DateOffset. We use this below to calculate either start of end</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="n">duration_value_col</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="n">duration_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">format_duration_row</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="n">duration_value_col</span><span class="p">,</span> <span class="n">duration_unit_col</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="format_time_interval">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.mhealth/#niimpy.reading.mhealth.format_time_interval">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">format_time_interval</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Format a database containing columns in the mHealth time interval.</span>
+<span class="sd">    </span>
+<span class="sd">    A time interval in the mHealth format has either</span>
+<span class="sd">     - a date and a time of day (morning, afternoon, evening or night), or</span>
+<span class="sd">     - any two of start time, end time and duration.</span>
+
+<span class="sd">    In the first case, the formatted database will contain two columns:</span>
+<span class="sd">    measure_date and time_of_day.</span>
+
+<span class="sd">    In the second case, the formatted database will contain two columns:</span>
+<span class="sd">    start and end.</span>
+
+<span class="sd">    Also sets the timestamp to &quot;start&quot; or &quot;date&quot; if available.</span>
+<span class="sd">    &#39;&#39;&#39;</span>    
+    <span class="c1"># Create any of the result columns thay may not exist</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">NaT</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">.part_of_day&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">format_part_of_day</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span>
+
+    <span class="c1"># Construct column names from the prefix</span>
+    <span class="n">start_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">.start_date_time&#39;</span>
+    <span class="n">end_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">.end_date_time&#39;</span>
+    <span class="n">duration_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">.duration&#39;</span>
+
+    <span class="c1"># Format the date-like columns. All the mHealth columns might exist if the formatting in the data is mixed</span>
+    <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">mHealth_col</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="n">start_col</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="n">end_col</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="n">mHealth_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">mHealth_col</span><span class="p">],</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Format duration as DateOffset. We use this below to calculate either start of end</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">duration_to_timedelta</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">duration_col</span><span class="p">)</span>
+
+    <span class="c1"># If duration is provided, we calculate either start or end</span>
+    <span class="k">if</span> <span class="n">start_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="n">duration_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="n">duration_col</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="n">start_col</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="n">duration_col</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">],</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">end_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="n">duration_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="n">end_col</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="n">duration_col</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="n">duration_col</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">],</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+    <span class="c1"># Drop the original columns</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="n">start_col</span><span class="p">,</span> <span class="n">end_col</span><span class="p">,</span> <span class="n">duration_col</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Set timestamp to the start time</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span>
+
+    <span class="c1"># where start time is abset (happens when time interval is given as</span>
+    <span class="c1"># date and part of day), set timestamp to date</span>
+    <span class="k">if</span> <span class="s2">&quot;date&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">],</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+
+<div class="viewcode-block" id="total_sleep_time">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.mhealth/#niimpy.reading.mhealth.total_sleep_time">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">total_sleep_time</span><span class="p">(</span><span class="n">data_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Format mHealth total sleep data from json formatted data to a Niimpy</span>
+<span class="sd">    compatible DataFrame. The DataFrame contains the columns</span>
+<span class="sd">        - total_sleep_time : The total sleep time measurement</span>
+<span class="sd">        - total_sleep_time_unit : The unit the measuremnet is expressed in</span>
+<span class="sd">        - measurement interval columns</span>
+<span class="sd">        - possible descriptive statistics columns</span>
+
+<span class="sd">    The measurement interval column are either</span>
+<span class="sd">        - start : start time of the measurement interval</span>
+<span class="sd">        - end : end time of the measurement interval</span>
+<span class="sd">    or</span>
+<span class="sd">        - date : the date of the measurement</span>
+<span class="sd">        - part_of_day : the time of day the measurement was made</span>
+<span class="sd">    </span>
+<span class="sd">    The descriptive statistics columns would be</span>
+<span class="sd">        - descriptive_statistics : Describes how the measurement is calculated</span>
+<span class="sd">        - descriptive_statistics_denominator : Time interval the above desciption refers to.</span>
+
+<span class="sd">    The dataframe is indexed by &quot;timestamp&quot;, which is either the &quot;start&quot; or the &quot;date&quot;.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    data_list: list of dictionaries</span>
+<span class="sd">        MHealth formatted sleep duration data loaded with json.load()</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    data: A pandas.DataFrame containing sleep duration data</span>
+
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">data_list</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">duration_to_timedelta</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;total_sleep_time&quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">format_time_interval</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;effective_time_frame.time_interval&quot;</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">],</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="total_sleep_time_from_file">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.mhealth/#niimpy.reading.mhealth.total_sleep_time_from_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">total_sleep_time_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Read mHealth total sleep time from a file and convert into a Niimpy</span>
+<span class="sd">    compatible DataFrame using total_sleep_time. The dataframe</span>
+<span class="sd">    contains the columns</span>
+<span class="sd">        - total_sleep_time : The total sleep time measurement</span>
+<span class="sd">        - total_sleep_time_unit : The unit the measuremnet is expressed in</span>
+<span class="sd">        - measurement interval columns</span>
+<span class="sd">        - possible descriptive statistics columns</span>
+
+<span class="sd">    The measurement interval column are either</span>
+<span class="sd">        - start : start time of the measurement interval</span>
+<span class="sd">        - end : end time of the measurement interval</span>
+<span class="sd">    or</span>
+<span class="sd">        - date : the date of the measurement</span>
+<span class="sd">        - part_of_day : the time of day the measurement was made</span>
+<span class="sd">    </span>
+<span class="sd">    The descriptive statistics columns would be</span>
+<span class="sd">        - descriptive_statistics : Describes how the measurement is calculated</span>
+<span class="sd">        - descriptive_statistics_denomirator : Time interval the above </span>
+<span class="sd">          description refers to.</span>
+
+<span class="sd">    The dataframe is indexed by &quot;timestamp&quot;, which is either the &quot;start&quot; or the &quot;date&quot;.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    filename: string</span>
+<span class="sd">        Path to the file containing mhealth formatted sleep duration data.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    data: A pandas.DataFrame containing sleep duration data</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">total_sleep_time</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="heart_rate">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.mhealth/#niimpy.reading.mhealth.heart_rate">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">heart_rate</span><span class="p">(</span><span class="n">data_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Format the heart rate json data into a niimpy dataframe.</span>
+
+<span class="sd">    The dataframe contains the columns</span>
+<span class="sd">        - heart_rate : Heart rate measurement in beats per minute</span>
+<span class="sd">        - (optional) time interval columns</span>
+<span class="sd">        - (optional) descriptive statistics column, a string</span>
+<span class="sd">        - (optional) temporal relationship to sleep column, a string</span>
+<span class="sd">        - (optional) temporal relationship to physical activity column, a </span>
+<span class="sd">           string</span>
+
+<span class="sd">    Measurement time or interval columns. If exact time is given, only the</span>
+<span class="sd">    index is set. If a time interval is given, we set two additional columns</span>
+<span class="sd">        - start : start time of the measurement interval</span>
+<span class="sd">        - end : end time of the measurement interval</span>
+<span class="sd">    and set the index to the start time.</span>
+<span class="sd">    </span>
+<span class="sd">    The descriptive statistics column describes how the value is calculated</span>
+<span class="sd">    over the given time interval. For example, &quot;average&quot; would denote a mean</span>
+<span class="sd">    over the time period.</span>
+
+<span class="sd">    The temporal relationship to sleep is one of &quot;before sleeping&quot;, &quot;during </span>
+<span class="sd">    sleep&quot; or &quot;on waking&quot;.</span>
+
+<span class="sd">    The temporal relationship to physical activity is one of &quot;at rest&quot;, </span>
+<span class="sd">    &quot;active&quot;, &quot;before exercise&quot;, &quot;after exercise&quot; or &quot;during exercise&quot;.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    data_list: list of dictionaries</span>
+<span class="sd">        MHealth formatted heart rate data loaded using json.load().</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    data: A pandas.DataFrame containing geolocation data</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">data_list</span><span class="p">)</span>
+
+    <span class="c1"># The mhealth standard specifies the unit is always beats per minute.</span>
+    <span class="c1"># We can drop the unit column without converting the value</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;heart_rate.unit&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;heart_rate.value&quot;</span><span class="p">:</span> <span class="s2">&quot;heart_rate&quot;</span><span class="p">,</span>
+    <span class="p">})</span>
+
+    <span class="c1"># Each sample contains a time_frame, which is either a duration or a</span>
+    <span class="c1"># date-time string</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;effective_time_frame.date_time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;effective_time_frame.date_time&quot;</span><span class="p">],</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">format_time_interval</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;effective_time_frame.time_interval&quot;</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="heart_rate_from_file">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.mhealth/#niimpy.reading.mhealth.heart_rate_from_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">heart_rate_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Read mHealth formatted heart rate data from a file and convert it to</span>
+<span class="sd">    a Niimpy compatible dataframe.  </span>
+
+<span class="sd">    The dataframe contains the columns</span>
+<span class="sd">        - heart_rate : Heart rate measurement in beats per minute</span>
+<span class="sd">        - (optional) time interval columns</span>
+<span class="sd">        - (optional) descriptive statistics column, a string</span>
+<span class="sd">        - (optional) temporal relationship to sleep column, a string</span>
+<span class="sd">        - (optional) temporal relationship to physical activity column, a </span>
+<span class="sd">           string</span>
+
+<span class="sd">    Measurement time or interval columns. If exact time is given, only the</span>
+<span class="sd">    index is set. If a time interval is given, we set two additional columns</span>
+<span class="sd">        - start : start time of the measurement interval</span>
+<span class="sd">        - end : end time of the measurement interval</span>
+<span class="sd">    and set the index to the start time.</span>
+<span class="sd">    </span>
+<span class="sd">    The descriptive statistics column describes how the value is calculated</span>
+<span class="sd">    over the given time interval. For example, &quot;average&quot; would denote a mean</span>
+<span class="sd">    over the time period.</span>
+
+<span class="sd">    The temporal relationship to sleep is one of &quot;before sleeping&quot;, &quot;during </span>
+<span class="sd">    sleep&quot; or &quot;on waking&quot;.</span>
+
+<span class="sd">    The temporal relationship to physical activity is one of &quot;at rest&quot;, </span>
+<span class="sd">    &quot;active&quot;, &quot;before exercise&quot;, &quot;after exercise&quot; or &quot;during exercise&quot;.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    filename: string</span>
+<span class="sd">        Path to the file containing mhealth formatted heart rate data.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    data: A pandas.DataFrame containing heart rate data</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">heart_rate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+
+<div class="viewcode-block" id="geolocation">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.mhealth/#niimpy.reading.mhealth.geolocation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">geolocation</span><span class="p">(</span><span class="n">data_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Format the geolocation json data into a niimpy dataframe.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    data_list: list of dictionaries</span>
+<span class="sd">        MHealth formatted geolocation data loaded using json.load().</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    data: A pandas.DataFrame containing geolocation data</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">data_list</span><span class="p">)</span>
+
+    <span class="c1"># Keep rows where latitude and longitude are given correctly</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;latitude.unit&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;deg&quot;</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;longitude.unit&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;deg&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;latitude.value&quot;</span><span class="p">:</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;longitude.value&quot;</span><span class="p">:</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+    <span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="geolocation_from_file">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.mhealth/#niimpy.reading.mhealth.geolocation_from_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">geolocation_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Read mHealth formatted geolocation data from a file and convert it to</span>
+<span class="sd">    a Niimpy compatible dataframe.  </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    filename: string</span>
+<span class="sd">        Path to the file containing mhealth formatted geolocation data.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    data: A pandas.DataFrame containing geolocation data</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">geolocation</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

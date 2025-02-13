@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.tracker &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.tracker</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.preprocessing.tracker</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
+
+<span class="n">group_by_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="step_summary">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.tracker/#niimpy.preprocessing.tracker.step_summary">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">step_summary</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">value_col</span><span class="o">=</span><span class="s1">&#39;values&#39;</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># value_col=&#39;values&#39;, user_id=None, start_date=None, end_date=None):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the summary of step count in a time range. The summary includes the following information</span>
+<span class="sd">    of step count per day: mean, standard deviation, min, max</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : Pandas Dataframe</span>
+<span class="sd">        Dataframe containing the hourly step count of an individual. The dataframe must be date time index.</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments. These can be:</span>
+
+<span class="sd">        value_col: str.</span>
+<span class="sd">            Column contains step values. Default value is &quot;values&quot;.</span>
+<span class="sd">        user_id: list. Optional</span>
+<span class="sd">            List of user id. If none given, returns summary for all users.</span>
+<span class="sd">        start_date: string. Optional</span>
+<span class="sd">            Start date of time segment used for computing the summary. If not given, acquire summary for the whole time range.</span>
+<span class="sd">        end_date: string.  Optional</span>
+<span class="sd">            End date of time segment used for computing the summary. If not given, acquire summary for the whole time range.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    summary_df: pandas DataFrame</span>
+<span class="sd">        A dataframe containing user id and associated step summary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="s1">&#39;user&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;User column does not exist&#39;</span>
+    <span class="k">assert</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">inferred_type</span> <span class="o">==</span> <span class="s1">&#39;datetime64&#39;</span><span class="p">,</span> <span class="s2">&quot;Dataframe must have a datetime index&quot;</span>
+
+    <span class="k">if</span> <span class="n">user_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="nb">list</span><span class="p">),</span> <span class="s1">&#39;User id must be a list&#39;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">user_id</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">start_date</span><span class="p">:</span><span class="n">end_date</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:</span><span class="n">end_date</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">start_date</span><span class="p">:]</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">month</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">day</span>
+
+    <span class="c1"># Calculate sum of steps for each date</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;daily_sum&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span> <span class="n">df</span><span class="p">,</span>
+        <span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">]</span>
+    <span class="p">)[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Under the assumption that a user cannot have zero steps per day, we remove rows where daily_sum are zero</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">daily_sum</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span>
+
+    <span class="n">summary_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    
+    <span class="n">summary_df</span><span class="p">[</span><span class="s1">&#39;median_sum_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="s1">&#39;daily_sum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+    <span class="n">summary_df</span><span class="p">[</span><span class="s1">&#39;avg_sum_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="s1">&#39;daily_sum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">summary_df</span><span class="p">[</span><span class="s1">&#39;std_sum_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="s1">&#39;daily_sum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+    <span class="n">summary_df</span><span class="p">[</span><span class="s1">&#39;min_sum_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="s1">&#39;daily_sum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">summary_df</span><span class="p">[</span><span class="s1">&#39;max_sum_step&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="s1">&#39;daily_sum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="n">summary_df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">summary_df</span><span class="p">)</span>
+    <span class="n">summary_df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">summary_df</span><span class="p">,</span> 
+        <span class="p">[</span><span class="s2">&quot;median_sum_step&quot;</span><span class="p">,</span> <span class="s2">&quot;avg_sum_step&quot;</span><span class="p">,</span> <span class="s2">&quot;std_sum_step&quot;</span><span class="p">,</span> <span class="s2">&quot;min_sum_step&quot;</span><span class="p">,</span> <span class="s2">&quot;max_sum_step&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">summary_df</span></div>
+
+
+
+<div class="viewcode-block" id="tracker_step_distribution">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.tracker/#niimpy.preprocessing.tracker.tracker_step_distribution">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tracker_step_distribution</span><span class="p">(</span><span class="n">steps_df</span><span class="p">,</span> <span class="n">steps_column</span><span class="o">=</span><span class="s1">&#39;steps&#39;</span><span class="p">,</span> <span class="n">resample_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;h&#39;</span><span class="p">},</span> <span class="n">timeframe</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return distribution of steps within a time range.</span>
+<span class="sd">    The number of step is sampled according to the frequency rule in resample_args.</span>
+<span class="sd">    This is divided by the total number of steps in a larger time frame, given by</span>
+<span class="sd">    the timeframe argument.</span>
+
+<span class="sd">    Using default parameters produces a daily step distribution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    steps_df : Pandas Dataframe</span>
+<span class="sd">        Dataframe the step distribution of each individual.</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments. These can be:</span>
+
+<span class="sd">        steps_column: str. Optional</span>
+<span class="sd">            Column contains step values. Default value is &quot;steps&quot;.</span>
+<span class="sd">        resample_args: dict. Optional</span>
+<span class="sd">            Dictionary containing the resample arguments. Default value is {&#39;rule&#39;: &#39;h&#39;}.</span>
+<span class="sd">        timeframe: string. Optional</span>
+<span class="sd">            Time frame used for computing the distribution. Default value is &#39;D&#39;.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: pandas DataFrame</span>
+<span class="sd">        A dataframe containing the distribution of step count.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">steps_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="c1"># time frame must be longer than resample_args[&quot;rule&quot;]</span>
+    <span class="n">to_offset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">tseries</span><span class="o">.</span><span class="n">frequencies</span><span class="o">.</span><span class="n">to_offset</span>
+    <span class="k">if</span> <span class="n">to_offset</span><span class="p">(</span><span class="n">timeframe</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">to_offset</span><span class="p">(</span><span class="n">resample_args</span><span class="p">[</span><span class="s2">&quot;rule&quot;</span><span class="p">]):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Time frame must be longer than resample rule&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Extract date and time columns from timestamp</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">steps_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Remove duplicates</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Convert the absolute values into distribution. This can be understood as the</span>
+    <span class="c1"># portion of steps the users took during each hour</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;user&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="n">steps_column</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">})</span>
+    <span class="n">step_sum</span> <span class="o">=</span> <span class="n">steps</span><span class="o">.</span><span class="n">reset_index</span><span class="p">([</span><span class="s2">&quot;user&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;user&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">timeframe</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="n">steps_column</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">})</span>
+
+    <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;step_sum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">step_sum</span><span class="p">[</span><span class="n">steps_column</span><span class="p">]</span>
+    <span class="c1"># fill down</span>
+    <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;step_sum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;step_sum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+
+    <span class="c1"># Divide hourly steps by daily sum to get the distribution</span>
+    <span class="n">steps</span><span class="p">[</span><span class="s1">&#39;step_distribution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="n">steps_column</span><span class="p">]</span> <span class="o">/</span> <span class="n">steps</span><span class="p">[</span><span class="s1">&#39;step_sum&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Set index and select columns</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;step_distribution&quot;</span><span class="p">,</span> <span class="s2">&quot;step_sum&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">steps</span><span class="p">[[</span><span class="s2">&quot;step_distribution&quot;</span><span class="p">,</span> <span class="s2">&quot;step_sum&quot;</span><span class="p">]]</span></div>
+
+
+
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">[</span><span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span>
+                         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;tracker_&#39;</span><span class="p">)]</span>
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ALL_FEATURES</span><span class="p">}</span>
+
+<div class="viewcode-block" id="extract_features_tracker">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.tracker/#niimpy.preprocessing.tracker.extract_features_tracker">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_features_tracker</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function computes and organizes the selected features for tracker data</span>
+<span class="sd">        recorded using Polar Ignite.</span>
+
+<span class="sd">        The complete list of features that can be calculated are: tracker_daily_step_distribution</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df: pandas.DataFrame</span>
+<span class="sd">            Input data frame</span>
+<span class="sd">        features: dict, optional</span>
+<span class="sd">            Dictionary keys contain the names of the features to compute.</span>
+<span class="sd">            The value of the keys is the list of parameters that will be passed to the function.</span>
+<span class="sd">            If none is given, all features will be computed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result: dataframe</span>
+<span class="sd">            Resulting dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">ALL_FEATURES</span>
+    <span class="k">for</span> <span class="n">feature_function</span><span class="p">,</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">feature_function</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">index_by</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">group_by_columns</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">computed_feature</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">computed_feature</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">index_by</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">computed_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">computed_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;group&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+        <span class="n">computed_features</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">computed_features</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">computed_features</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

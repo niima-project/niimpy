@@ -1,0 +1,743 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.location &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.location</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.preprocessing.location</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">DBSCAN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geopy.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">geodesic</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tzfpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tz</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
+
+<span class="n">default_freq</span> <span class="o">=</span> <span class="s2">&quot;1ME&quot;</span>
+
+
+<div class="viewcode-block" id="distance_matrix">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.distance_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">distance_matrix</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute distance matrix using great-circle distance formula</span>
+
+<span class="sd">    https://en.wikipedia.org/wiki/Great-circle_distance#Formulae</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lats : array</span>
+<span class="sd">        Latitudes</span>
+
+<span class="sd">    lons : array</span>
+<span class="sd">        Longitudes</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dists : matrix</span>
+<span class="sd">        Entry `(i, j)` shows the great-circle distance between</span>
+<span class="sd">        point `i` and `j`, i.e. distance between `(lats[i], lons[i])`</span>
+<span class="sd">        and `(lats[j], lons[j])`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="mf">6372795.477598</span>
+
+    <span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span>
+    <span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lons</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">lons</span><span class="p">),</span> <span class="s2">&quot;lats and lons should be of the same size&quot;</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lats</span><span class="p">)),</span> <span class="s2">&quot;nan in lats&quot;</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lons</span><span class="p">)),</span> <span class="s2">&quot;nan in lons&quot;</span>
+
+    <span class="c1"># convert degree to radian</span>
+    <span class="n">lats</span> <span class="o">=</span> <span class="n">lats</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+    <span class="n">lons</span> <span class="o">=</span> <span class="n">lons</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+
+    <span class="n">sins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span>
+    <span class="n">sin_matrix</span> <span class="o">=</span> <span class="n">sins</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">sins</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">coss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span>
+    <span class="n">cos_matrix</span> <span class="o">=</span> <span class="n">coss</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">coss</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">lons_matrix</span> <span class="o">=</span> <span class="n">lons</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">lons</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">lons</span><span class="p">)))</span>
+    <span class="n">lons_diff</span> <span class="o">=</span> <span class="n">lons_matrix</span> <span class="o">-</span> <span class="n">lons_matrix</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">lons_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lons_diff</span><span class="p">)</span>
+
+    <span class="c1"># TODO: make this function more efficient</span>
+    <span class="n">dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">sin_matrix</span> <span class="o">+</span> <span class="n">cos_matrix</span> <span class="o">*</span> <span class="n">lons_diff</span><span class="p">)</span>
+    <span class="n">dists</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">dists</span><span class="p">)</span>
+    <span class="n">dists</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">dists</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">dists</span></div>
+
+
+
+<div class="viewcode-block" id="filter_location">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.filter_location">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">filter_location</span><span class="p">(</span><span class="n">location</span><span class="p">,</span>
+                    <span class="n">remove_disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">remove_zeros</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">remove_network</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">latitude_column</span> <span class="o">=</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+                    <span class="n">longitude_column</span> <span class="o">=</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+                    <span class="n">label_column</span> <span class="o">=</span> <span class="s2">&quot;label&quot;</span><span class="p">,</span>
+                    <span class="n">provider_column</span> <span class="o">=</span> <span class="s2">&quot;provider&quot;</span><span class="p">,</span>
+                    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove low-quality or weird location samples</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    location : pd.DataFrame</span>
+<span class="sd">        DataFrame of locations</span>
+
+<span class="sd">    remove_disabled : bool</span>
+<span class="sd">        Remove locations whose `label` is disabled</span>
+
+<span class="sd">    remove_zero : bool</span>
+<span class="sd">        Remove locations which their latitude and longitueds are close to 0</span>
+
+<span class="sd">    remove_network : bool</span>
+<span class="sd">        Keep only locations whose `provider` is `gps`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    location : pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">remove_disabled</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">label_column</span> <span class="ow">in</span> <span class="n">location</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">[</span><span class="n">location</span><span class="p">[</span><span class="n">label_column</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;disabled&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">remove_zeros</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">location</span><span class="p">[</span><span class="n">latitude_column</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span>
+                 <span class="n">location</span><span class="p">[</span><span class="n">longitude_column</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.001</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">remove_network</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">provider_column</span> <span class="ow">in</span> <span class="n">location</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">[</span><span class="n">location</span><span class="p">[</span><span class="n">provider_column</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;gps&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">location</span></div>
+
+
+
+<div class="viewcode-block" id="get_speeds_totaldist">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.get_speeds_totaldist">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_speeds_totaldist</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes speed of bins with dividing distance by their time difference</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lats : array-like</span>
+<span class="sd">        Array of latitudes</span>
+<span class="sd">    lons : array-like</span>
+<span class="sd">        Array of longitudes</span>
+<span class="sd">    times : array-like</span>
+<span class="sd">        Array of times associted with bins</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ------</span>
+<span class="sd">    (speeds, total_distances) : tuple of speeds (array) and total distance travled (float)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">lons</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+    <span class="n">n_bins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">n_bins</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">([],</span> <span class="p">[])</span>
+
+    <span class="n">dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
+    <span class="n">time_deltas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_bins</span><span class="p">):</span>
+        <span class="n">loc1</span> <span class="o">=</span> <span class="p">(</span><span class="n">lats</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lons</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">loc2</span> <span class="o">=</span> <span class="p">(</span><span class="n">lats</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">lons</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="n">time_deltas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="n">dists</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">geodesic</span><span class="p">(</span><span class="n">loc1</span><span class="p">,</span> <span class="n">loc2</span><span class="p">)</span><span class="o">.</span><span class="n">meters</span>
+    <span class="n">speeds</span> <span class="o">=</span> <span class="n">dists</span> <span class="o">/</span> <span class="n">time_deltas</span>
+    <span class="n">speeds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">speeds</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">dists</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="find_home">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.find_home">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_home</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find coordinates of the home of a person</span>
+
+<span class="sd">    Home is defined as the place most visited between</span>
+<span class="sd">    12am - 6am. Locations within this time period first</span>
+<span class="sd">    clustered and then the center of largest clusetr</span>
+<span class="sd">    shows the home.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lats : array-like</span>
+<span class="sd">        Latitudes</span>
+<span class="sd">    lons : array-like</span>
+<span class="sd">        Longitudes</span>
+<span class="sd">    times : array-like</span>
+<span class="sd">        Time of the recorderd coordinates</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ------</span>
+<span class="sd">    (lat_home, lon_home) : tuple of floats</span>
+<span class="sd">        Coordinates of the home</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">idx_night</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">hour</span> <span class="o">&lt;=</span> <span class="mi">6</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">idx_night</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="n">lats_night</span> <span class="o">=</span> <span class="n">lats</span><span class="p">[</span><span class="n">idx_night</span><span class="p">]</span>
+    <span class="n">lons_night</span> <span class="o">=</span> <span class="n">lons</span><span class="p">[</span><span class="n">idx_night</span><span class="p">]</span>
+    <span class="n">clusters</span> <span class="o">=</span> <span class="n">cluster_locations</span><span class="p">(</span><span class="n">lats_night</span><span class="p">,</span> <span class="n">lons_night</span><span class="p">)</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span>
+    <span class="n">home_cluster</span> <span class="o">=</span> <span class="n">counter</span><span class="o">.</span><span class="n">most_common</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">lats_home</span> <span class="o">=</span> <span class="n">lats_night</span><span class="p">[</span><span class="n">clusters</span> <span class="o">==</span> <span class="n">home_cluster</span><span class="p">]</span>
+    <span class="n">lons_home</span> <span class="o">=</span> <span class="n">lons_night</span><span class="p">[</span><span class="n">clusters</span> <span class="o">==</span> <span class="n">home_cluster</span><span class="p">]</span>
+
+    <span class="n">lat_home</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">lats_home</span><span class="p">)</span>
+    <span class="n">lon_home</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">lons_home</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lat_home</span><span class="p">,</span> <span class="n">lon_home</span></div>
+
+
+
+<div class="viewcode-block" id="cluster_locations">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.cluster_locations">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cluster_locations</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs clustering on the locations</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lats : pd.DataFrame</span>
+<span class="sd">        Latitudes</span>
+<span class="sd">    lons : pd.DataFrame</span>
+<span class="sd">        Longitudes</span>
+<span class="sd">    mins_samples : int</span>
+<span class="sd">        Minimum number of samples to form a cluster. Default is 5.</span>
+<span class="sd">    eps : float</span>
+<span class="sd">        Epsilone parameter in DBSCAN. The maximum distance between</span>
+<span class="sd">        two neighbour samples. Default is 200.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    clusters : array</span>
+<span class="sd">        Array of clusters. -1 indicates outlier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">lats</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">lons</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+    <span class="n">dists_matrix</span> <span class="o">=</span> <span class="n">distance_matrix</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">)</span>
+    <span class="n">dbscan</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="n">min_samples</span><span class="o">=</span><span class="n">min_samples</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">eps</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;precomputed&#39;</span><span class="p">)</span>
+    <span class="n">clusters</span> <span class="o">=</span> <span class="n">dbscan</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">dists_matrix</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">clusters</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">number_of_significant_places</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">times</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes number of significant places.</span>
+
+<span class="sd">    Number of significant plcaes is computed by first clustering</span>
+<span class="sd">    the locations in each month and then taking the median of the</span>
+<span class="sd">    number of clusters in each month.</span>
+
+<span class="sd">    It is assumed that `lats` and `lons` are the coordinates of</span>
+<span class="sd">    static points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lats : pd.DataFrame</span>
+<span class="sd">        Latitudes</span>
+<span class="sd">    lons : pd.DataFrame</span>
+<span class="sd">        Longitudes</span>
+<span class="sd">    times : array</span>
+<span class="sd">        Array of times</span>
+
+<span class="sd">    Returns : the number of significant places discovered</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sps</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">number_of_places</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">months</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;M&#39;</span><span class="p">)</span>
+    <span class="n">months</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">months</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">months</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">last_month</span> <span class="o">=</span> <span class="n">months</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">weeks</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">months</span> <span class="o">+=</span> <span class="p">[</span><span class="n">last_month</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">months</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">months</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">months</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">times</span> <span class="o">&gt;=</span> <span class="n">start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">times</span> <span class="o">&lt;=</span> <span class="n">end</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">lats_month</span> <span class="o">=</span> <span class="n">lats</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">lons_month</span> <span class="o">=</span> <span class="n">lons</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="n">clusters</span> <span class="o">=</span> <span class="n">cluster_locations</span><span class="p">(</span><span class="n">lats_month</span><span class="p">,</span> <span class="n">lons_month</span><span class="p">)</span>
+        <span class="n">number_of_sps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">clusters</span><span class="p">))</span>
+        <span class="k">if</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">:</span>
+            <span class="n">number_of_sps</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">number_of_places</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+        <span class="n">sps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">number_of_sps</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">sps</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="number_of_significant_places">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.number_of_significant_places">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">number_of_significant_places</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">latitude_column</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+        <span class="n">longitude_column</span><span class="o">=</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+        <span class="n">resample_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">default_freq</span><span class="p">},</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Computes number of significant places.</span>
+
+<span class="sd">    This feature is included in location_significant_place_features as</span>
+<span class="sd">    n_sps and this standalone function is not included in default location</span>
+<span class="sd">    features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_features</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>  <span class="c1"># sort based on time</span>
+
+        <span class="n">lats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">latitude_column</span><span class="p">]</span>
+        <span class="n">lons</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">longitude_column</span><span class="p">]</span>
+
+        <span class="n">clusters</span> <span class="o">=</span> <span class="n">cluster_locations</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">)</span>
+        <span class="n">number_of_sps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">clusters</span><span class="p">))</span>
+        <span class="k">if</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">:</span>
+            <span class="n">number_of_sps</span> <span class="o">-=</span> <span class="mi">1</span>
+        
+        <span class="n">row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>
+            <span class="s1">&#39;n_significant_places&#39;</span><span class="p">:</span> <span class="n">number_of_sps</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">row</span>
+    
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">compute_features</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;n_significant_places&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="compute_nbin_maxdist_home">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.compute_nbin_maxdist_home">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_nbin_maxdist_home</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">latlon_home</span><span class="p">,</span> <span class="n">home_radius</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes number of bins in home and maximum distance to home</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lats : pd.DataFrame</span>
+<span class="sd">        Latitudes</span>
+<span class="sd">    lons : pd.DataFrame</span>
+<span class="sd">        Longitudes</span>
+<span class="sd">    latlon_home : array</span>
+<span class="sd">        A tuple (lat, lon) showing the coordinate of home</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (n_home, max_dist_home) : tuple</span>
+<span class="sd">        `n_home`: number of bins the person has been near the home</span>
+<span class="sd">        `max_dist_home`: maximum distance that the person has been from home</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">latlon_home</span><span class="p">)):</span>
+        <span class="n">time_home</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">max_dist_home</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">home_idx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">max_dist_home</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">latlon</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">):</span>
+            <span class="n">dist_home</span> <span class="o">=</span> <span class="n">geodesic</span><span class="p">(</span><span class="n">latlon</span><span class="p">,</span> <span class="n">latlon_home</span><span class="p">)</span><span class="o">.</span><span class="n">meters</span>
+            <span class="n">home_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist_home</span> <span class="o">&lt;=</span> <span class="n">home_radius</span><span class="p">)</span>
+            <span class="n">max_dist_home</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_dist_home</span><span class="p">,</span> <span class="n">dist_home</span><span class="p">)</span>
+        <span class="n">time_home</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">home_idx</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">time_home</span><span class="p">,</span> <span class="n">max_dist_home</span></div>
+
+
+
+<div class="viewcode-block" id="location_significant_place_features">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.location_significant_place_features">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">location_significant_place_features</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">latitude_column</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+        <span class="n">longitude_column</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+        <span class="n">speed_column</span><span class="o">=</span><span class="s2">&quot;speed&quot;</span><span class="p">,</span>
+        <span class="n">speed_threshold</span><span class="o">=</span><span class="mf">0.277</span><span class="p">,</span>
+        <span class="n">resample_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">default_freq</span><span class="p">},</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates features related to Significant Places.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: dataframe with date index</span>
+<span class="sd">    config: A dictionary of optional arguments</span>
+
+<span class="sd">    Optional arguments in config:</span>
+<span class="sd">        longitude_column: The name of the column with longitude data in a floating point format. Defaults to &#39;longitude&#39;. </span>
+<span class="sd">        latitude_column: The name of the column with latitude data in a floating point format. Defaults to &#39;latitude&#39;.</span>
+<span class="sd">        speed_column: The name of the column with speed data in a floating point format. Defaults to &#39;speed&#39;.</span>
+<span class="sd">        resample_args: a dictionary of arguments for the Pandas resample function. For example to resample by hour, you would pass {&quot;rule&quot;: &quot;1h&quot;}.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_features</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute features for a single user&quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>  <span class="c1"># sort based on time</span>
+
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">lats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">latitude_column</span><span class="p">]</span>
+        <span class="n">lons</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">longitude_column</span><span class="p">]</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span>
+
+        <span class="c1"># Home realted featuers</span>
+        <span class="n">latlon_home</span> <span class="o">=</span> <span class="n">find_home</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">speed_column</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+            <span class="n">speeds</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">speed_column</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">speeds</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_speeds_totaldist</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+
+        <span class="n">static_bins</span> <span class="o">=</span> <span class="n">speeds</span> <span class="o">&lt;</span> <span class="n">speed_threshold</span>
+        <span class="n">lats_static</span> <span class="o">=</span> <span class="n">lats</span><span class="p">[</span><span class="n">static_bins</span><span class="p">]</span>
+        <span class="n">lons_static</span> <span class="o">=</span> <span class="n">lons</span><span class="p">[</span><span class="n">static_bins</span><span class="p">]</span>
+        <span class="n">clusters</span> <span class="o">=</span> <span class="n">cluster_locations</span><span class="p">(</span><span class="n">lats_static</span><span class="p">,</span> <span class="n">lons_static</span><span class="p">)</span>
+
+        <span class="n">non_rare_clusters</span> <span class="o">=</span> <span class="n">clusters</span><span class="p">[</span><span class="n">clusters</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">n_unique_sps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">non_rare_clusters</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">n_unique_sps</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">entropy</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">non_rare_clusters</span><span class="p">)</span>
+            <span class="n">normalized_entropy</span> <span class="o">=</span> <span class="n">entropy</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">non_rare_clusters</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">entropy</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">normalized_entropy</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">counter</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span>
+        <span class="n">stay_times</span> <span class="o">=</span> <span class="n">counter</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="n">stay_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">stay_times</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">n_static</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">static_bins</span><span class="p">)</span>
+        <span class="n">n_moving</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="o">~</span><span class="n">static_bins</span><span class="p">)</span>
+        <span class="n">n_rare</span> <span class="o">=</span> <span class="n">counter</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">n_home</span><span class="p">,</span> <span class="n">max_dist_home</span> <span class="o">=</span> <span class="n">compute_nbin_maxdist_home</span><span class="p">(</span>
+            <span class="n">lats_static</span><span class="p">,</span> <span class="n">lons_static</span><span class="p">,</span> <span class="n">latlon_home</span>
+        <span class="p">)</span>
+
+        <span class="n">n_transitions</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">n_top1</span> <span class="o">=</span> <span class="n">stay_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stay_times</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">n_top2</span> <span class="o">=</span> <span class="n">stay_times</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stay_times</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">n_top3</span> <span class="o">=</span> <span class="n">stay_times</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stay_times</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">n_top4</span> <span class="o">=</span> <span class="n">stay_times</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stay_times</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">n_top5</span> <span class="o">=</span> <span class="n">stay_times</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stay_times</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="k">else</span> <span class="mi">0</span>
+
+        <span class="n">row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>
+            <span class="s1">&#39;n_sps&#39;</span><span class="p">:</span> <span class="n">n_unique_sps</span><span class="p">,</span>
+            <span class="s1">&#39;n_static&#39;</span><span class="p">:</span> <span class="n">n_static</span><span class="p">,</span>
+            <span class="s1">&#39;n_moving&#39;</span><span class="p">:</span> <span class="n">n_moving</span><span class="p">,</span>
+            <span class="s1">&#39;n_rare&#39;</span><span class="p">:</span> <span class="n">n_rare</span><span class="p">,</span>
+            <span class="s1">&#39;n_home&#39;</span><span class="p">:</span> <span class="n">n_home</span><span class="p">,</span>
+            <span class="s1">&#39;max_dist_home&#39;</span><span class="p">:</span> <span class="n">max_dist_home</span><span class="p">,</span>
+            <span class="s1">&#39;n_transitions&#39;</span><span class="p">:</span> <span class="n">n_transitions</span><span class="p">,</span>
+            <span class="s1">&#39;n_top1&#39;</span><span class="p">:</span> <span class="n">n_top1</span><span class="p">,</span>
+            <span class="s1">&#39;n_top2&#39;</span><span class="p">:</span> <span class="n">n_top2</span><span class="p">,</span>
+            <span class="s1">&#39;n_top3&#39;</span><span class="p">:</span> <span class="n">n_top3</span><span class="p">,</span>
+            <span class="s1">&#39;n_top4&#39;</span><span class="p">:</span> <span class="n">n_top4</span><span class="p">,</span>
+            <span class="s1">&#39;n_top5&#39;</span><span class="p">:</span> <span class="n">n_top5</span><span class="p">,</span>
+            <span class="s1">&#39;entropy&#39;</span><span class="p">:</span> <span class="n">entropy</span><span class="p">,</span>
+            <span class="s1">&#39;normalized_entropy&#39;</span><span class="p">:</span> <span class="n">normalized_entropy</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">row</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">compute_features</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;n_sps&quot;</span><span class="p">,</span> <span class="s2">&quot;n_static&quot;</span><span class="p">,</span> <span class="s2">&quot;n_moving&quot;</span><span class="p">,</span> <span class="s2">&quot;n_rare&quot;</span><span class="p">,</span> <span class="s2">&quot;n_home&quot;</span><span class="p">,</span> <span class="s2">&quot;max_dist_home&quot;</span><span class="p">,</span> <span class="s2">&quot;n_transitions&quot;</span><span class="p">,</span> <span class="s2">&quot;n_top1&quot;</span><span class="p">,</span> <span class="s2">&quot;n_top2&quot;</span><span class="p">,</span> <span class="s2">&quot;n_top3&quot;</span><span class="p">,</span> <span class="s2">&quot;n_top4&quot;</span><span class="p">,</span> <span class="s2">&quot;n_top5&quot;</span><span class="p">,</span> <span class="s2">&quot;entropy&quot;</span><span class="p">,</span> <span class="s2">&quot;normalized_entropy&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="location_distance_features">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.location_distance_features">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">location_distance_features</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">latitude_column</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+        <span class="n">longitude_column</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+        <span class="n">speed_column</span><span class="o">=</span><span class="s2">&quot;speed&quot;</span><span class="p">,</span>
+        <span class="n">resample_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">default_freq</span><span class="p">},</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates features related to distance and speed.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: dataframe with date index</span>
+<span class="sd">    config: A dictionary of optional arguments</span>
+
+<span class="sd">    Optional arguments in config:</span>
+<span class="sd">        longitude_column: The name of the column with longitude data in a floating point format. Defaults to &#39;longitude&#39;. </span>
+<span class="sd">        latitude_column: The name of the column with latitude data in a floating point format. Defaults to &#39;latitude&#39;.</span>
+<span class="sd">        speed_column: The name of the column with speed data in a floating point format. Defaults to &#39;speed&#39;.</span>
+<span class="sd">        resample_args: a dictionary of arguments for the Pandas resample function. For example to resample by hour, you would pass {&quot;rule&quot;: &quot;1h&quot;}.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_features</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute features for a single user and given time interval&quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>  <span class="c1"># sort based on time</span>
+        <span class="n">n_bins</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">n_bins</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">lats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">latitude_column</span><span class="p">]</span>
+        <span class="n">lons</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">longitude_column</span><span class="p">]</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span>
+
+        <span class="n">speeds</span><span class="p">,</span> <span class="n">total_dist</span> <span class="o">=</span> <span class="n">get_speeds_totaldist</span><span class="p">(</span><span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">speed_column</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+            <span class="n">speeds</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">speed_column</span><span class="p">]</span>
+
+        <span class="n">speed_average</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">speeds</span><span class="p">)</span>
+        <span class="n">speed_variance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">speeds</span><span class="p">)</span>
+        <span class="n">speed_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">speeds</span><span class="p">)</span>
+
+        <span class="n">variance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">lons</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">variance</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">log_variance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">variance</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log_variance</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+        <span class="n">row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>
+            <span class="s1">&#39;dist_total&#39;</span><span class="p">:</span> <span class="n">total_dist</span><span class="p">,</span>
+            <span class="s1">&#39;n_bins&#39;</span><span class="p">:</span> <span class="n">n_bins</span><span class="p">,</span>
+            <span class="s1">&#39;speed_average&#39;</span><span class="p">:</span> <span class="n">speed_average</span><span class="p">,</span>
+            <span class="s1">&#39;speed_variance&#39;</span><span class="p">:</span> <span class="n">speed_variance</span><span class="p">,</span>
+            <span class="s1">&#39;speed_max&#39;</span><span class="p">:</span> <span class="n">speed_max</span><span class="p">,</span>
+            <span class="s1">&#39;variance&#39;</span><span class="p">:</span> <span class="n">variance</span><span class="p">,</span>
+            <span class="s1">&#39;log_variance&#39;</span><span class="p">:</span> <span class="n">log_variance</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">row</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">compute_features</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;dist_total&quot;</span><span class="p">,</span> <span class="s2">&quot;n_bins&quot;</span><span class="p">,</span> <span class="s2">&quot;speed_average&quot;</span><span class="p">,</span> <span class="s2">&quot;speed_variance&quot;</span><span class="p">,</span> <span class="s2">&quot;speed_max&quot;</span><span class="p">,</span> <span class="s2">&quot;variance&quot;</span><span class="p">,</span> <span class="s2">&quot;log_variance&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="location_local_time">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.location_local_time">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">location_local_time</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">longitude_column</span><span class="o">=</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+        <span class="n">latitude_column</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+        <span class="n">resample_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">default_freq</span><span class="p">},</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculates the local time of the user based on the longitude.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: dataframe with date index</span>
+<span class="sd">    config: A dictionary of optional arguments</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_timezone</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">get_tz</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">longitude_column</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="n">latitude_column</span><span class="p">])</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_timezone</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;local_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;timezone&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">row</span>
+    
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;timezone&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">get_timezone</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">set_timezone</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;timezone&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+    
+
+
+
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">[</span><span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span>
+                         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;location_&#39;</span><span class="p">)]</span>
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ALL_FEATURES</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="extract_features_location">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.location/#niimpy.preprocessing.location.extract_features_location">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_features_location</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates location features</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pd.DataFrame</span>
+<span class="sd">        dataframe of location data. It must contain these columns:</span>
+<span class="sd">        `latitude`, `longitude`, `user`, `group`.</span>
+<span class="sd">        `speed` is optional. If not provided, it will be</span>
+<span class="sd">        computed manually.</span>
+<span class="sd">    speed_threshold : float</span>
+<span class="sd">        Bins whose speed is lower than `speed_threshold` are considred</span>
+<span class="sd">        `static` and the rest are `moving`.</span>
+<span class="sd">    features : map (dictionary) of functions that compute features.</span>
+<span class="sd">        it is a map of map, where the keys to the first map is the name of</span>
+<span class="sd">        functions that compute features and the nested map contains the keyword</span>
+<span class="sd">        arguments to that function. If there is no arguments use an empty map.</span>
+<span class="sd">        Default is None. If None, all the available functions are used.</span>
+<span class="sd">        Those functions are in the dict `location.ALL_FEATURES`.</span>
+<span class="sd">        You can implement your own function and use it instead or add it</span>
+<span class="sd">        to the mentioned map.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    features : pd.DataFrame</span>
+<span class="sd">        Dataframe of computed features where the index is users and columns</span>
+<span class="sd">        are the the features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">ALL_FEATURES</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="s2">&quot;Please input the features as a dictionary&quot;</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">features</span><span class="p">,</span> <span class="n">feature_arg</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">features</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_arg</span><span class="p">)</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">set_conserved_index</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+        <span class="n">computed_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+    
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">computed_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">computed_features</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">computed_features</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

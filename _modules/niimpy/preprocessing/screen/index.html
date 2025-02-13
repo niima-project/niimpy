@@ -1,0 +1,762 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.screen &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.screen</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.preprocessing.screen</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">battery</span> <span class="k">as</span> <span class="n">b</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
+
+
+<div class="viewcode-block" id="util_screen">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.util_screen">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">screen_column_name</span> <span class="o">=</span> <span class="s2">&quot;screen_status&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function is a helper function for all other screen preprocessing.</span>
+<span class="sd">    The function has the option to merge information from the battery sensors to</span>
+<span class="sd">    include data when the phone is shut down. The function also detects the missing </span>
+<span class="sd">    datapoints (i.e. not allowed transitions like ON to ON). </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of screen</span>
+<span class="sd">        information. The following arguments are used:</span>
+
+<span class="sd">        screen_column_name: Column containing the screen status. Default is</span>
+<span class="sd">                            &quot;screen_status&quot;.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+
+    <span class="n">id_columns</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">identifier_columns</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">screen_column_name</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">screen_column_name</span><span class="p">])</span> <span class="c1">#convert to numeric in case it is not</span>
+
+    <span class="c1">#Include the missing points that are due to shutting down the phone</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bat</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">shutdown</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">shutdown_info</span><span class="p">(</span><span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">shutdown</span> <span class="o">=</span> <span class="n">shutdown</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">shutdown</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">shutdown</span><span class="p">])</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">id_columns</span> <span class="o">+</span> <span class="p">[</span><span class="n">screen_column_name</span><span class="p">]]</span>
+
+    <span class="c1">#Sort the dataframe</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">id_columns</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1">#Detect missing data points</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;next&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">screen_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;dummy&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">screen_column_name</span><span class="p">]</span><span class="o">-</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;next&#39;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;dummy&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">#Check the missing points and label them as 1</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;dummy&#39;</span><span class="p">,</span><span class="s1">&#39;next&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+   
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">missing</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="c1">#Discard missing values</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;missing&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="event_classification_screen">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.event_classification_screen">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">event_classification_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">screen_column_name</span> <span class="o">=</span> <span class="s2">&quot;screen_status&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function is a helper function for other screen preprocessing.</span>
+<span class="sd">    The function classifies the screen events into four transition types: on, </span>
+<span class="sd">    off, in use, and undefined, based on the screen events recorded. For example,</span>
+<span class="sd">    if two consecutive events are 0 and 3, there has been a transition from off</span>
+<span class="sd">    to unlocked, i.e. the phone has been unlocked and the events will be </span>
+<span class="sd">    classified into the &quot;use&quot; transition. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. The following arguments are used:</span>
+
+<span class="sd">        screen_column_name: Column containing the screen status. Default is</span>
+<span class="sd">                            &quot;screen_status&quot;.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="k">assert</span> <span class="s2">&quot;user&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+    <span class="n">id_columns</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">identifier_columns</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    
+    <span class="c1">#Classify the event </span>
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">id_columns</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">col_as_str</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">screen_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">next_as_str</span> <span class="o">=</span> <span class="n">col_as_str</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;next&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_as_str</span> <span class="o">+</span> <span class="n">next_as_str</span>
+    
+    <span class="n">index_name</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;device&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+    
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;use&quot;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">df</span><span class="p">[</span><span class="s2">&quot;on&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;na&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;off&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;30&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;31&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;32&#39;</span><span class="p">),</span> <span class="s2">&quot;use&quot;</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span> <span class="c1">#in use</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;10&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;12&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;13&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;20&#39;</span><span class="p">),</span> <span class="s2">&quot;on&quot;</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span> <span class="c1">#on</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;21&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;23&#39;</span><span class="p">),</span> <span class="s2">&quot;na&quot;</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span> <span class="c1">#irrelevant. It seems like from 2 to 1 is from off to on (i.e. the screen goes to off and then it locks)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;01&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;02&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;03&#39;</span><span class="p">),</span> <span class="s2">&quot;off&quot;</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span> <span class="c1">#off</span>
+    
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="n">screen_column_name</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1">#Discard the first and last row because they do not have all info. We do not</span>
+    <span class="c1">#know what happened before or after these points.</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;device&quot;</span><span class="p">],</span> <span class="n">group_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;device&quot;</span><span class="p">],</span> <span class="n">group_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">([</span><span class="s2">&quot;device&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Set the original index. If the origianal name was none, the </span>
+    <span class="c1"># default value is &quot;index&quot;</span>
+    <span class="k">if</span> <span class="n">index_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">index_name</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="duration_util_screen">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.duration_util_screen">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">duration_util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function is a helper function for other screen preprocessing.</span>
+<span class="sd">    The function computes the duration of an event, based on the classification</span>
+<span class="sd">    function event_classification_screen. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+            
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span><span class="s2">&quot;device&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1">#Discard transitions between subjects</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    
+    <span class="c1">#Discard any datapoints whose duration in “ON” and &quot;IN USE&quot; states are </span>
+    <span class="c1">#longer than 10 hours becaus they may be artifacts</span>
+    <span class="n">thr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;10 hours&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">on</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">duration</span><span class="o">&gt;</span><span class="n">thr</span><span class="p">))]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">use</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">duration</span><span class="o">&gt;</span><span class="n">thr</span><span class="p">))]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="screen_off">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_off">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen_off</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the timestamps, within the specified timeframe, </span>
+<span class="sd">    when the screen has turned off. If there is no specified timeframe,</span>
+<span class="sd">    the function sets a 30 min default time window. The function aggregates this number </span>
+<span class="sd">    by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    <span class="n">id_columns</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">identifier_columns</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">screen_status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="c1">#Select only those OFF events when no missing data is present</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;screen_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">id_columns</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;screen_status&quot;</span><span class="p">]]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;screen_status&quot;</span><span class="p">:</span><span class="s2">&quot;screen_off&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;screen_status&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="screen_count">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_count">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen_count</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the number of times, within the specified timeframe, </span>
+<span class="sd">    when the screen has turned off, turned on, and been in use. If there is no </span>
+<span class="sd">    specified timeframe, the function sets a 30 min default time window. The </span>
+<span class="sd">    function aggregates this number by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">event_classification_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">)[</span><span class="s2">&quot;on&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">on</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_on_count&#39;</span><span class="p">)</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">)[</span><span class="s2">&quot;off&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">off</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_off_count&#39;</span><span class="p">)</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">)[</span><span class="s2">&quot;use&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_use_count&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">on</span><span class="p">,</span> <span class="n">off</span><span class="p">,</span> <span class="n">use</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;screen_on_count&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_off_count&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_use_count&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="screen_duration">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen_duration</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the duration (in seconds) of each transition, within the </span>
+<span class="sd">    specified timeframe. The transitions are off, on, and in use. If there is no </span>
+<span class="sd">    specified timeframe, the function sets a 30 min default time window. The </span>
+<span class="sd">    function aggregates this number by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">event_classification_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">duration_util_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">on</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">on</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_on_durationtotal&#39;</span><span class="p">)</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">off</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">off</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_off_durationtotal&#39;</span><span class="p">)</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">use</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_use_durationtotal&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">on</span><span class="p">,</span> <span class="n">off</span><span class="p">,</span> <span class="n">use</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;screen_on_durationtotal&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_off_durationtotal&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_use_durationtotal&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="screen_duration_min">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration_min">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen_duration_min</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the duration (in seconds) of each transition, within the </span>
+<span class="sd">    specified timeframe. The transitions are off, on, and in use. If there is no </span>
+<span class="sd">    specified timeframe, the function sets a 30 min default time window. The </span>
+<span class="sd">    function aggregates this number by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">event_classification_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>           
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">duration_util_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">on</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">on</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_on_durationminimum&#39;</span><span class="p">)</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">off</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">off</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_off_durationminimum&#39;</span><span class="p">)</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">use</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_use_durationminimum&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">on</span><span class="p">,</span> <span class="n">off</span><span class="p">,</span> <span class="n">use</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;screen_on_durationminimum&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_off_durationminimum&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_use_durationminimum&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="screen_duration_max">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration_max">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen_duration_max</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the duration (in seconds) of each transition, within the </span>
+<span class="sd">    specified timeframe. The transitions are off, on, and in use. If there is no </span>
+<span class="sd">    specified timeframe, the function sets a 30 min default time window. The </span>
+<span class="sd">    function aggregates this number by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">event_classification_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>           
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">duration_util_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">on</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">on</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_on_durationmaximum&#39;</span><span class="p">)</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">off</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">off</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_off_durationmaximum&#39;</span><span class="p">)</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">use</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_use_durationmaximum&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">on</span><span class="p">,</span> <span class="n">off</span><span class="p">,</span> <span class="n">use</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;screen_on_durationmaximum&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_off_durationmaximum&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_use_durationmaximum&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="screen_duration_mean">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration_mean">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen_duration_mean</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the duration (in seconds) of each transition, within the </span>
+<span class="sd">    specified timeframe. The transitions are off, on, and in use. If there is no </span>
+<span class="sd">    specified timeframe, the function sets a 30 min default time window. The </span>
+<span class="sd">    function aggregates this number by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">event_classification_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>           
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">duration_util_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">on</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">on</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_on_durationmean&#39;</span><span class="p">)</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">off</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">off</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_off_durationmean&#39;</span><span class="p">)</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">use</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_use_durationmean&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">on</span><span class="p">,</span> <span class="n">off</span><span class="p">,</span> <span class="n">use</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;screen_on_durationmean&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_off_durationmean&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_use_durationmean&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="screen_duration_median">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration_median">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen_duration_median</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the duration (in seconds) of each transition, within the </span>
+<span class="sd">    specified timeframe. The transitions are off, on, and in use. If there is no </span>
+<span class="sd">    specified timeframe, the function sets a 30 min default time window. The </span>
+<span class="sd">    function aggregates this number by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">event_classification_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>           
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">duration_util_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">on</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">on</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_on_durationmedian&#39;</span><span class="p">)</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">off</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">off</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_off_durationmedian&#39;</span><span class="p">)</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">use</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_use_durationmedian&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">on</span><span class="p">,</span> <span class="n">off</span><span class="p">,</span> <span class="n">use</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;screen_on_durationmedian&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_off_durationmedian&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_use_durationmedian&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="screen_duration_std">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration_std">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen_duration_std</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the duration (in seconds) of each transition, within the </span>
+<span class="sd">    specified timeframe. The transitions are off, on, and in use. If there is no </span>
+<span class="sd">    specified timeframe, the function sets a 30 min default time window. The </span>
+<span class="sd">    function aggregates this number by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">event_classification_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>           
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">duration_util_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">on</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="n">on</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_on_durationstd&#39;</span><span class="p">)</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">off</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="n">off</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_off_durationstd&#39;</span><span class="p">)</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">use</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">use</span> <span class="o">=</span> <span class="n">use</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;screen_use_durationstd&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">on</span><span class="p">,</span> <span class="n">off</span><span class="p">,</span> <span class="n">use</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;screen_on_durationstd&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_off_durationstd&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_use_durationstd&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="screen_first_unlock">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_first_unlock">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen_first_unlock</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the first time the phone was unlocked each day. </span>
+<span class="sd">    The data is aggregated by user, by day.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">util_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">event_classification_screen</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="o">.</span><span class="n">on</span><span class="o">==</span><span class="mi">1</span><span class="p">])[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="s1">&#39;1D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;first_unlock&quot;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;first_unlock&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">[</span><span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;screen_&#39;</span><span class="p">)]</span>
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ALL_FEATURES</span><span class="p">}</span>
+
+<div class="viewcode-block" id="extract_features_screen">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.screen/#niimpy.preprocessing.screen.extract_features_screen">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_features_screen</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function computes and organizes the selected features for screen events</span>
+<span class="sd">    that have been recorded using Aware Framework. The function aggregates the features</span>
+<span class="sd">    by user, by time window. If no time window is specified, it will automatically aggregate</span>
+<span class="sd">    the features in 30 mins non-overlapping windows. </span>
+<span class="sd">    </span>
+<span class="sd">    The complete list of features that can be calculated are: screen_off, screen_count,</span>
+<span class="sd">    screen_duration, screen_duration_min, screen_duration_max, screen_duration_median,</span>
+<span class="sd">    screen_duration_mean, screen_duration_std, and screen_first_unlock.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    features: dict</span>
+<span class="sd">        Dictionary keys contain the names of the features to compute. </span>
+<span class="sd">        If none is given, all features will be computed.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    computed_features: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    
+    <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">ALL_FEATURES</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="s2">&quot;Please input the features as a dictionary&quot;</span>
+    
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">feature</span><span class="p">,</span> <span class="n">feature_arg</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">feature</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_arg</span><span class="p">)</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">set_conserved_index</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+        <span class="n">computed_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+    
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">computed_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">computed_features</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">computed_features</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.location module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.preprocessing.sampledata module" href="../niimpy.preprocessing.sampledata/" />
+    <link rel="prev" title="niimpy.preprocessing.filter module" href="../niimpy.preprocessing.filter/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.location module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.preprocessing.location.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.preprocessing.location">
+<span id="niimpy-preprocessing-location-module"></span><h1>niimpy.preprocessing.location module<a class="headerlink" href="#module-niimpy.preprocessing.location" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.cluster_locations">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">cluster_locations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#cluster_locations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.cluster_locations" title="Link to this definition"></a></dt>
+<dd><p>Performs clustering on the locations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lats</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>Latitudes</p>
+</dd>
+<dt><strong>lons</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>Longitudes</p>
+</dd>
+<dt><strong>mins_samples</strong><span class="classifier">int</span></dt><dd><p>Minimum number of samples to form a cluster. Default is 5.</p>
+</dd>
+<dt><strong>eps</strong><span class="classifier">float</span></dt><dd><p>Epsilone parameter in DBSCAN. The maximum distance between
+two neighbour samples. Default is 200.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>clusters</strong><span class="classifier">array</span></dt><dd><p>Array of clusters. -1 indicates outlier.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.compute_nbin_maxdist_home">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">compute_nbin_maxdist_home</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latlon_home</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">home_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#compute_nbin_maxdist_home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.compute_nbin_maxdist_home" title="Link to this definition"></a></dt>
+<dd><p>Computes number of bins in home and maximum distance to home</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lats</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>Latitudes</p>
+</dd>
+<dt><strong>lons</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>Longitudes</p>
+</dd>
+<dt><strong>latlon_home</strong><span class="classifier">array</span></dt><dd><p>A tuple (lat, lon) showing the coordinate of home</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>(n_home, max_dist_home)</strong><span class="classifier">tuple</span></dt><dd><p><cite>n_home</cite>: number of bins the person has been near the home
+<cite>max_dist_home</cite>: maximum distance that the person has been from home</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.distance_matrix">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">distance_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lons</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#distance_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.distance_matrix" title="Link to this definition"></a></dt>
+<dd><p>Compute distance matrix using great-circle distance formula</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Great-circle_distance#Formulae">https://en.wikipedia.org/wiki/Great-circle_distance#Formulae</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lats</strong><span class="classifier">array</span></dt><dd><p>Latitudes</p>
+</dd>
+<dt><strong>lons</strong><span class="classifier">array</span></dt><dd><p>Longitudes</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>dists</strong><span class="classifier">matrix</span></dt><dd><p>Entry <cite>(i, j)</cite> shows the great-circle distance between
+point <cite>i</cite> and <cite>j</cite>, i.e. distance between <cite>(lats[i], lons[i])</cite>
+and <cite>(lats[j], lons[j])</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.extract_features_location">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">extract_features_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#extract_features_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.extract_features_location" title="Link to this definition"></a></dt>
+<dd><p>Calculates location features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>dataframe of location data. It must contain these columns:
+<cite>latitude</cite>, <cite>longitude</cite>, <cite>user</cite>, <cite>group</cite>.
+<cite>speed</cite> is optional. If not provided, it will be
+computed manually.</p>
+</dd>
+<dt><strong>speed_threshold</strong><span class="classifier">float</span></dt><dd><p>Bins whose speed is lower than <cite>speed_threshold</cite> are considred
+<cite>static</cite> and the rest are <cite>moving</cite>.</p>
+</dd>
+<dt><strong>features</strong><span class="classifier">map (dictionary) of functions that compute features.</span></dt><dd><p>it is a map of map, where the keys to the first map is the name of
+functions that compute features and the nested map contains the keyword
+arguments to that function. If there is no arguments use an empty map.
+Default is None. If None, all the available functions are used.
+Those functions are in the dict <cite>location.ALL_FEATURES</cite>.
+You can implement your own function and use it instead or add it
+to the mentioned map.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>features</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>Dataframe of computed features where the index is users and columns
+are the the features.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.filter_location">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">filter_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_disabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_zeros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_network</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'latitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'longitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'label'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provider_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'provider'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#filter_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.filter_location" title="Link to this definition"></a></dt>
+<dd><p>Remove low-quality or weird location samples</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>location</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>DataFrame of locations</p>
+</dd>
+<dt><strong>remove_disabled</strong><span class="classifier">bool</span></dt><dd><p>Remove locations whose <cite>label</cite> is disabled</p>
+</dd>
+<dt><strong>remove_zero</strong><span class="classifier">bool</span></dt><dd><p>Remove locations which their latitude and longitueds are close to 0</p>
+</dd>
+<dt><strong>remove_network</strong><span class="classifier">bool</span></dt><dd><p>Keep only locations whose <cite>provider</cite> is <cite>gps</cite></p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>location</strong><span class="classifier">pd.DataFrame</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.find_home">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">find_home</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#find_home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.find_home" title="Link to this definition"></a></dt>
+<dd><p>Find coordinates of the home of a person</p>
+<p>Home is defined as the place most visited between
+12am - 6am. Locations within this time period first
+clustered and then the center of largest clusetr
+shows the home.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lats</strong><span class="classifier">array-like</span></dt><dd><p>Latitudes</p>
+</dd>
+<dt><strong>lons</strong><span class="classifier">array-like</span></dt><dd><p>Longitudes</p>
+</dd>
+<dt><strong>times</strong><span class="classifier">array-like</span></dt><dd><p>Time of the recorderd coordinates</p>
+</dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>——</strong></dt><dd></dd>
+<dt><strong>(lat_home, lon_home)</strong><span class="classifier">tuple of floats</span></dt><dd><p>Coordinates of the home</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.get_speeds_totaldist">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">get_speeds_totaldist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#get_speeds_totaldist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.get_speeds_totaldist" title="Link to this definition"></a></dt>
+<dd><p>Computes speed of bins with dividing distance by their time difference</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lats</strong><span class="classifier">array-like</span></dt><dd><p>Array of latitudes</p>
+</dd>
+<dt><strong>lons</strong><span class="classifier">array-like</span></dt><dd><p>Array of longitudes</p>
+</dd>
+<dt><strong>times</strong><span class="classifier">array-like</span></dt><dd><p>Array of times associted with bins</p>
+</dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>——</strong></dt><dd></dd>
+<dt><strong>(speeds, total_distances)</strong><span class="classifier">tuple of speeds (array) and total distance travled (float)</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.location_distance_features">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">location_distance_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'latitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'latitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'speed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'1ME'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#location_distance_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.location_distance_features" title="Link to this definition"></a></dt>
+<dd><p>Calculates features related to distance and speed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: dataframe with date index</strong></dt><dd></dd>
+<dt><strong>config: A dictionary of optional arguments</strong></dt><dd></dd>
+<dt><strong>Optional arguments in config:</strong></dt><dd><p>longitude_column: The name of the column with longitude data in a floating point format. Defaults to ‘longitude’. 
+latitude_column: The name of the column with latitude data in a floating point format. Defaults to ‘latitude’.
+speed_column: The name of the column with speed data in a floating point format. Defaults to ‘speed’.
+resample_args: a dictionary of arguments for the Pandas resample function. For example to resample by hour, you would pass {“rule”: “1h”}.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.location_local_time">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">location_local_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'longitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'latitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'1ME'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#location_local_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.location_local_time" title="Link to this definition"></a></dt>
+<dd><p>Calculates the local time of the user based on the longitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: dataframe with date index</strong></dt><dd></dd>
+<dt><strong>config: A dictionary of optional arguments</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.location_significant_place_features">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">location_significant_place_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'latitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'latitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'speed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.277</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'1ME'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#location_significant_place_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.location_significant_place_features" title="Link to this definition"></a></dt>
+<dd><p>Calculates features related to Significant Places.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: dataframe with date index</strong></dt><dd></dd>
+<dt><strong>config: A dictionary of optional arguments</strong></dt><dd></dd>
+<dt><strong>Optional arguments in config:</strong></dt><dd><p>longitude_column: The name of the column with longitude data in a floating point format. Defaults to ‘longitude’. 
+latitude_column: The name of the column with latitude data in a floating point format. Defaults to ‘latitude’.
+speed_column: The name of the column with speed data in a floating point format. Defaults to ‘speed’.
+resample_args: a dictionary of arguments for the Pandas resample function. For example to resample by hour, you would pass {“rule”: “1h”}.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.location.number_of_significant_places">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.location.</span></span><span class="sig-name descname"><span class="pre">number_of_significant_places</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'latitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'longitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'1ME'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/location/#number_of_significant_places"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.location.number_of_significant_places" title="Link to this definition"></a></dt>
+<dd><p>Computes number of significant places.</p>
+<p>This feature is included in location_significant_place_features as
+n_sps and this standalone function is not included in default location
+features.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.preprocessing.filter/" class="btn btn-neutral float-left" title="niimpy.preprocessing.filter module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.preprocessing.sampledata/" class="btn btn-neutral float-right" title="niimpy.preprocessing.sampledata module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,430 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.reading.mhealth module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.reading.read module" href="../niimpy.reading.read/" />
+    <link rel="prev" title="niimpy.reading.database module" href="../niimpy.reading.database/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.reading/">niimpy.reading package</a></li>
+      <li class="breadcrumb-item active">niimpy.reading.mhealth module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.reading.mhealth.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.reading.mhealth">
+<span id="niimpy-reading-mhealth-module"></span><h1>niimpy.reading.mhealth module<a class="headerlink" href="#module-niimpy.reading.mhealth" title="Link to this heading"></a></h1>
+<p>Read data from various formats, user entery point.</p>
+<p>This module contains various functions <cite>read_*</cite> which load data from different
+formats into pandas.DataFrame:s.  As a side effect, it provides the
+authoritative information on how incoming data is converted to dataframes.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.reading.mhealth.duration_to_timedelta">
+<span class="sig-prename descclassname"><span class="pre">niimpy.reading.mhealth.</span></span><span class="sig-name descname"><span class="pre">duration_to_timedelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration_col</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/mhealth/#duration_to_timedelta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.mhealth.duration_to_timedelta" title="Link to this definition"></a></dt>
+<dd><p>Format a duration entry in the mHealth format. Duration
+is a dictionary that contains a value and a unit. The 
+dataframe should contain two columns, DURATION_COL_NAME.value
+and DURATION_COL_NAME.unit.</p>
+<p>Returns a dataframe with a DURATION_COL_NAME column containing a
+a timedelta object. The original columns will be dropped.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.reading.mhealth.format_part_of_day">
+<span class="sig-prename descclassname"><span class="pre">niimpy.reading.mhealth.</span></span><span class="sig-name descname"><span class="pre">format_part_of_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/mhealth/#format_part_of_day"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.mhealth.format_part_of_day" title="Link to this definition"></a></dt>
+<dd><p>Format columns with mHealth formatted part of day. Returns a dataframe
+with date stored in the column “date” and “part_of_day”. Options for
+part of day are “morning”, “afternoon”, “evening”, “night”.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.reading.mhealth.format_time_interval">
+<span class="sig-prename descclassname"><span class="pre">niimpy.reading.mhealth.</span></span><span class="sig-name descname"><span class="pre">format_time_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/mhealth/#format_time_interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.mhealth.format_time_interval" title="Link to this definition"></a></dt>
+<dd><p>Format a database containing columns in the mHealth time interval.</p>
+<dl class="simple">
+<dt>A time interval in the mHealth format has either</dt><dd><ul class="simple">
+<li><p>a date and a time of day (morning, afternoon, evening or night), or</p></li>
+<li><p>any two of start time, end time and duration.</p></li>
+</ul>
+</dd>
+</dl>
+<p>In the first case, the formatted database will contain two columns:
+measure_date and time_of_day.</p>
+<p>In the second case, the formatted database will contain two columns:
+start and end.</p>
+<p>Also sets the timestamp to “start” or “date” if available.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.reading.mhealth.geolocation">
+<span class="sig-prename descclassname"><span class="pre">niimpy.reading.mhealth.</span></span><span class="sig-name descname"><span class="pre">geolocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/mhealth/#geolocation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.mhealth.geolocation" title="Link to this definition"></a></dt>
+<dd><p>Format the geolocation json data into a niimpy dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_list: list of dictionaries</strong></dt><dd><p>MHealth formatted geolocation data loaded using json.load().</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>data: A pandas.DataFrame containing geolocation data</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.reading.mhealth.geolocation_from_file">
+<span class="sig-prename descclassname"><span class="pre">niimpy.reading.mhealth.</span></span><span class="sig-name descname"><span class="pre">geolocation_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/mhealth/#geolocation_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.mhealth.geolocation_from_file" title="Link to this definition"></a></dt>
+<dd><p>Read mHealth formatted geolocation data from a file and convert it to
+a Niimpy compatible dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename: string</strong></dt><dd><p>Path to the file containing mhealth formatted geolocation data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>data: A pandas.DataFrame containing geolocation data</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.reading.mhealth.heart_rate">
+<span class="sig-prename descclassname"><span class="pre">niimpy.reading.mhealth.</span></span><span class="sig-name descname"><span class="pre">heart_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/mhealth/#heart_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.mhealth.heart_rate" title="Link to this definition"></a></dt>
+<dd><p>Format the heart rate json data into a niimpy dataframe.</p>
+<dl class="simple">
+<dt>The dataframe contains the columns</dt><dd><ul class="simple">
+<li><p>heart_rate : Heart rate measurement in beats per minute</p></li>
+<li><p>(optional) time interval columns</p></li>
+<li><p>(optional) descriptive statistics column, a string</p></li>
+<li><p>(optional) temporal relationship to sleep column, a string</p></li>
+<li><dl class="simple">
+<dt>(optional) temporal relationship to physical activity column, a </dt><dd><p>string</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>Measurement time or interval columns. If exact time is given, only the
+index is set. If a time interval is given, we set two additional columns</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>start : start time of the measurement interval</p></li>
+<li><p>end : end time of the measurement interval</p></li>
+</ul>
+</div></blockquote>
+<p>and set the index to the start time.</p>
+<p>The descriptive statistics column describes how the value is calculated
+over the given time interval. For example, “average” would denote a mean
+over the time period.</p>
+<p>The temporal relationship to sleep is one of “before sleeping”, “during 
+sleep” or “on waking”.</p>
+<p>The temporal relationship to physical activity is one of “at rest”, 
+“active”, “before exercise”, “after exercise” or “during exercise”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_list: list of dictionaries</strong></dt><dd><p>MHealth formatted heart rate data loaded using json.load().</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>data: A pandas.DataFrame containing geolocation data</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.reading.mhealth.heart_rate_from_file">
+<span class="sig-prename descclassname"><span class="pre">niimpy.reading.mhealth.</span></span><span class="sig-name descname"><span class="pre">heart_rate_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/mhealth/#heart_rate_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.mhealth.heart_rate_from_file" title="Link to this definition"></a></dt>
+<dd><p>Read mHealth formatted heart rate data from a file and convert it to
+a Niimpy compatible dataframe.</p>
+<dl class="simple">
+<dt>The dataframe contains the columns</dt><dd><ul class="simple">
+<li><p>heart_rate : Heart rate measurement in beats per minute</p></li>
+<li><p>(optional) time interval columns</p></li>
+<li><p>(optional) descriptive statistics column, a string</p></li>
+<li><p>(optional) temporal relationship to sleep column, a string</p></li>
+<li><dl class="simple">
+<dt>(optional) temporal relationship to physical activity column, a </dt><dd><p>string</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>Measurement time or interval columns. If exact time is given, only the
+index is set. If a time interval is given, we set two additional columns</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>start : start time of the measurement interval</p></li>
+<li><p>end : end time of the measurement interval</p></li>
+</ul>
+</div></blockquote>
+<p>and set the index to the start time.</p>
+<p>The descriptive statistics column describes how the value is calculated
+over the given time interval. For example, “average” would denote a mean
+over the time period.</p>
+<p>The temporal relationship to sleep is one of “before sleeping”, “during 
+sleep” or “on waking”.</p>
+<p>The temporal relationship to physical activity is one of “at rest”, 
+“active”, “before exercise”, “after exercise” or “during exercise”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename: string</strong></dt><dd><p>Path to the file containing mhealth formatted heart rate data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>data: A pandas.DataFrame containing heart rate data</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.reading.mhealth.total_sleep_time">
+<span class="sig-prename descclassname"><span class="pre">niimpy.reading.mhealth.</span></span><span class="sig-name descname"><span class="pre">total_sleep_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/mhealth/#total_sleep_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.mhealth.total_sleep_time" title="Link to this definition"></a></dt>
+<dd><p>Format mHealth total sleep data from json formatted data to a Niimpy
+compatible DataFrame. The DataFrame contains the columns</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>total_sleep_time : The total sleep time measurement</p></li>
+<li><p>total_sleep_time_unit : The unit the measuremnet is expressed in</p></li>
+<li><p>measurement interval columns</p></li>
+<li><p>possible descriptive statistics columns</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>The measurement interval column are either</dt><dd><ul class="simple">
+<li><p>start : start time of the measurement interval</p></li>
+<li><p>end : end time of the measurement interval</p></li>
+</ul>
+</dd>
+<dt>or</dt><dd><ul class="simple">
+<li><p>date : the date of the measurement</p></li>
+<li><p>part_of_day : the time of day the measurement was made</p></li>
+</ul>
+</dd>
+<dt>The descriptive statistics columns would be</dt><dd><ul class="simple">
+<li><p>descriptive_statistics : Describes how the measurement is calculated</p></li>
+<li><p>descriptive_statistics_denominator : Time interval the above desciption refers to.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The dataframe is indexed by “timestamp”, which is either the “start” or the “date”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_list: list of dictionaries</strong></dt><dd><p>MHealth formatted sleep duration data loaded with json.load()</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>data: A pandas.DataFrame containing sleep duration data</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.reading.mhealth.total_sleep_time_from_file">
+<span class="sig-prename descclassname"><span class="pre">niimpy.reading.mhealth.</span></span><span class="sig-name descname"><span class="pre">total_sleep_time_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/reading/mhealth/#total_sleep_time_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.reading.mhealth.total_sleep_time_from_file" title="Link to this definition"></a></dt>
+<dd><p>Read mHealth total sleep time from a file and convert into a Niimpy
+compatible DataFrame using total_sleep_time. The dataframe
+contains the columns</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>total_sleep_time : The total sleep time measurement</p></li>
+<li><p>total_sleep_time_unit : The unit the measuremnet is expressed in</p></li>
+<li><p>measurement interval columns</p></li>
+<li><p>possible descriptive statistics columns</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>The measurement interval column are either</dt><dd><ul class="simple">
+<li><p>start : start time of the measurement interval</p></li>
+<li><p>end : end time of the measurement interval</p></li>
+</ul>
+</dd>
+<dt>or</dt><dd><ul class="simple">
+<li><p>date : the date of the measurement</p></li>
+<li><p>part_of_day : the time of day the measurement was made</p></li>
+</ul>
+</dd>
+<dt>The descriptive statistics columns would be</dt><dd><ul class="simple">
+<li><p>descriptive_statistics : Describes how the measurement is calculated</p></li>
+<li><p>descriptive_statistics_denomirator : Time interval the above 
+description refers to.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The dataframe is indexed by “timestamp”, which is either the “start” or the “date”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename: string</strong></dt><dd><p>Path to the file containing mhealth formatted sleep duration data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>data: A pandas.DataFrame containing sleep duration data</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.reading.database/" class="btn btn-neutral float-left" title="niimpy.reading.database module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.reading.read/" class="btn btn-neutral float-right" title="niimpy.reading.read module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

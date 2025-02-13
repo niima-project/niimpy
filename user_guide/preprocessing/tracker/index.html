@@ -1,0 +1,468 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tracker Data &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+    <link rel="next" title="Exploration" href="../../Exploration/" />
+    <link rel="prev" title="Survey Data" href="../survey/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">Preprocessing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../location/">Location Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../application/">Application data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/">Audio Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../battery/">Battery Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/">Call and Message Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../screen/">Screen On/Off Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../survey/">Survey Data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tracker Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Read-data">Read data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Getting-basic-statistics">Getting basic statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Feature-extraction">Feature extraction</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../">Preprocessing</a></li>
+      <li class="breadcrumb-item active">Tracker Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user_guide/preprocessing/tracker.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Tracker-Data">
+<h1>Tracker Data<a class="headerlink" href="#Tracker-Data" title="Link to this heading"></a></h1>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading"></a></h2>
+<p>Fitness tracker is a rich source of longitudinal data captured at high frequency. Those can include step counts, heart rate, calories expenditure, or sleep time. This notebook explains how we can use <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> to extract some basic statistic and features from step count data.</p>
+<p>A dataframe with fittness data should contain the following columns (column names can be different, but in that case they must be provided as parameters):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user</span></code>: Subject ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">device</span></code>: Device ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">steps</span></code>: Number of steps measured on the time interval</p></li>
+</ul>
+<p>As usual, the index should be the time of the measurements. Step count is calculated between that time and the previous timestamp.</p>
+</section>
+<section id="Read-data">
+<h2>Read data<a class="headerlink" href="#Read-data" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy.preprocessing.tracker</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tracker</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">STEP_SUMMARY_PATH</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Converting the index as date</span>
+<span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(73, 4)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>date</th>
+      <th>time</th>
+      <th>steps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2021-07-01 00:00:00</th>
+      <td>wiam9xme</td>
+      <td>2021-07-01</td>
+      <td>00:00:00.000</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2021-07-01 01:00:00</th>
+      <td>wiam9xme</td>
+      <td>2021-07-01</td>
+      <td>01:00:00.000</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2021-07-01 02:00:00</th>
+      <td>wiam9xme</td>
+      <td>2021-07-01</td>
+      <td>02:00:00.000</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2021-07-01 03:00:00</th>
+      <td>wiam9xme</td>
+      <td>2021-07-01</td>
+      <td>03:00:00.000</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2021-07-01 04:00:00</th>
+      <td>wiam9xme</td>
+      <td>2021-07-01</td>
+      <td>04:00:00.000</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Getting-basic-statistics">
+<h2>Getting basic statistics<a class="headerlink" href="#Getting-basic-statistics" title="Link to this heading"></a></h2>
+<p>Using <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> we can extract a user’s step count statistic within a time window. The statistics include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mean</span></code>: average number of steps taken within the time range</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">standard</span> <span class="pre">deviation</span></code>: standard deviation of steps</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max</span></code>: max steps taken within a day during the time range</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min</span></code>: min steps taken within a day during the time range</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tracker</span><span class="o">.</span><span class="n">step_summary</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">value_col</span> <span class="o">=</span> <span class="s1">&#39;steps&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>min_sum_step</th>
+      <th>max_sum_step</th>
+      <th>std_sum_step</th>
+      <th>avg_sum_step</th>
+      <th>median_sum_step</th>
+      <th>user</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5616</td>
+      <td>13025</td>
+      <td>3352.347745</td>
+      <td>8437.383562</td>
+      <td>6480.0</td>
+      <td>wiam9xme</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Feature-extraction">
+<h2>Feature extraction<a class="headerlink" href="#Feature-extraction" title="Link to this heading"></a></h2>
+<p>Assuming that the step count comes in at hourly resolution, we can compute the distribution of daily step count at each hour. The daily distribution is helpful to look at if for example, we want to see at what hours a user is most active at.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">tracker</span><span class="o">.</span><span class="n">tracker_step_distribution</span>
+<span class="n">step_distribution</span> <span class="o">=</span> <span class="n">tracker</span><span class="o">.</span><span class="n">extract_features_tracker</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">{</span><span class="n">f</span><span class="p">:</span> <span class="p">{}})</span>
+<span class="n">step_distribution</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&lt;function tracker_step_distribution at 0x7a2e3a9e6fc0&gt;: {}} {}
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>step_distribution</th>
+      <th>step_sum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2021-07-01 00:00:00</th>
+      <td>wiam9xme</td>
+      <td>0.000000</td>
+      <td>5616.0</td>
+    </tr>
+    <tr>
+      <th>2021-07-01 01:00:00</th>
+      <td>wiam9xme</td>
+      <td>0.000000</td>
+      <td>5616.0</td>
+    </tr>
+    <tr>
+      <th>2021-07-01 02:00:00</th>
+      <td>wiam9xme</td>
+      <td>0.000000</td>
+      <td>5616.0</td>
+    </tr>
+    <tr>
+      <th>2021-07-01 03:00:00</th>
+      <td>wiam9xme</td>
+      <td>0.000000</td>
+      <td>5616.0</td>
+    </tr>
+    <tr>
+      <th>2021-07-01 04:00:00</th>
+      <td>wiam9xme</td>
+      <td>0.000000</td>
+      <td>5616.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2021-07-03 19:00:00</th>
+      <td>wiam9xme</td>
+      <td>0.025162</td>
+      <td>12002.0</td>
+    </tr>
+    <tr>
+      <th>2021-07-03 20:00:00</th>
+      <td>wiam9xme</td>
+      <td>0.001000</td>
+      <td>12002.0</td>
+    </tr>
+    <tr>
+      <th>2021-07-03 21:00:00</th>
+      <td>wiam9xme</td>
+      <td>0.029495</td>
+      <td>12002.0</td>
+    </tr>
+    <tr>
+      <th>2021-07-03 22:00:00</th>
+      <td>wiam9xme</td>
+      <td>0.000000</td>
+      <td>12002.0</td>
+    </tr>
+    <tr>
+      <th>2021-07-03 23:00:00</th>
+      <td>wiam9xme</td>
+      <td>0.000000</td>
+      <td>12002.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>72 rows × 3 columns</p>
+</div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../survey/" class="btn btn-neutral float-left" title="Survey Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../Exploration/" class="btn btn-neutral float-right" title="Exploration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

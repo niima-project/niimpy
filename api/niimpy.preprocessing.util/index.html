@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.util module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.reading package" href="../niimpy.reading/" />
+    <link rel="prev" title="niimpy.preprocessing.tracker module" href="../niimpy.preprocessing.tracker/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.util module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.preprocessing.util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.preprocessing.util">
+<span id="niimpy-preprocessing-util-module"></span><h1>niimpy.preprocessing.util module<a class="headerlink" href="#module-niimpy.preprocessing.util" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.aggregate">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method_numerical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method_categorical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'first'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['user']</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">resample_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.aggregate" title="Link to this definition"></a></dt>
+<dd><p>Grouping and resampling the data. This function performs separated resampling
+for different types of columns: numerical and categorical.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">pandas Dataframe</span></dt><dd><p>Dataframe to resample</p>
+</dd>
+<dt><strong>freq</strong><span class="classifier">string</span></dt><dd><p>Frequency to resample the data. Requires the dataframe to have datetime-like index.</p>
+</dd>
+<dt><strong>method_numerical</strong><span class="classifier">str</span></dt><dd><p>Resampling method for numerical columns. Possible values:
+‘sum’, ‘mean’, ‘median’. Default value is ‘mean’.</p>
+</dd>
+<dt><strong>method_categorical</strong><span class="classifier">str</span></dt><dd><p>Resampling method for categorical columns. Possible values: ‘first’, ‘mode’, ‘last’.</p>
+</dd>
+<dt><strong>groups</strong><span class="classifier">list</span></dt><dd><p>Columns used for groupby operation.</p>
+</dd>
+<dt><strong>resample_kwargs</strong><span class="classifier">dict</span></dt><dd><p>keywords to pass pandas resampling function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>An aggregated and resampled multi-index dataframe.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.date_range">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">date_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#date_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.date_range" title="Link to this definition"></a></dt>
+<dd><p>Extract out a certain date range from a DataFrame.</p>
+<p>Extract out a certain data range from a dataframe.  The index must be the
+dates, and the index must be sorted.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.df_normalize">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">df_normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_tz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#df_normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.df_normalize" title="Link to this definition"></a></dt>
+<dd><p>Normalize a df (from sql) before presenting it to the user.</p>
+<p>This sets the dataframe index to the time values, and converts times
+to pandas.TimeStamp:s.  Modifies the data frame inplace.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.ensure_dataframe">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">ensure_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#ensure_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.ensure_dataframe" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.group_data">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">group_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">additional_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['user',</span> <span class="pre">'device',</span> <span class="pre">'group']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#group_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.group_data" title="Link to this definition"></a></dt>
+<dd><p>Group the dataframe by Niimpy standard user identifier columns present in
+the dataframe. The columns are ‘user’, ‘device’, and ‘group’. An addional
+column may be added and used for grouping.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.identifier_columns">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">identifier_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['user',</span> <span class="pre">'device',</span> <span class="pre">'group']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#identifier_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.identifier_columns" title="Link to this definition"></a></dt>
+<dd><p>build a list of standard Niimpy identifier columns in the 
+dataframe.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.install_extensions">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">install_extensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#install_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.install_extensions" title="Link to this definition"></a></dt>
+<dd><p>Automatically install sqlite extension functions.</p>
+<p>Only works on Linux for now, improvements welcome.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.occurrence">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">occurrence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1h'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#occurrence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.occurrence" title="Link to this definition"></a></dt>
+<dd><p>Resamples by grouping_width and aggregates by the number of bins
+with data.</p>
+<p>With default options, this reproduces the logic of the “occurrence” database
+function, without needing the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>series</strong><span class="classifier">pandas.Series</span></dt><dd><p>A pandas series of pandas.Timestamps.</p>
+</dd>
+<dt><strong>bins</strong><span class="classifier">int</span></dt><dd><p>The number of bins each time interval is divided into.</p>
+</dd>
+<dt><strong>interval</strong><span class="classifier">str</span></dt><dd><p>Length of the time interval. Default is “1h”.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>pandas.DataFrame</dt><dd><p>Dataframe with timestamp index and ‘occurance’ column.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.read_preprocess">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">read_preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#read_preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.read_preprocess" title="Link to this definition"></a></dt>
+<dd><p>Standard preprocessing arguments when reading.</p>
+<p>This is a preprocessing filter which handles some standard arguments
+when reading files.  This should be considered a private, unstable
+function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>add_group: string, optional</strong></dt><dd><p>If given, add a new ‘group’ column with all values set to this
+given identifier.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>df: dataframe</dt><dd><p>Resulting dataframe (modified in-place if possible, but may also
+be a copy)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.reset_groups">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">reset_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">additional_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['user',</span> <span class="pre">'device',</span> <span class="pre">'group']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#reset_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.reset_groups" title="Link to this definition"></a></dt>
+<dd><p>Reset id columns and optional addional columns in the dataframe index.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.select_columns">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">select_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['user',</span> <span class="pre">'device',</span> <span class="pre">'group']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#select_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.select_columns" title="Link to this definition"></a></dt>
+<dd><p>Select Niimpy identifier columns and listed feature columns</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.set_conserved_index">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">set_conserved_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">additional_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['user',</span> <span class="pre">'device',</span> <span class="pre">'group']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#set_conserved_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.set_conserved_index" title="Link to this definition"></a></dt>
+<dd><p>Set standard id columns as index. This allows concatenating dataframes
+with different measurements.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.set_encoding">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">set_encoding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'iso-8859-1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#set_encoding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.set_encoding" title="Link to this definition"></a></dt>
+<dd><p>Recode the dataframe to a different encoding. This is useful when
+the encoding in a data file is set incorrectly and utf characters are
+garbled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">pandas.DataFrame</span></dt><dd><p>Dataframe to recode</p>
+</dd>
+<dt><strong>to_encoding</strong><span class="classifier">str</span></dt><dd><p>Encoding to convert to. Default is ‘utf-8’.</p>
+</dd>
+<dt><strong>from_encoding</strong><span class="classifier">str</span></dt><dd><p>Encoding to convert from. Default is ‘iso-8859-1’.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>pandas.DataFrame</dt><dd><p>Recoded dataframe.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.set_tz">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">set_tz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#set_tz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.set_tz" title="Link to this definition"></a></dt>
+<dd><p>Globally set the preferred local timezone</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.tmp_timezone">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">tmp_timezone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_tz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#tmp_timezone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.tmp_timezone" title="Link to this definition"></a></dt>
+<dd><p>Temporarily override the global timezone for a black.</p>
+<p>This is used as a context manager:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">tmp_timezone</span><span class="p">(</span><span class="s1">&#39;Europe/Berlin&#39;</span><span class="p">):</span>
+    <span class="o">....</span>
+</pre></div>
+</div>
+<p>Note: this overrides the global timezone.  In the future, there will
+be a way to handle timezones as non-global variables, which should
+be preferred.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.to_datetime">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">to_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#to_datetime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.to_datetime" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.util.uninstall_extensions">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.util.</span></span><span class="sig-name descname"><span class="pre">uninstall_extensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/util/#uninstall_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.util.uninstall_extensions" title="Link to this definition"></a></dt>
+<dd><p>Uninstall any installed extensions</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.preprocessing.tracker/" class="btn btn-neutral float-left" title="niimpy.preprocessing.tracker module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.reading/" class="btn btn-neutral float-right" title="niimpy.reading package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

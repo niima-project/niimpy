@@ -1,0 +1,1870 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio Data &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+    <link rel="next" title="Battery Data" href="../battery/" />
+    <link rel="prev" title="Application data" href="../application/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">Preprocessing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../location/">Location Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../application/">Application data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Audio Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.-Read-data">2. Read data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#*-TIP!-Data-format-requirements-(or-what-should-our-data-look-like)">* TIP! Data format requirements (or what should our data look like)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#4.-Extracting-features">4. Extracting features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#4.1-Extract-features-using-stand-alone-functions">4.1 Extract features using stand-alone functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.2-Extract-features-using-the-wrapper">4.2 Extract features using the wrapper</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#5.-Implementing-own-features">5. Implementing own features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../battery/">Battery Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/">Call and Message Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../screen/">Screen On/Off Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../survey/">Survey Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracker/">Tracker Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../">Preprocessing</a></li>
+      <li class="breadcrumb-item active">Audio Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user_guide/preprocessing/audio.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Audio-Data">
+<h1>Audio Data<a class="headerlink" href="#Audio-Data" title="Link to this heading"></a></h1>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading"></a></h2>
+<p>Audio data - as recorded by smartphones or other portable devices - can carry important information about individuals’ environments. This may give insights about the activity, sleep, and social interaction. However, using these data can be tricky due to privacy concerns, for example, conversations are highly identifiable. A possible solution is to compute more general characteristics (e.g. frequency) and use those instead to extract features. To address this last part, <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> includes the
+function <code class="docutils literal notranslate"><span class="pre">extract_features_audio</span></code> to clean, downsample, and extract features from audio snippets that have been already anonymized.</p>
+<p>Audio dataframes should have the following columns (column names can be different, but in that case they must be provided as parameters):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user</span></code>: Subject ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">device</span></code>: Device ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_silent</span></code>: Boolean value, indicates when audio is too quiet to record</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frequency</span></code>: Audio frequency in Hz</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">decibels</span></code>: Audio volume in decibels</p></li>
+</ul>
+<p>Niimpy extracts the following audio features:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_count_silent</span></code>: number of times when there has been some sound in the environment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_count_speech</span></code>: number of times when there has been some sound in the environment that matches the range of human speech frequency (65 - 255Hz)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_count_loud</span></code>: number of times when there has been some sound in the environment above 70dB</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_min_freq</span></code>: minimum frequency of the recorded audio snippets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_max_freq</span></code>: maximum frequency of the recorded audio snippets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_mean_freq</span></code>: mean frequency of the recorded audio snippets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_median_freq</span></code>: median frequency of the recorded audio snippets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_std_freq</span></code>: standard deviation of the frequency of the recorded audio snippets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_min_db</span></code>: minimum decibels of the recorded audio snippets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_max_db</span></code>: maximum decibels of the recorded audio snippets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_mean_db</span></code>: mean decibels of the recorded audio snippets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_median_db</span></code>: median decibels of the recorded audio snippets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_std_db</span></code>: standard deviations of the recorded audio snippets decibels</p></li>
+</ul>
+<p>In the following, we will analyze audio snippets provided by <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> as an example to illustrate the use of niimpy’s audio preprocessing functions.</p>
+</section>
+<section id="2.-Read-data">
+<h2>2. Read data<a class="headerlink" href="#2.-Read-data" title="Link to this heading"></a></h2>
+<p>Let’s start by reading the example data provided in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>. These data have already been shaped in a format that meets the requirements of the data schema. Let’s start by importing the needed modules. Firstly we will import the <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> package and then we will import the module we will use (audio) and give it a short name for use convinience.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">niimpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy.preprocessing.audio</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">au</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/u/24/rantahj1/unix/miniconda3/envs/niimpy/lib/python3.12/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div></div>
+</div>
+<p>Now let’s read the example data provided in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>. The example data is in <code class="docutils literal notranslate"><span class="pre">csv</span></code> format, so we need to use the <code class="docutils literal notranslate"><span class="pre">read_csv</span></code> function. When reading the data, we can specify the timezone where the data was collected. This will help us handle daylight saving times easier. We can specify the timezone with the argument <strong>tz</strong>. The output is a dataframe. We can also check the number of rows and columns in the dataframe.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MULTIUSER_AWARE_AUDIO_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(33, 7)
+</pre></div></div>
+</div>
+<p>The data was succesfully read. We can see that there are 33 datapoints with 7 columns in the dataset. However, we do not know yet what the data really looks like, so let’s have a quick look:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>is_silent</th>
+      <th>double_decibels</th>
+      <th>double_frequency</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578528e+09</td>
+      <td>0</td>
+      <td>84</td>
+      <td>4935</td>
+      <td>2020-01-09 02:08:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:38:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>0</td>
+      <td>89</td>
+      <td>8734</td>
+      <td>2020-01-09 02:38:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 03:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578532e+09</td>
+      <td>0</td>
+      <td>99</td>
+      <td>1710</td>
+      <td>2020-01-09 03:08:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 03:38:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578534e+09</td>
+      <td>0</td>
+      <td>77</td>
+      <td>9054</td>
+      <td>2020-01-09 03:38:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 04:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578536e+09</td>
+      <td>0</td>
+      <td>80</td>
+      <td>12265</td>
+      <td>2020-01-09 04:08:03.895999908+02:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>is_silent</th>
+      <th>double_decibels</th>
+      <th>double_frequency</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-13 15:02:17.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565698e+09</td>
+      <td>1</td>
+      <td>44</td>
+      <td>2914</td>
+      <td>2019-08-13 15:02:17.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 15:28:59.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565699e+09</td>
+      <td>1</td>
+      <td>49</td>
+      <td>7195</td>
+      <td>2019-08-13 15:28:59.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 15:59:01.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565701e+09</td>
+      <td>0</td>
+      <td>55</td>
+      <td>91</td>
+      <td>2019-08-13 15:59:01.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 16:29:03.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565703e+09</td>
+      <td>0</td>
+      <td>76</td>
+      <td>3853</td>
+      <td>2019-08-13 16:29:03.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 16:59:05.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565705e+09</td>
+      <td>0</td>
+      <td>84</td>
+      <td>7419</td>
+      <td>2019-08-13 16:59:05.657999992+03:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>By exploring the head and tail of the dataframe we can form an idea of its entirety. From the data, we can see that:</p>
+<ul class="simple">
+<li><p>rows are observations, indexed by timestamps, i.e. each row represents a snippet that has been recorded at a given time and date</p></li>
+<li><p>columns are characteristics for each observation, for example, the user whose data we are analyzing</p></li>
+<li><p>there are at least two different users in the dataframe</p></li>
+<li><p>there are two main columns: <code class="docutils literal notranslate"><span class="pre">decibels</span></code> and <code class="docutils literal notranslate"><span class="pre">frequency</span></code>.</p></li>
+</ul>
+<p>In fact, we can check the first three elements for each user</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;time&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>is_silent</th>
+      <th>double_decibels</th>
+      <th>double_frequency</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578528e+09</td>
+      <td>0</td>
+      <td>84</td>
+      <td>4935</td>
+      <td>2020-01-09 02:08:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:38:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>0</td>
+      <td>89</td>
+      <td>8734</td>
+      <td>2020-01-09 02:38:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 03:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578532e+09</td>
+      <td>0</td>
+      <td>99</td>
+      <td>1710</td>
+      <td>2020-01-09 03:08:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 07:28:27.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565671e+09</td>
+      <td>0</td>
+      <td>51</td>
+      <td>7735</td>
+      <td>2019-08-13 07:28:27.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 07:58:29.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565672e+09</td>
+      <td>0</td>
+      <td>90</td>
+      <td>13609</td>
+      <td>2019-08-13 07:58:29.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:28:31.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565674e+09</td>
+      <td>0</td>
+      <td>81</td>
+      <td>7690</td>
+      <td>2019-08-13 08:28:31.657999992+03:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Sometimes the data may come in a disordered manner, so just to make sure, let’s order the dataframe and compare the results. We will use the columns “user” and “datetime” since we would like to order the information according to firstly, participants, and then, by time in order of happening. Luckily, in our dataframe, the index and datetime are the same.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;time&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>is_silent</th>
+      <th>double_decibels</th>
+      <th>double_frequency</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-13 07:28:27.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565671e+09</td>
+      <td>0</td>
+      <td>51</td>
+      <td>7735</td>
+      <td>2019-08-13 07:28:27.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 07:58:29.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565672e+09</td>
+      <td>0</td>
+      <td>90</td>
+      <td>13609</td>
+      <td>2019-08-13 07:58:29.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:28:31.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565674e+09</td>
+      <td>0</td>
+      <td>81</td>
+      <td>7690</td>
+      <td>2019-08-13 08:28:31.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578528e+09</td>
+      <td>0</td>
+      <td>84</td>
+      <td>4935</td>
+      <td>2020-01-09 02:08:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:38:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>0</td>
+      <td>89</td>
+      <td>8734</td>
+      <td>2020-01-09 02:38:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 03:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578532e+09</td>
+      <td>0</td>
+      <td>99</td>
+      <td>1710</td>
+      <td>2020-01-09 03:08:03.895999908+02:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The main column names in our dataframe do not match the Niimpy schema. We could provide these column names as parameters but it easier to rename them here.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;decibels&#39;</span><span class="p">:</span> <span class="s1">&#39;decibels&#39;</span><span class="p">,</span> <span class="s1">&#39;frequency&#39;</span><span class="p">:</span> <span class="s1">&#39;frequency&#39;</span><span class="p">})</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>is_silent</th>
+      <th>double_decibels</th>
+      <th>double_frequency</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-13 07:28:27.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565671e+09</td>
+      <td>0</td>
+      <td>51</td>
+      <td>7735</td>
+      <td>2019-08-13 07:28:27.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 07:58:29.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565672e+09</td>
+      <td>0</td>
+      <td>90</td>
+      <td>13609</td>
+      <td>2019-08-13 07:58:29.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:28:31.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565674e+09</td>
+      <td>0</td>
+      <td>81</td>
+      <td>7690</td>
+      <td>2019-08-13 08:28:31.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:58:33.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565676e+09</td>
+      <td>0</td>
+      <td>58</td>
+      <td>8347</td>
+      <td>2019-08-13 08:58:33.657999992+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 09:28:35.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1.565678e+09</td>
+      <td>1</td>
+      <td>36</td>
+      <td>13592</td>
+      <td>2019-08-13 09:28:35.657999992+03:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Ok, it seems like our dataframe was in order. We can start extracting features. However, we need to understand the data format requirements first.</p>
+</section>
+<section id="*-TIP!-Data-format-requirements-(or-what-should-our-data-look-like)">
+<h2>* TIP! Data format requirements (or what should our data look like)<a class="headerlink" href="#*-TIP!-Data-format-requirements-(or-what-should-our-data-look-like)" title="Link to this heading"></a></h2>
+<p>Data can take other shapes and formats. However, the <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> data schema requires it to be in a certain shape. This means the dataframe needs to have at least the following characteristics:</p>
+<ol class="arabic simple">
+<li><p>One row per call. Each row should store information about one call only</p></li>
+<li><p>Each row’s index should be a timestamp</p></li>
+<li><p>The following five columns are required:</p>
+<ul class="simple">
+<li><p>index: date and time when the event happened (timestamp)</p></li>
+<li><p>user: stores the user name whose data is analyzed. Each user should have a unique name or hash (i.e. one hash for each unique user)</p></li>
+<li><p>is_silent: stores whether the decibel level is above a set threshold (usually 50dB)</p></li>
+<li><p>decibels: stores the decibels of the recorded snippet</p></li>
+<li><p>frequency: the frequency of the recorded snippet in Hz</p></li>
+<li><p>NOTE: most of our audio examples come from data recorded with the Aware Framework, if you want to know more about the frequency and decibels, please read <a class="reference external" href="https://github.com/denzilferreira/com.aware.plugin.ambient_noise">https://github.com/denzilferreira/com.aware.plugin.ambient_noise</a></p></li>
+</ul>
+</li>
+<li><p>Additional columns are allowed.</p></li>
+<li><p>The names of the columns do not need to be exactly “user”, “is_silent”, “decibels” or “frequency” as we can pass our own names in an argument.</p></li>
+</ol>
+<p>Column names in our data do not match the Niimpy schema. We could provide these column names as parameters to niimpy functions, but it is simpler to rename them here.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;double_decibels&#39;</span><span class="p">:</span> <span class="s1">&#39;decibels&#39;</span><span class="p">,</span> <span class="s1">&#39;double_frequency&#39;</span><span class="p">:</span> <span class="s1">&#39;frequency&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<p>Below is an example of a dataframe that complies with these minimum requirements</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_dataschema</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;is_silent&#39;</span><span class="p">,</span><span class="s1">&#39;decibels&#39;</span><span class="p">,</span><span class="s1">&#39;frequency&#39;</span><span class="p">]]</span>
+<span class="n">example_dataschema</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>is_silent</th>
+      <th>decibels</th>
+      <th>frequency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-13 07:28:27.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>0</td>
+      <td>51</td>
+      <td>7735</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 07:58:29.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>0</td>
+      <td>90</td>
+      <td>13609</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:28:31.657999992+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>0</td>
+      <td>81</td>
+      <td>7690</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="4.-Extracting-features">
+<h2>4. Extracting features<a class="headerlink" href="#4.-Extracting-features" title="Link to this heading"></a></h2>
+<p>There are two ways to extract features. We could use each function separately or we could use <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s ready-made wrapper. Both ways will require us to specify arguments to pass to the functions/wrapper in order to customize the way the functions work. These arguments are specified in dictionaries. Let’s first understand how to extract features using stand-alone functions.</p>
+<section id="4.1-Extract-features-using-stand-alone-functions">
+<h3>4.1 Extract features using stand-alone functions<a class="headerlink" href="#4.1-Extract-features-using-stand-alone-functions" title="Link to this heading"></a></h3>
+<p>We can use <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s functions to compute communication features. Each function will require two inputs:</p>
+<ul class="simple">
+<li><p>(mandatory) dataframe that must comply with the minimum requirements (see ‘* TIP! Data requirements above)</p></li>
+<li><p>(optional) arguments for stand-alone functions</p></li>
+</ul>
+<section id="4.1.1-The-argument-dictionary-for-stand-alone-functions-(or-how-we-specify-the-way-a-function-works)">
+<h4>4.1.1 The argument dictionary for stand-alone functions (or how we specify the way a function works)<a class="headerlink" href="#4.1.1-The-argument-dictionary-for-stand-alone-functions-(or-how-we-specify-the-way-a-function-works)" title="Link to this heading"></a></h4>
+<p>We can input two types of arguments to customize the way a stand-alone function works:</p>
+<ul class="simple">
+<li><p>the name of the columns to be preprocessed: Since the dataframe may have different columns, we need to specify which column has the data we would like to be preprocessed. To do so, we can simply pass the name of the column to the argument <code class="docutils literal notranslate"><span class="pre">audio_column_name</span></code>.</p></li>
+<li><p>the way we resample: resampling options are specified in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> as a dictionary. <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s resampling and aggregating relies on <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.resample</span></code>, so mastering the use of this pandas function will help us greatly in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s preprocessing. Please familiarize yourself with the pandas resample function before continuing. Briefly, to use the <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.resample</span></code> function, we need a rule. This rule states the intervals we would like to use to resample our data
+(e.g., 15-seconds, 30-minutes, 1-hour). Neverthless, we can input more details into the function to specify the exact sampling we would like. For example, we could use the <em>close</em> argument if we would like to specify which side of the interval is closed, or we could use the <em>offset</em> argument if we would like to start our binning with an offset, etc. There are plenty of options to use this command, so we strongly recommend having <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.resample</span></code> documentation at hand. All
+features for the <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.resample</span></code> will be specified in a dictionary where keys are the arguments’ names for the <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.resample</span></code>, and the dictionary’s values are the values for each of these selected arguments. This dictionary will be passed as a value to the key <code class="docutils literal notranslate"><span class="pre">resample_args</span></code> in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>.</p></li>
+</ul>
+<p>Let’s see some examples of these parameters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">au</span><span class="o">.</span><span class="n">audio_count_loud</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1D&quot;</span><span class="p">})</span>
+<span class="n">au</span><span class="o">.</span><span class="n">audio_count_loud</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;random_name&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">})</span>
+<span class="n">au</span><span class="o">.</span><span class="n">audio_count_loud</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;other_name&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;45T&quot;</span><span class="p">,</span><span class="s2">&quot;origin&quot;</span><span class="p">:</span><span class="s2">&quot;end&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Here, we have three basic feature dictionaries.</p>
+<ul class="simple">
+<li><p>The first example will analyze the data stored in the column <code class="docutils literal notranslate"><span class="pre">frequency</span></code> in our dataframe. The data will be binned in one day periods</p></li>
+<li><p>The second example will analyze the data stored in the column <code class="docutils literal notranslate"><span class="pre">random_name</span></code> in our dataframe. The data will be aggregated in 30-minutes bins</p></li>
+<li><p>The third example will analyze the data stored in the column <code class="docutils literal notranslate"><span class="pre">other_name</span></code> in our dataframe. The data will be binned in 45-minutes bins, but the binning will start from the last timestamp in the dataframe.</p></li>
+</ul>
+<p><strong>Default values:</strong> if no arguments are passed, <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s will aggregate the data in 30-min bins, and will select the audio_column_name according to the most suitable column. For example, if we are computing the minimum frequency, <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> will select <em>frequency</em> as the column name.</p>
+</section>
+<section id="4.1.2-Using-the-functions">
+<h4>4.1.2 Using the functions<a class="headerlink" href="#4.1.2-Using-the-functions" title="Link to this heading"></a></h4>
+<p>Now that we understand how the functions are customized, it is time we compute our first audio feature. Suppose that we are interested in extracting the total number of times our recordings were loud every 50 minutes. We will need <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s <code class="docutils literal notranslate"><span class="pre">audio_count_loud</span></code> function.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_loud_times</span> <span class="o">=</span> <span class="n">au</span><span class="o">.</span><span class="n">audio_count_loud</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;decibels&quot;</span><span class="p">,</span>
+    <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;50T&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s look at some values for one of the subjects.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_loud_times</span><span class="p">[</span><span class="n">my_loud_times</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;jd9INuQ5BBlW&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>audio_count_loud</th>
+      <th>device</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 01:40:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:30:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>2</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 03:20:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>2</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 04:10:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>0</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 05:00:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 05:50:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 06:40:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>OWd1Uau8POix</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 07:30:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>0</td>
+      <td>OWd1Uau8POix</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 08:20:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>OWd1Uau8POix</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 09:10:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>OWd1Uau8POix</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 10:00:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>2</td>
+      <td>OWd1Uau8POix</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Let’s remember how the original data looks like for this subject</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;jd9INuQ5BBlW&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>is_silent</th>
+      <th>decibels</th>
+      <th>frequency</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578528e+09</td>
+      <td>0</td>
+      <td>84</td>
+      <td>4935</td>
+      <td>2020-01-09 02:08:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:38:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>0</td>
+      <td>89</td>
+      <td>8734</td>
+      <td>2020-01-09 02:38:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 03:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578532e+09</td>
+      <td>0</td>
+      <td>99</td>
+      <td>1710</td>
+      <td>2020-01-09 03:08:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 03:38:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578534e+09</td>
+      <td>0</td>
+      <td>77</td>
+      <td>9054</td>
+      <td>2020-01-09 03:38:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 04:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578536e+09</td>
+      <td>0</td>
+      <td>80</td>
+      <td>12265</td>
+      <td>2020-01-09 04:08:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 04:38:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578537e+09</td>
+      <td>0</td>
+      <td>52</td>
+      <td>7281</td>
+      <td>2020-01-09 04:38:03.895999908+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 05:08:03.895999908+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578539e+09</td>
+      <td>0</td>
+      <td>63</td>
+      <td>14408</td>
+      <td>2020-01-09 05:08:03.895999908+02:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>We see that the bins are indeed 50-minutes bins, however, they are adjusted to fixed, predetermined intervals, i.e. the bin does not start on the time of the first datapoint. Instead, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> starts the binning at 00:00:00 of everyday and counts 50-minutes intervals from there.</p>
+<p>If we want the binning to start from the first datapoint in our dataset, we need the origin parameter and a for loop.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="o">==</span><span class="n">user</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">au</span><span class="o">.</span><span class="n">audio_count_loud</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="o">==</span><span class="n">user</span><span class="p">],</span>
+        <span class="n">audio_column_name</span><span class="o">=</span><span class="s2">&quot;decibels&quot;</span><span class="p">,</span>
+        <span class="n">resample_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;50T&quot;</span><span class="p">}</span>
+    <span class="p">))</span>
+<span class="n">my_loud_times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_loud_times</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>audio_count_loud</th>
+      <th>device</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-13 07:30:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>1</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:20:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>1</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 09:10:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>1</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 10:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>1</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 10:50:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>2</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 11:40:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>1</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 12:30:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>0</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 13:20:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>0</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 14:10:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>1</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 15:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>0</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 15:50:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>1</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 16:40:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>1</td>
+      <td>Cq9vueHh3zVs</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 01:40:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:30:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>2</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 03:20:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>2</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 04:10:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>0</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 05:00:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 05:50:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>3p83yASkOb_B</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 06:40:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>OWd1Uau8POix</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 07:30:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>0</td>
+      <td>OWd1Uau8POix</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 08:20:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>OWd1Uau8POix</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 09:10:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+      <td>OWd1Uau8POix</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 10:00:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>2</td>
+      <td>OWd1Uau8POix</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="4.2-Extract-features-using-the-wrapper">
+<h3>4.2 Extract features using the wrapper<a class="headerlink" href="#4.2-Extract-features-using-the-wrapper" title="Link to this heading"></a></h3>
+<p>We can use <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s ready-made wrapper to extract one or several features at the same time. The wrapper will require two inputs:</p>
+<ul class="simple">
+<li><p>(mandatory) dataframe that must comply with the minimum requirements (see ‘* TIP! Data requirements above)</p></li>
+<li><p>(optional) an argument dictionary for wrapper</p></li>
+</ul>
+<section id="4.2.1-The-argument-dictionary-for-wrapper-(or-how-we-specify-the-way-the-wrapper-works)">
+<h4>4.2.1 The argument dictionary for wrapper (or how we specify the way the wrapper works)<a class="headerlink" href="#4.2.1-The-argument-dictionary-for-wrapper-(or-how-we-specify-the-way-the-wrapper-works)" title="Link to this heading"></a></h4>
+<p>The argument dictionary contains the arguments for each stand-alone function we would like to employ. Its keys are the feature functions we want to compute. Its values are argument dictionaries created for each stand-alone function we will employ. Let’s see some examples of wrapper dictionaries:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features1</span> <span class="o">=</span> <span class="p">{</span><span class="n">au</span><span class="o">.</span><span class="n">audio_count_loud</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;decibels&quot;</span><span class="p">,</span><span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1D&quot;</span><span class="p">}},</span>
+                     <span class="n">au</span><span class="o">.</span><span class="n">audio_max_freq</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;frequency&quot;</span><span class="p">,</span><span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1D&quot;</span><span class="p">}}}</span>
+</pre></div>
+</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wrapper_features1</span></code> will be used to analyze two features, <code class="docutils literal notranslate"><span class="pre">audio_count_loud</span></code> and <code class="docutils literal notranslate"><span class="pre">audio_max_freq</span></code>. For the feature audio_count_loud, we will use the data stored in the column <code class="docutils literal notranslate"><span class="pre">decibels</span></code> in our dataframe and the data will be binned in one day periods. For the feature audio_max_freq, we will use the data stored in the column <code class="docutils literal notranslate"><span class="pre">frequency</span></code> in our dataframe and the data will be binned in one day periods.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features2</span> <span class="o">=</span> <span class="p">{</span><span class="n">au</span><span class="o">.</span><span class="n">audio_mean_db</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;random_name&quot;</span><span class="p">,</span><span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1D&quot;</span><span class="p">}},</span>
+                     <span class="n">au</span><span class="o">.</span><span class="n">audio_count_speech</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;decibels&quot;</span><span class="p">,</span> <span class="s2">&quot;audio_freq_name&quot;</span><span class="p">:</span><span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;5H&quot;</span><span class="p">,</span><span class="s2">&quot;offset&quot;</span><span class="p">:</span><span class="s2">&quot;5min&quot;</span><span class="p">}}}</span>
+</pre></div>
+</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wrapper_features2</span></code> will be used to analyze two features, <code class="docutils literal notranslate"><span class="pre">audio_mean_db</span></code> and <code class="docutils literal notranslate"><span class="pre">audio_count_speech</span></code>. For the feature audio_mean_db, we will use the data stored in the column <code class="docutils literal notranslate"><span class="pre">random_name</span></code> in our dataframe and the data will be binned in one day periods. For the feature audio_count_speech, we will use the data stored in the column <code class="docutils literal notranslate"><span class="pre">decibels</span></code> in our dataframe and the data will be binned in 5-hour periods with a 5-minute offset. Note that for this feature we will also need another column
+named “audio_freq_column”, this is because the speech is not only defined by the amplitude of the recording, but the frequency range.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features3</span> <span class="o">=</span> <span class="p">{</span><span class="n">au</span><span class="o">.</span><span class="n">audio_mean_db</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;one_name&quot;</span><span class="p">,</span><span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1D&quot;</span><span class="p">,</span><span class="s2">&quot;offset&quot;</span><span class="p">:</span><span class="s2">&quot;5min&quot;</span><span class="p">}},</span>
+                     <span class="n">au</span><span class="o">.</span><span class="n">audio_min_freq</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;one_name&quot;</span><span class="p">,</span><span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;5H&quot;</span><span class="p">}},</span>
+                     <span class="n">au</span><span class="o">.</span><span class="n">audio_count_silent</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;another_name&quot;</span><span class="p">,</span><span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30T&quot;</span><span class="p">,</span><span class="s2">&quot;origin&quot;</span><span class="p">:</span><span class="s2">&quot;end_day&quot;</span><span class="p">}}}</span>
+</pre></div>
+</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wrapper_features3</span></code> will be used to analyze three features, <code class="docutils literal notranslate"><span class="pre">audio_mean_db</span></code>, <code class="docutils literal notranslate"><span class="pre">audio_min_freq</span></code>, and <code class="docutils literal notranslate"><span class="pre">audio_count_silent</span></code>. For the feature audio_mean_db, we will use the data stored in the column <code class="docutils literal notranslate"><span class="pre">one_name</span></code> and the data will be binned in one day periods with a 5-min offset. For the feature audio_min_freq, we will use the data stored in the column <code class="docutils literal notranslate"><span class="pre">one_name</span></code> in our dataframe and the data will be binned in 5-hour periods. Finally, for the feature audio_count_silent, we will use the
+data stored in the column <code class="docutils literal notranslate"><span class="pre">another_name</span></code> in our dataframe and the data will be binned in 30-minute periods and the origin of the bins will be the ceiling midnight of the last day.</p></li>
+</ul>
+<p><strong>Default values:</strong> if no arguments are passed, <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s default values are either “decibels”, “frequency”, or “is_silent” for the communication_column_name, and 30-min aggregation bins. The column name depends on the function to be called. Moreover, the wrapper will compute all the available functions in absence of the argument dictionary.</p>
+</section>
+<section id="4.2.2-Using-the-wrapper">
+<h4>4.2.2 Using the wrapper<a class="headerlink" href="#4.2.2-Using-the-wrapper" title="Link to this heading"></a></h4>
+<p>Now that we understand how the wrapper is customized, it is time we compute our first communication feature using the wrapper. Suppose that we are interested in extracting the audio_count_loud duration every 50 minutes. We will need <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s <code class="docutils literal notranslate"><span class="pre">extract_features_audio</span></code> function, the data, and we will also need to create a dictionary to customize our function. Let’s create the dictionary first</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features1</span> <span class="o">=</span> <span class="p">{</span><span class="n">au</span><span class="o">.</span><span class="n">audio_count_loud</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;decibels&quot;</span><span class="p">,</span><span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;50T&quot;</span><span class="p">}}}</span>
+</pre></div>
+</div>
+</div>
+<p>Now, let’s use the wrapper</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_wrapper</span> <span class="o">=</span> <span class="n">au</span><span class="o">.</span><span class="n">extract_features_audio</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">wrapper_features1</span><span class="p">)</span>
+<span class="n">results_wrapper</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>audio_count_loud</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-13 07:30:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:20:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 09:10:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 10:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 10:50:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Our first attempt was succesful. Now, let’s try something more. Let’s assume we want to compute the audio_count_loud and audio_min_freq in 1-hour bins.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features2</span> <span class="o">=</span> <span class="p">{</span><span class="n">au</span><span class="o">.</span><span class="n">audio_count_loud</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;decibels&quot;</span><span class="p">,</span><span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1H&quot;</span><span class="p">}},</span>
+                     <span class="n">au</span><span class="o">.</span><span class="n">audio_min_freq</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1H&quot;</span><span class="p">}}}</span>
+<span class="n">results_wrapper</span> <span class="o">=</span> <span class="n">au</span><span class="o">.</span><span class="n">extract_features_audio</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">wrapper_features2</span><span class="p">)</span>
+<span class="n">results_wrapper</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>audio_count_loud</th>
+      <th>audio_min_freq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-13 07:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1</td>
+      <td>7735.0</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1</td>
+      <td>7690.0</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 09:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1</td>
+      <td>756.0</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 10:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>2</td>
+      <td>3059.0</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 11:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>2</td>
+      <td>12278.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Great! Another successful attempt. We see from the results that more columns were added with the required calculations. This is how the wrapper works when all features are computed with the same bins. Now, let’s see how the wrapper performs when each function has different binning requirements. Let’s assume we need to compute the audio_count_loud every day, and the audio_min_freq every 5 hours with an offset of 5 minutes.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features3</span> <span class="o">=</span> <span class="p">{</span><span class="n">au</span><span class="o">.</span><span class="n">audio_count_loud</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;decibels&quot;</span><span class="p">,</span><span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1D&quot;</span><span class="p">}},</span>
+                     <span class="n">au</span><span class="o">.</span><span class="n">audio_min_freq</span><span class="p">:{</span><span class="s2">&quot;audio_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;5H&quot;</span><span class="p">,</span> <span class="s2">&quot;offset&quot;</span><span class="p">:</span><span class="s2">&quot;5min&quot;</span><span class="p">}}}</span>
+<span class="n">results_wrapper</span> <span class="o">=</span> <span class="n">au</span><span class="o">.</span><span class="n">extract_features_audio</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">wrapper_features3</span><span class="p">)</span>
+<span class="n">results_wrapper</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>audio_count_loud</th>
+      <th>audio_min_freq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-13 00:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>10.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 00:00:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>7.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 00:00:00+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>5.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 05:05:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>NaN</td>
+      <td>756.0</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 10:05:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>NaN</td>
+      <td>2914.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The output is once again a dataframe. In this case, two aggregations are shown. The first one is the daily aggregation computed for the <code class="docutils literal notranslate"><span class="pre">audio_count_loud</span></code> feature. The second one is the 5-hour aggregation period with 5-min offset for the <code class="docutils literal notranslate"><span class="pre">audio_min_freq</span></code>. We must note that because the <code class="docutils literal notranslate"><span class="pre">audio_min_freq</span></code>feature is not required to be aggregated daily, the daily aggregation timestamps have a NaN value. Similarly, because the <code class="docutils literal notranslate"><span class="pre">audio_count_loud</span></code>is not required to be aggregated in 5-hour
+windows, its values are NaN for all subjects.</p>
+</section>
+<section id="4.2.3-Wrapper-and-its-default-option">
+<h4>4.2.3 Wrapper and its default option<a class="headerlink" href="#4.2.3-Wrapper-and-its-default-option" title="Link to this heading"></a></h4>
+<p>The default option will compute all features in 30-minute aggregation windows. To use the <code class="docutils literal notranslate"><span class="pre">extract_features_audio</span></code> function with its default options, simply call the function.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">default</span> <span class="o">=</span> <span class="n">au</span><span class="o">.</span><span class="n">extract_features_audio</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">default</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>audio_count_silent</th>
+      <th>audio_count_speech</th>
+      <th>audio_count_loud</th>
+      <th>audio_min_freq</th>
+      <th>audio_max_freq</th>
+      <th>audio_mean_freq</th>
+      <th>audio_median_freq</th>
+      <th>audio_std_freq</th>
+      <th>audio_min_db</th>
+      <th>audio_max_db</th>
+      <th>audio_mean_db</th>
+      <th>audio_median_db</th>
+      <th>audio_std_db</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-13 07:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>7735.0</td>
+      <td>7735.0</td>
+      <td>7735.0</td>
+      <td>7735.0</td>
+      <td>NaN</td>
+      <td>51.0</td>
+      <td>51.0</td>
+      <td>51.0</td>
+      <td>51.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 07:30:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>13609.0</td>
+      <td>13609.0</td>
+      <td>13609.0</td>
+      <td>13609.0</td>
+      <td>NaN</td>
+      <td>90.0</td>
+      <td>90.0</td>
+      <td>90.0</td>
+      <td>90.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>7690.0</td>
+      <td>7690.0</td>
+      <td>7690.0</td>
+      <td>7690.0</td>
+      <td>NaN</td>
+      <td>81.0</td>
+      <td>81.0</td>
+      <td>81.0</td>
+      <td>81.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:30:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>8347.0</td>
+      <td>8347.0</td>
+      <td>8347.0</td>
+      <td>8347.0</td>
+      <td>NaN</td>
+      <td>58.0</td>
+      <td>58.0</td>
+      <td>58.0</td>
+      <td>58.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 09:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>Cq9vueHh3zVs</td>
+      <td>1</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>13592.0</td>
+      <td>13592.0</td>
+      <td>13592.0</td>
+      <td>13592.0</td>
+      <td>NaN</td>
+      <td>36.0</td>
+      <td>36.0</td>
+      <td>36.0</td>
+      <td>36.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+</section>
+<section id="5.-Implementing-own-features">
+<h2>5. Implementing own features<a class="headerlink" href="#5.-Implementing-own-features" title="Link to this heading"></a></h2>
+<p>If none of the provided functions suits well, We can implement our own customized features easily. To do so, we need to define a function that accepts a dataframe and returns a dataframe. The returned object should be indexed by user and timestamps (multiindex). Let’s assume we need a new function that counts sums all frequencies. Let’s first define the function</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">audio_sum_freq</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">resample_args</span><span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30T&quot;</span><span class="p">}):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_sum_freq&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<p>Then, we can call our new function in the stand-alone way or using the <code class="docutils literal notranslate"><span class="pre">extract_features_audio</span></code> function. Alternatively, we can pass the feature function to the wrapper. Let’s read again the data and assume we want the default behavior of the wrapper.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">customized_features</span> <span class="o">=</span> <span class="n">au</span><span class="o">.</span><span class="n">extract_features_audio</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">{</span><span class="n">audio_sum_freq</span><span class="p">:</span> <span class="p">{}})</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">customized_features</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>audio_sum_freq</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-13 07:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>7735</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 07:30:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>13609</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>7690</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 08:30:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>8347</td>
+    </tr>
+    <tr>
+      <th>2019-08-13 09:00:00+03:00</th>
+      <td>iGyXetHE3S8u</td>
+      <td>13592</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../application/" class="btn btn-neutral float-left" title="Application data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../battery/" class="btn btn-neutral float-right" title="Battery Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

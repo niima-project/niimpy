@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.exploration.eda.lineplot &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.exploration.eda.lineplot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.exploration.eda.lineplot</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Wed Oct 27 09:53:46 2021</span>
+
+<span class="sd">@author: arsii</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+
+<div class="viewcode-block" id="timeplot">
+<a class="viewcode-back" href="../../../../../api/niimpy.exploration.eda.lineplot/#niimpy.exploration.eda.lineplot.timeplot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">timeplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">users</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">reset_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot a time series plot. Plot selected users and columns or group level</span>
+<span class="sd">    averages, aggregated by hour or weekday.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : Pandas Dataframe</span>
+<span class="sd">        Dataframe containing the data</span>
+<span class="sd">    users : list or str </span>
+<span class="sd">        Users to plot.</span>
+<span class="sd">    columns : list or str</span>
+<span class="sd">        Columns to plot.</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Plot title.</span>
+<span class="sd">    xlabel : str</span>
+<span class="sd">        Plot xlabel.</span>
+<span class="sd">    ylabel : str</span>
+<span class="sd">        Plot ylabel.</span>
+<span class="sd">    resample : str, optional</span>
+<span class="sd">        Data resampling frequency. The default is False.</span>
+<span class="sd">        For details: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html</span>
+<span class="sd">    interpolate : bool, optional</span>
+<span class="sd">        If true, time series will be interpolated using splines. The default is False.</span>
+<span class="sd">    window : int, optional</span>
+<span class="sd">        Rolling window smoothing window size. The default is False.</span>
+<span class="sd">    reset_index : bool, optional</span>
+<span class="sd">        If true, dataframe index will be resetted. The default is False.</span>
+<span class="sd">    by : str, optional</span>
+<span class="sd">        Indicator for group level averaging. The default is False.</span>
+<span class="sd">        If &#39;hour&#39;, hourly averages per group are presented.</span>
+<span class="sd">        If &#39;weekday&#39;, daily averages per gruop are presented.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas dataframe.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="nb">list</span><span class="p">)),</span> <span class="s2">&quot;users is not a string or a list&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">)),</span> <span class="s2">&quot;column is not a string or a list&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;title is not a string&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;xlabel is not a string&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ylabel</span> <span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;ylabel is not a string&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">resample</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)),</span> <span class="s2">&quot;resample is not a string or a boolean&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">interpolate</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span> <span class="s2">&quot;interpolate is not a boolean&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="s2">&quot;window is not an int&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reset_index</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span> <span class="s2">&quot;reset_index is not boolean&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">bool</span><span class="p">)),</span> <span class="s2">&quot;by is not a string or a boolean&quot;</span>
+    
+    
+    <span class="k">if</span> <span class="n">users</span> <span class="o">==</span> <span class="s1">&#39;Group&#39;</span><span class="p">:</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_averages_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                             <span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                             <span class="n">by</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_timeseries_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> 
+                               <span class="n">columns</span><span class="p">,</span>
+                               <span class="n">users</span><span class="p">,</span>
+                               <span class="n">title</span><span class="p">,</span>
+                               <span class="n">xlabel</span><span class="p">,</span>
+                               <span class="n">ylabel</span><span class="p">,</span>
+                               <span class="n">resample</span><span class="p">,</span>
+                               <span class="n">interpolate</span><span class="p">,</span>
+                               <span class="n">window</span><span class="p">,</span>
+                               <span class="n">reset_index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+<div class="viewcode-block" id="calculate_averages_">
+<a class="viewcode-back" href="../../../../../api/niimpy.exploration.eda.lineplot/#niimpy.exploration.eda.lineplot.calculate_averages_">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_averages_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">column</span><span class="p">,</span> <span class="n">by</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;calculate group averages by given timerange</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">by</span> <span class="o">==</span> <span class="s1">&#39;hour&#39;</span><span class="p">:</span>
+        <span class="n">averages</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">column</span><span class="p">,</span><span class="s1">&#39;group&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="s1">&#39;group&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">by</span> <span class="o">==</span> <span class="s1">&#39;weekday&#39;</span><span class="p">:</span>
+        <span class="n">averages</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">column</span><span class="p">,</span> <span class="s1">&#39;group&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">weekday</span><span class="p">,</span> <span class="s1">&#39;group&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">averages</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="n">averages</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">averages</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">averages</span></div>
+
+
+<div class="viewcode-block" id="plot_averages_">
+<a class="viewcode-back" href="../../../../../api/niimpy.exploration.eda.lineplot/#niimpy.exploration.eda.lineplot.plot_averages_">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_averages_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s1">&#39;hour&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot user group level averages by hour or by weekday.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : Pandas Dataframe</span>
+<span class="sd">        Dataframe containing the data</span>
+<span class="sd">    column : str</span>
+<span class="sd">        Columns to plot.</span>
+<span class="sd">    by : str, optional</span>
+<span class="sd">        Indicator for group level averaging. The default is False.</span>
+<span class="sd">        If &#39;hour&#39;, hourly averages per group are presented.</span>
+<span class="sd">        If &#39;weekday&#39;, daily averages per gruop are presented.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas dataframe.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;column is not a string&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">by</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;by is not a string&quot;</span>
+    
+    <span class="c1"># GROUP AVERAGES BY HOUR</span>
+    <span class="k">if</span> <span class="n">by</span> <span class="o">==</span> <span class="s1">&#39;hour&#39;</span><span class="p">:</span>
+        <span class="n">averages</span> <span class="o">=</span> <span class="n">calculate_averages_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">column</span><span class="p">,</span><span class="n">by</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">averages</span><span class="p">,</span>
+                      <span class="n">x</span><span class="o">=</span><span class="n">averages</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                      <span class="n">y</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
+                      <span class="n">color</span><span class="o">=</span><span class="s2">&quot;group&quot;</span><span class="p">,)</span>
+
+        <span class="c1">#fig.update_traces(mode=&#39;markers+lines&#39;)</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> hourly averages&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">column</span><span class="p">),</span>
+                          <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Hour&quot;</span><span class="p">,</span>
+                          <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span>
+                          <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">tickmode</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">,</span>
+                                     <span class="n">tickvals</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">21</span><span class="p">],</span>
+                                     <span class="n">ticktext</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0am&#39;</span><span class="p">,</span> <span class="s1">&#39;3am&#39;</span><span class="p">,</span> <span class="s1">&#39;6am&#39;</span><span class="p">,</span> <span class="s1">&#39;9am&#39;</span><span class="p">,</span> <span class="s1">&#39;12pm&#39;</span><span class="p">,</span> <span class="s1">&#39;15pm&#39;</span><span class="p">,</span> <span class="s1">&#39;18pm&#39;</span><span class="p">,</span> <span class="s1">&#39;21pm&#39;</span><span class="p">]))</span>
+
+    <span class="c1"># GROUP AVERAGES BY WEEKDAY</span>
+    <span class="k">elif</span> <span class="n">by</span> <span class="o">==</span> <span class="s1">&#39;weekday&#39;</span><span class="p">:</span>
+        <span class="n">averages</span> <span class="o">=</span> <span class="n">calculate_averages_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">column</span><span class="p">,</span><span class="n">by</span><span class="p">)</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">averages</span><span class="p">,</span>
+                      <span class="n">x</span><span class="o">=</span><span class="n">averages</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                      <span class="n">y</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
+                      <span class="n">color</span><span class="o">=</span><span class="s2">&quot;group&quot;</span><span class="p">,)</span>
+
+        <span class="c1">#fig.update_traces(mode=&#39;markers+lines&#39;)</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> weekday averages&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">column</span><span class="p">),</span>
+                          <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Weekday&quot;</span><span class="p">,</span>
+                          <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span>
+                          <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                          <span class="n">tickmode</span><span class="o">=</span><span class="s1">&#39;array&#39;</span><span class="p">,</span>
+                          <span class="n">tickvals</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+                          <span class="n">ticktext</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Mon&#39;</span><span class="p">,</span> <span class="s1">&#39;Tue&#39;</span><span class="p">,</span> <span class="s1">&#39;Wed&#39;</span><span class="p">,</span> <span class="s1">&#39;Thu&#39;</span><span class="p">,</span> <span class="s1">&#39;Fri&#39;</span><span class="p">,</span> <span class="s1">&#39;Sat&#39;</span><span class="p">,</span> <span class="s1">&#39;Sun&#39;</span><span class="p">]))</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+    
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+            
+
+<div class="viewcode-block" id="resample_data_">
+<a class="viewcode-back" href="../../../../../api/niimpy.exploration.eda.lineplot/#niimpy.exploration.eda.lineplot.resample_data_">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resample_data_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">resample</span><span class="p">,</span> <span class="n">interpolate</span><span class="p">,</span> <span class="n">window_len</span><span class="p">,</span> <span class="n">reset_index</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;resample dataframe for plotting</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">resample</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">resample</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            
+    <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;spline&#39;</span><span class="p">,</span><span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            
+    <span class="k">if</span> <span class="n">window_len</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window_len</span><span class="p">,</span> <span class="n">win_type</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">std</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                
+    <span class="k">if</span> <span class="n">reset_index</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+    <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="plot_timeseries_">
+<a class="viewcode-back" href="../../../../../api/niimpy.exploration.eda.lineplot/#niimpy.exploration.eda.lineplot.plot_timeseries_">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_timeseries_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">users</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">window_len</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">reset_index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;There goes the text.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : Pandas Dataframe</span>
+<span class="sd">        Dataframe containing the data</span>
+<span class="sd">    columns : list or str</span>
+<span class="sd">        Columns to plot.</span>
+<span class="sd">    users : list or str </span>
+<span class="sd">        Users to plot.</span>
+<span class="sd">    title : str</span>
+<span class="sd">        Plot title.</span>
+<span class="sd">    xlabel : str</span>
+<span class="sd">        Plot xlabel.</span>
+<span class="sd">    ylabel : str</span>
+<span class="sd">        Plot ylabel.</span>
+<span class="sd">    resample : str, optional</span>
+<span class="sd">        Data resampling frequency. The default is False.</span>
+<span class="sd">        For details: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html</span>
+<span class="sd">    interpolate : bool, optional</span>
+<span class="sd">        If true, time series will be interpolated using splines. The default is False.</span>
+<span class="sd">    window : int, optional</span>
+<span class="sd">        Rolling window smoothing window size. The default is False.</span>
+<span class="sd">    reset_index : bool, optional</span>
+<span class="sd">        If true, dataframe index will be resetted. The default is False.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas dataframe.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">list</span><span class="p">)),</span> <span class="s2">&quot;users is not a string or a list&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">)),</span> <span class="s2">&quot;column is not a string or a list&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;title is not a string&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;xlabel is not a string&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ylabel</span> <span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;ylabel is not a string&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">resample</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">bool</span><span class="p">)),</span> <span class="s2">&quot;resample is not a string or a boolean&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">interpolate</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span> <span class="s2">&quot;interpolate is not a boolean&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">window_len</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="s2">&quot;window is not an int&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reset_index</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span> <span class="s2">&quot;reset_index is not boolean&quot;</span>
+
+    
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            
+            <span class="n">df_sel</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">u</span><span class="p">][</span><span class="n">c</span><span class="p">]</span>
+            
+            <span class="n">df_sel</span> <span class="o">=</span> <span class="n">resample_data_</span><span class="p">(</span><span class="n">df_sel</span><span class="p">,</span> <span class="n">resample</span><span class="p">,</span> <span class="n">interpolate</span><span class="p">,</span> <span class="n">window_len</span><span class="p">,</span> <span class="n">reset_index</span><span class="p">)</span>
+                        
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df_sel</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> 
+                                     <span class="n">y</span><span class="o">=</span><span class="n">df_sel</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                                     <span class="n">name</span><span class="o">=</span> <span class="n">u</span> <span class="o">+</span> <span class="s1">&#39; / &#39;</span> <span class="o">+</span> <span class="n">c</span><span class="p">,</span>
+                                     <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    
+    <span class="c1">#fig.update_traces(mode=&#39;markers+lines&#39;)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+                      <span class="n">xaxis_title</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+                      <span class="n">yaxis_title</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+                      <span class="n">width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+                      <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">,)</span>
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

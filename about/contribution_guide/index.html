@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contribution Guide &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="How to cite" href="../How-to-cite/" />
+    <link rel="prev" title="Data schema" href="../schema/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schema/">Data schema</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contribution Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#General-principles">General principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Communication">Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Bugs">Bugs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#New-Functionality">New Functionality</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Function-inputs">Function inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Function-outputs">Function outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other">other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Improving-old-functions">Improving old functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Example-unit-test">Example unit test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Documentation-notes">Documentation notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Contribution Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/about/contribution_guide.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Contribution-Guide">
+<h1>Contribution Guide<a class="headerlink" href="#Contribution-Guide" title="Link to this heading"></a></h1>
+<section id="General-principles">
+<h2>General principles<a class="headerlink" href="#General-principles" title="Link to this heading"></a></h2>
+<p>Niimpy is an open source project and general open source contribution guidelines apply.</p>
+<p>Contributions are welcome and encouraged.</p>
+<ul class="simple">
+<li><p>You don’t need to be perfect. Suggest what you can and we will help it improve.</p></li>
+</ul>
+</section>
+<section id="Communication">
+<h2>Communication<a class="headerlink" href="#Communication" title="Link to this heading"></a></h2>
+<p>We use GitHub issues and pull requests for communication.</p>
+<ul class="simple">
+<li><p>Before you start, create an issue and describe your contribution.</p>
+<ul>
+<li><p>This is the primary discussion channel about your contribution and allows us to plan effectively.</p></li>
+</ul>
+</li>
+<li><p>When accepted, you agree to publish your contribution under the MIT license. The full license text can be found in the “LICENSE” file in the project root</p></li>
+</ul>
+</section>
+<section id="Bugs">
+<h2>Bugs<a class="headerlink" href="#Bugs" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>If you find a bug, problem or potential enhancement, let us know in an Issue on the <a class="reference external" href="https://github.com/digitraceslab/niimpy">Niimpy GitHub page</a>.</p></li>
+<li><p>Before sinking time into fixing the issue or improving Niimpy, discuss with us on the Issue. This ensures that no-one else is working on it and that we can help you with the process.</p></li>
+<li><p>To suggest a change, preferably fork the repository and create a pull request.</p></li>
+</ul>
+</section>
+<section id="New-Functionality">
+<h2>New Functionality<a class="headerlink" href="#New-Functionality" title="Link to this heading"></a></h2>
+<section id="Function-inputs">
+<h3>Function inputs<a class="headerlink" href="#Function-inputs" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Each function should accept two parameters: a dataframe and an optional dictionary containing other arguments.</p></li>
+<li><p>Column names should be passed as optional arguments. They can have default values, but these should be adjustable.</p></li>
+<li><p>Group by ‘user’ and ‘device’ columns if they are present in the input</p></li>
+<li><p>You should always use the DataFrame index to retrieve data/time values, not the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> column (which is a convenience thing but not guaranteed to be there).</p></li>
+<li><p>Don’t fail if there are extra columns passed (or missing some non-essential columns). Look at what columns/data is passed and and use that, but don’t do anything unexpected if someone makes a mistake with input data</p></li>
+</ul>
+</section>
+<section id="Function-outputs">
+<h3>Function outputs<a class="headerlink" href="#Function-outputs" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Have any times returned in the index (unless each row needs multiple times, then do what you need)</p></li>
+<li><p>Resample by the time index, using given resample arguments (or a default value).</p></li>
+</ul>
+</section>
+<section id="other">
+<h3>other<a class="headerlink" href="#other" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Please add documentation to each new function using docstrings. This should include enough description so that someone else can understand and reproduce all relevant features - enough to describe the method for a scientific article.</p></li>
+<li><p>Please add unit tests which test each relevant feature (and each claimed method feature) with a minimal example. Each function can have multiple tests. For examples of unit tests, see below or <code class="docutils literal notranslate"><span class="pre">niimpy/test_screen.py</span></code>. You can create some sample data within each test module which can be used both during development and for tests.</p></li>
+<li><p><a class="reference external" href="https://www.python.org/dev/peps/pep-0020/">The Zen of Python</a> is always good advice</p></li>
+</ul>
+</section>
+</section>
+<section id="Improving-old-functions">
+<h2>Improving old functions<a class="headerlink" href="#Improving-old-functions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Add tests for existing functionality</p>
+<ul>
+<li><p>For every functionality Niimpy claims, there should be a minimal test for it.</p></li>
+</ul>
+</li>
+<li><p>Don’t fail if unnecessary columns are not there (don’t drop unneeded columns, select only the needed ones).</p></li>
+<li><p>Use the index, not the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> column.</p></li>
+<li><p>Improve the docstring of the function: we use the <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">numpydoc format</a></p></li>
+<li><p>Add a documentation page for each sensor, document each function and include an example.</p></li>
+<li><p>Document what parameters the function groups by when analyzing</p>
+<ul>
+<li><p>For example an ideal case is that any ‘user’ and ‘device’ columns are grouped by in the final output.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="Example-unit-test">
+<h2>Example unit test<a class="headerlink" href="#Example-unit-test" title="Link to this heading"></a></h2>
+<p>You can read about testing in general in the <a class="reference external" href="https://coderefinery.github.io/testing/">CodeRefinery testing lesson</a>.</p>
+<p>First you would define some sample data. You could reuse existing data (or data from <code class="docutils literal notranslate"><span class="pre">niimpy.sampledata</span></code>), but if data is reused too much it can become harder to edit existing tests. Do share data when possible but split it when it’s relevant.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen1</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">time,screen_status</span>
+<span class="s2">0,1</span>
+<span class="s2">60,0</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Then you can make a test function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_screen_off</span><span class="p">(</span><span class="n">screen1</span><span class="p">):</span>
+    <span class="n">off</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">preprocess</span><span class="o">.</span><span class="n">screen_off</span><span class="p">(</span><span class="n">screen1</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span>  <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="n">TZ</span><span class="p">)</span> <span class="ow">in</span> <span class="n">off</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">assert</span></code> is the actual test: if the statement after assert is false, the test fails. You can have multiple asserts in a function to test multiple things. When something fails, <code class="docutils literal notranslate"><span class="pre">pytest</span></code> will provide much more useful error messages than you might expect.</p>
+<p>You run tests with <code class="docutils literal notranslate"><span class="pre">pytest</span></code> or <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">tests/preprocessing/test_screen.py</span></code>. You can limit to certain tests with <code class="docutils literal notranslate"><span class="pre">-k</span></code> and engage a debugger on errors with <code class="docutils literal notranslate"><span class="pre">--pdb</span></code>.</p>
+</section>
+<section id="Documentation-notes">
+<h2>Documentation notes<a class="headerlink" href="#Documentation-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>You can use Jupyter or ReST. ReST is better for narrative documentation.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../schema/" class="btn btn-neutral float-left" title="Data schema" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../How-to-cite/" class="btn btn-neutral float-right" title="How to cite" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,653 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.audio &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.audio</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.preprocessing.audio</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
+
+<span class="n">group_by_columns</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="audio_count_silent">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_count_silent">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_count_silent</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;is_silent&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the number of times, within the specified timeframe, </span>
+<span class="sd">    when there has been some sound in the environment. If there is no specified timeframe,</span>
+<span class="sd">    the function sets a 30 min default time window. The function aggregates this number </span>
+<span class="sd">    by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of screen</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>    
+    <span class="n">df_u</span><span class="p">[</span><span class="n">audio_column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df_u</span><span class="p">[</span><span class="n">audio_column_name</span><span class="p">])</span>
+        
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_count_silent&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_count_silent&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_count_speech">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_count_speech">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_count_speech</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;is_silent&quot;</span><span class="p">,</span> <span class="n">audio_freq_name</span> <span class="o">=</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the number of times, within the specified timeframe, </span>
+<span class="sd">    when there has been some sound between 65Hz and 255Hz in the environment that could</span>
+<span class="sd">    be specified as speech. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>    
+        
+    <span class="n">df_u</span><span class="p">[</span><span class="n">audio_column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df_u</span><span class="p">[</span><span class="n">audio_column_name</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">df_s</span> <span class="o">=</span> <span class="n">df_u</span><span class="p">[</span><span class="n">df_u</span><span class="p">[</span><span class="n">audio_freq_name</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="mi">255</span><span class="p">)]</span>
+        <span class="n">df_s</span> <span class="o">=</span> <span class="n">df_s</span><span class="p">[</span><span class="n">df_s</span><span class="p">[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#check if there was a conversation. 0 is not silent, 1 is silent</span>
+        <span class="n">df_s</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">audio_column_name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_s</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_count_speech&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_count_speech&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_count_loud">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_count_loud">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_count_loud</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;decibels&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the number of times, within the specified timeframe, </span>
+<span class="sd">    when there has been some sound louder than 70dB in the environment. If there </span>
+<span class="sd">    is no specified timeframe, the function sets a 30 min default time window. </span>
+<span class="sd">    The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+        
+    <span class="n">df_u</span><span class="p">[</span><span class="n">audio_column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df_u</span><span class="p">[</span><span class="n">audio_column_name</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">df_u</span> <span class="o">=</span> <span class="n">df_u</span><span class="p">[</span><span class="n">df_u</span><span class="p">[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">70</span><span class="p">]</span> <span class="c1">#check if environment was noisy</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_count_loud&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_count_loud&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_min_freq">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_min_freq">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_min_freq</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the minimum frequency of the recorded audio snippets, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_min_freq&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_min_freq&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_max_freq">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_max_freq">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_max_freq</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the maximum frequency of the recorded audio snippets, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_max_freq&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_max_freq&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_mean_freq">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_mean_freq">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_mean_freq</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the mean frequency of the recorded audio snippets, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_mean_freq&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_mean_freq&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_median_freq">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_median_freq">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_median_freq</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the median frequency of the recorded audio snippets, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_median_freq&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_median_freq&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_std_freq">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_std_freq">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_std_freq</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the standard deviation of the frequency of the recorded audio snippets, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_std_freq&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_std_freq&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_min_db">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_min_db">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_min_db</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;decibels&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the minimum decibels of the recorded audio snippets, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_min_db&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_min_db&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_max_db">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_max_db">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_max_db</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;decibels&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the maximum decibels of the recorded audio snippets, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_max_db&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_max_db&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_mean_db">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_mean_db">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_mean_db</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;decibels&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the mean decibels of the recorded audio snippets, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_mean_db&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_mean_db&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_median_db">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_median_db">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_median_db</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;decibels&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the median decibels of the recorded audio snippets, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_median_db&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_median_db&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="audio_std_db">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_std_db">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_std_db</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">audio_column_name</span> <span class="o">=</span> <span class="s2">&quot;decibels&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the standard deviation of the decibels of the recorded audio snippets, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe, the function sets a </span>
+<span class="sd">    30 min default time window. The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_u: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_u</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_u</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df_u</span><span class="p">)[</span><span class="n">audio_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;audio_std_db&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;audio_std_db&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">[</span><span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;audio_&#39;</span><span class="p">)]</span>
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ALL_FEATURES</span><span class="p">}</span>
+
+<div class="viewcode-block" id="extract_features_audio">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.audio/#niimpy.preprocessing.audio.extract_features_audio">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_features_audio</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function computes and organizes the selected features for audio snippets </span>
+<span class="sd">    that have been recorded using Aware Framework. The function aggregates the features</span>
+<span class="sd">    by user, by time window. If no time window is specified, it will automatically aggregate</span>
+<span class="sd">    the features in 30 mins non-overlapping windows. </span>
+<span class="sd">    </span>
+<span class="sd">    The complete list of features that can be calculated are: audio_count_silent, </span>
+<span class="sd">    audio_count_speech, audio_count_loud, audio_min_freq, audio_max_freq, audio_mean_freq, </span>
+<span class="sd">    audio_median_freq, audio_std_freq, audio_min_db, audio_max_db, audio_mean_db, </span>
+<span class="sd">    audio_median_db, audio_std_db</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    features: dict, optional</span>
+<span class="sd">        Dictionary keys contain the names of the features to compute. </span>
+<span class="sd">        If none is given, all features will be computed.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    
+    <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">ALL_FEATURES</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="s2">&quot;Please input the features as a dictionary&quot;</span>
+    
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">feature</span><span class="p">,</span> <span class="n">feature_arg</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">feature</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_arg</span><span class="p">)</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">set_conserved_index</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+        <span class="n">computed_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">computed_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">computed_features</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">computed_features</span></div>
+
+            
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

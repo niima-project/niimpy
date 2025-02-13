@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.exploration.eda.countplot module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.exploration.eda.lineplot module" href="../niimpy.exploration.eda.lineplot/" />
+    <link rel="prev" title="niimpy.exploration.eda.categorical module" href="../niimpy.exploration.eda.categorical/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.exploration/">niimpy.exploration package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.exploration.eda/">niimpy.exploration.eda package</a></li>
+      <li class="breadcrumb-item active">niimpy.exploration.eda.countplot module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.exploration.eda.countplot.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.exploration.eda.countplot">
+<span id="niimpy-exploration-eda-countplot-module"></span><h1>niimpy.exploration.eda.countplot module<a class="headerlink" href="#module-niimpy.exploration.eda.countplot" title="Link to this heading"></a></h1>
+<p>Created on Mon Nov  8 14:42:18 2021</p>
+<p>&#64;author: arsii</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.countplot.barplot_">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.countplot.</span></span><span class="sig-name descname"><span class="pre">barplot_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/countplot/#barplot_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.countplot.barplot_" title="Link to this definition"></a></dt>
+<dd><p>Plot a barplot showing counts for each subjects</p>
+<p>A dataframe must have columns named ‘user’, containing the user id’s,
+and ‘values’ containing the observation counts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe containing the data</p>
+</dd>
+<dt><strong>fig_title</strong><span class="classifier">str</span></dt><dd><p>Plot title</p>
+</dd>
+<dt><strong>xlabel</strong><span class="classifier">str</span></dt><dd><p>Plot xlabel</p>
+</dd>
+<dt><strong>ylabel</strong><span class="classifier">str</span></dt><dd><p>Plot ylabel</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"></dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.countplot.boxplot_">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.countplot.</span></span><span class="sig-name descname"><span class="pre">boxplot_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'outliers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'values'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Group'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/countplot/#boxplot_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.countplot.boxplot_" title="Link to this definition"></a></dt>
+<dd><p>Plot a boxplot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe containing the data</p>
+</dd>
+<dt><strong>fig_title</strong><span class="classifier">str</span></dt><dd><p>Plot title</p>
+</dd>
+<dt><strong>points</strong><span class="classifier">str</span></dt><dd><p>If ‘all’, show all observations next to boxplots
+If ‘outliers’, show only outlying points
+The default is ‘outliers’</p>
+</dd>
+<dt><strong>y: str</strong></dt><dd><p>A dataframe column to plot</p>
+</dd>
+<dt><strong>xlabel</strong><span class="classifier">str</span></dt><dd><p>Plot xlabel</p>
+</dd>
+<dt><strong>ylabel</strong><span class="classifier">str</span></dt><dd><p>Plot ylabel</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"></dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.countplot.calculate_bins">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.countplot.</span></span><span class="sig-name descname"><span class="pre">calculate_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binning</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/countplot/#calculate_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.countplot.calculate_bins" title="Link to this definition"></a></dt>
+<dd><p>Calculate time index based bins for each observation in the dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas DataFrame</span></dt><dd></dd>
+<dt><strong>binning</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>to_string</strong><span class="classifier">bool</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>bins</strong><span class="classifier">pandas period index</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.countplot.countplot">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.countplot.</span></span><span class="sig-name descname"><span class="pre">countplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'outliers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'group'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/countplot/#countplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.countplot.countplot" title="Link to this definition"></a></dt>
+<dd><p>Create boxplot comparing groups or individual users.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">pandas DataFrame</span></dt><dd><p>A DataFrame to be visuliazed</p>
+</dd>
+<dt><strong>fig_title</strong><span class="classifier">str</span></dt><dd><p>The plot title.</p>
+</dd>
+<dt><strong>plot_type</strong><span class="classifier">str</span></dt><dd><p>If ‘count’, plot observation count per group (boxplot) or by user (barplot)
+If ‘value’, plot observation values per group (boxplot)
+The default is ‘count’</p>
+</dd>
+<dt><strong>aggregation</strong><span class="classifier">str</span></dt><dd><p>If ‘group’, plot group level summary
+If ‘user’, plot user level summary
+The default is ‘group’</p>
+</dd>
+<dt><strong>user</strong><span class="classifier">str</span></dt><dd><p>if given …  
+The default is None</p>
+</dd>
+<dt><strong>column</strong><span class="classifier">str, optional</span></dt><dd><p>if None, count number of rows.  If given, count only occurances of that column. 
+The default is None.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"></dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.countplot.get_counts">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.countplot.</span></span><span class="sig-name descname"><span class="pre">get_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/countplot/#get_counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.countplot.get_counts" title="Link to this definition"></a></dt>
+<dd><p>Calculate datapoint counts by group or by user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas DataFrame</span></dt><dd></dd>
+<dt><strong>aggregation</strong><span class="classifier">str</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>n_events</strong><span class="classifier">Pandas DataFrame</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.exploration.eda.categorical/" class="btn btn-neutral float-left" title="niimpy.exploration.eda.categorical module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.exploration.eda.lineplot/" class="btn btn-neutral float-right" title="niimpy.exploration.eda.lineplot module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

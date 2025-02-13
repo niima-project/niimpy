@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.exploration.eda.lineplot module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.exploration.eda.missingness module" href="../niimpy.exploration.eda.missingness/" />
+    <link rel="prev" title="niimpy.exploration.eda.countplot module" href="../niimpy.exploration.eda.countplot/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.exploration/">niimpy.exploration package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.exploration.eda/">niimpy.exploration.eda package</a></li>
+      <li class="breadcrumb-item active">niimpy.exploration.eda.lineplot module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.exploration.eda.lineplot.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.exploration.eda.lineplot">
+<span id="niimpy-exploration-eda-lineplot-module"></span><h1>niimpy.exploration.eda.lineplot module<a class="headerlink" href="#module-niimpy.exploration.eda.lineplot" title="Link to this heading"></a></h1>
+<p>Created on Wed Oct 27 09:53:46 2021</p>
+<p>&#64;author: arsii</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.lineplot.calculate_averages_">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.lineplot.</span></span><span class="sig-name descname"><span class="pre">calculate_averages_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/lineplot/#calculate_averages_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.lineplot.calculate_averages_" title="Link to this definition"></a></dt>
+<dd><p>calculate group averages by given timerange</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.lineplot.plot_averages_">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.lineplot.</span></span><span class="sig-name descname"><span class="pre">plot_averages_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hour'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/lineplot/#plot_averages_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.lineplot.plot_averages_" title="Link to this definition"></a></dt>
+<dd><p>Plot user group level averages by hour or by weekday.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe containing the data</p>
+</dd>
+<dt><strong>column</strong><span class="classifier">str</span></dt><dd><p>Columns to plot.</p>
+</dd>
+<dt><strong>by</strong><span class="classifier">str, optional</span></dt><dd><p>Indicator for group level averaging. The default is False.
+If ‘hour’, hourly averages per group are presented.
+If ‘weekday’, daily averages per gruop are presented.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.lineplot.plot_timeseries_">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.lineplot.</span></span><span class="sig-name descname"><span class="pre">plot_timeseries_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">users</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/lineplot/#plot_timeseries_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.lineplot.plot_timeseries_" title="Link to this definition"></a></dt>
+<dd><p>There goes the text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe containing the data</p>
+</dd>
+<dt><strong>columns</strong><span class="classifier">list or str</span></dt><dd><p>Columns to plot.</p>
+</dd>
+<dt><strong>users</strong><span class="classifier">list or str</span></dt><dd><p>Users to plot.</p>
+</dd>
+<dt><strong>title</strong><span class="classifier">str</span></dt><dd><p>Plot title.</p>
+</dd>
+<dt><strong>xlabel</strong><span class="classifier">str</span></dt><dd><p>Plot xlabel.</p>
+</dd>
+<dt><strong>ylabel</strong><span class="classifier">str</span></dt><dd><p>Plot ylabel.</p>
+</dd>
+<dt><strong>resample</strong><span class="classifier">str, optional</span></dt><dd><p>Data resampling frequency. The default is False.
+For details: <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html</a></p>
+</dd>
+<dt><strong>interpolate</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, time series will be interpolated using splines. The default is False.</p>
+</dd>
+<dt><strong>window</strong><span class="classifier">int, optional</span></dt><dd><p>Rolling window smoothing window size. The default is False.</p>
+</dd>
+<dt><strong>reset_index</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, dataframe index will be resetted. The default is False.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.lineplot.resample_data_">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.lineplot.</span></span><span class="sig-name descname"><span class="pre">resample_data_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_len</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/lineplot/#resample_data_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.lineplot.resample_data_" title="Link to this definition"></a></dt>
+<dd><p>resample dataframe for plotting</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.lineplot.timeplot">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.lineplot.</span></span><span class="sig-name descname"><span class="pre">timeplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">users</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/lineplot/#timeplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.lineplot.timeplot" title="Link to this definition"></a></dt>
+<dd><p>Plot a time series plot. Plot selected users and columns or group level
+averages, aggregated by hour or weekday.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe containing the data</p>
+</dd>
+<dt><strong>users</strong><span class="classifier">list or str</span></dt><dd><p>Users to plot.</p>
+</dd>
+<dt><strong>columns</strong><span class="classifier">list or str</span></dt><dd><p>Columns to plot.</p>
+</dd>
+<dt><strong>title</strong><span class="classifier">str</span></dt><dd><p>Plot title.</p>
+</dd>
+<dt><strong>xlabel</strong><span class="classifier">str</span></dt><dd><p>Plot xlabel.</p>
+</dd>
+<dt><strong>ylabel</strong><span class="classifier">str</span></dt><dd><p>Plot ylabel.</p>
+</dd>
+<dt><strong>resample</strong><span class="classifier">str, optional</span></dt><dd><p>Data resampling frequency. The default is False.
+For details: <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.resample.html</a></p>
+</dd>
+<dt><strong>interpolate</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, time series will be interpolated using splines. The default is False.</p>
+</dd>
+<dt><strong>window</strong><span class="classifier">int, optional</span></dt><dd><p>Rolling window smoothing window size. The default is False.</p>
+</dd>
+<dt><strong>reset_index</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, dataframe index will be resetted. The default is False.</p>
+</dd>
+<dt><strong>by</strong><span class="classifier">str, optional</span></dt><dd><p>Indicator for group level averaging. The default is False.
+If ‘hour’, hourly averages per group are presented.
+If ‘weekday’, daily averages per gruop are presented.</p>
+</dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>——-</strong></dt><dd></dd>
+<dt><strong>None.</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.exploration.eda.countplot/" class="btn btn-neutral float-left" title="niimpy.exploration.eda.countplot module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.exploration.eda.missingness/" class="btn btn-neutral float-right" title="niimpy.exploration.eda.missingness module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.exploration.eda.countplot &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.exploration.eda.countplot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.exploration.eda.countplot</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Mon Nov  8 14:42:18 2021</span>
+
+<span class="sd">@author: arsii</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+
+<div class="viewcode-block" id="get_counts">
+<a class="viewcode-back" href="../../../../../api/niimpy.exploration.eda.countplot/#niimpy.exploration.eda.countplot.get_counts">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_counts</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">aggregation</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate datapoint counts by group or by user</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    </span>
+<span class="sd">    df : Pandas DataFrame</span>
+<span class="sd">    </span>
+<span class="sd">    aggregation : str</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    </span>
+<span class="sd">    n_events : Pandas DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas dataframe.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aggregation</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;aggregation is not a string&quot;</span>
+    
+    <span class="k">if</span> <span class="n">aggregation</span> <span class="o">==</span> <span class="s1">&#39;group&#39;</span><span class="p">:</span>
+            <span class="n">n_events</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;group&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+            <span class="n">n_events</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span>
+            <span class="n">n_events</span> <span class="o">=</span> <span class="n">n_events</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+            
+    <span class="k">elif</span> <span class="n">aggregation</span> <span class="o">==</span> <span class="s1">&#39;user&#39;</span><span class="p">:</span>
+            <span class="n">n_events</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;user&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+            <span class="n">n_events</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span>
+            <span class="n">n_events</span> <span class="o">=</span> <span class="n">n_events</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">n_events</span></div>
+
+
+<div class="viewcode-block" id="calculate_bins">
+<a class="viewcode-back" href="../../../../../api/niimpy.exploration.eda.countplot/#niimpy.exploration.eda.countplot.calculate_bins">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_bins</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">binning</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate time index based bins for each observation in the dataframe.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : Pandas DataFrame</span>
+<span class="sd">    </span>
+<span class="sd">    binning : str</span>
+<span class="sd">    </span>
+<span class="sd">    to_string : bool</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    </span>
+<span class="sd">    bins : pandas period index</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+    
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas dataframe.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">binning</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;binning is not a string&quot;</span>
+    <span class="c1">#assert isinstance(to_string,bool), &quot;to_string is not a bool&quot;</span>
+    
+    <span class="n">bins</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="n">binning</span><span class="p">)</span>
+    <span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">bins</span></div>
+
+    
+
+
+<div class="viewcode-block" id="boxplot_">
+<a class="viewcode-back" href="../../../../../api/niimpy.exploration.eda.countplot/#niimpy.exploration.eda.countplot.boxplot_">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">boxplot_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">fig_title</span><span class="p">,</span> <span class="n">points</span> <span class="o">=</span> <span class="s1">&#39;outliers&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;values&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Group&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">,</span><span class="n">binning</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot a boxplot</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : Pandas Dataframe</span>
+<span class="sd">        Dataframe containing the data</span>
+<span class="sd">        </span>
+<span class="sd">    fig_title : str</span>
+<span class="sd">        Plot title</span>
+<span class="sd">        </span>
+<span class="sd">    points : str</span>
+<span class="sd">        If &#39;all&#39;, show all observations next to boxplots</span>
+<span class="sd">        If &#39;outliers&#39;, show only outlying points</span>
+<span class="sd">        The default is &#39;outliers&#39; </span>
+<span class="sd">        </span>
+<span class="sd">    y: str</span>
+<span class="sd">        A dataframe column to plot</span>
+<span class="sd">        </span>
+<span class="sd">    xlabel : str</span>
+<span class="sd">        Plot xlabel</span>
+<span class="sd">        </span>
+<span class="sd">    ylabel : str</span>
+<span class="sd">        Plot ylabel </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas dataframe.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">points</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;points is not a string&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;y is not a string&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fig_title</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;Title is not a string.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;Xlabel is not a string.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;Ylabel is not a string.&quot;</span>
+    <span class="k">assert</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">binning</span><span class="p">,</span><span class="nb">str</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">binning</span><span class="p">,</span><span class="nb">bool</span><span class="p">)),</span> <span class="s2">&quot;binning.&quot;</span>
+
+    <span class="c1">#TODO! check if this is necessary!</span>
+    <span class="c1">#df[y] = df[y].astype(np.float64)</span>
+        
+    <span class="k">if</span> <span class="n">binning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_bins</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">binning</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                     <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;bin&quot;</span><span class="p">,</span> 
+                     <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span>
+                     <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;group&quot;</span><span class="p">,</span>
+                     <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                     <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;group&quot;</span><span class="p">,</span> 
+                     <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span>
+                     <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;group&quot;</span><span class="p">,</span>
+                     <span class="n">points</span> <span class="o">=</span> <span class="n">points</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">quartilemethod</span><span class="o">=</span><span class="s1">&#39;inclusive&#39;</span><span class="p">)</span> <span class="c1"># or &quot;inclusive&quot;, or &quot;linear&quot; by default</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="n">fig_title</span><span class="p">,</span>
+                      <span class="n">xaxis_title</span> <span class="o">=</span> <span class="n">xlabel</span><span class="p">,</span>
+                      <span class="n">yaxis_title</span> <span class="o">=</span> <span class="n">ylabel</span><span class="p">,</span>
+                      <span class="n">autotypenumbers</span><span class="o">=</span><span class="s1">&#39;convert types&#39;</span><span class="p">)</span> 
+    
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+<div class="viewcode-block" id="barplot_">
+<a class="viewcode-back" href="../../../../../api/niimpy.exploration.eda.countplot/#niimpy.exploration.eda.countplot.barplot_">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">barplot_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">fig_title</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot a barplot showing counts for each subjects</span>
+<span class="sd">    </span>
+<span class="sd">    A dataframe must have columns named &#39;user&#39;, containing the user id&#39;s,</span>
+<span class="sd">    and &#39;values&#39; containing the observation counts.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : Pandas Dataframe</span>
+<span class="sd">        Dataframe containing the data</span>
+<span class="sd">        </span>
+<span class="sd">    fig_title : str</span>
+<span class="sd">        Plot title</span>
+<span class="sd">        </span>
+<span class="sd">    xlabel : str</span>
+<span class="sd">        Plot xlabel</span>
+<span class="sd">        </span>
+<span class="sd">    ylabel : str</span>
+<span class="sd">        Plot ylabel </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas dataframe.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fig_title</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;Title is not a string.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;Xlabel is not a string.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;Ylabel is not a string.&quot;</span>
+    
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> 
+                 <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+                 <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;values&quot;</span><span class="p">,</span>
+                 <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;user&quot;</span><span class="p">)</span>
+    
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="n">fig_title</span><span class="p">,</span>
+                      <span class="n">xaxis_title</span> <span class="o">=</span> <span class="n">xlabel</span><span class="p">,</span>
+                      <span class="n">yaxis_title</span> <span class="o">=</span> <span class="n">ylabel</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">fig</span> </div>
+
+
+<div class="viewcode-block" id="countplot">
+<a class="viewcode-back" href="../../../../../api/niimpy.exploration.eda.countplot/#niimpy.exploration.eda.countplot.countplot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">countplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">fig_title</span><span class="p">,</span> <span class="n">plot_type</span> <span class="o">=</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="n">points</span> <span class="o">=</span> <span class="s1">&#39;outliers&#39;</span><span class="p">,</span><span class="n">aggregation</span> <span class="o">=</span> <span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="n">user</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">binning</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create boxplot comparing groups or individual users.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas DataFrame</span>
+<span class="sd">        A DataFrame to be visuliazed</span>
+<span class="sd">        </span>
+<span class="sd">    fig_title : str</span>
+<span class="sd">        The plot title.</span>
+<span class="sd">    </span>
+<span class="sd">    plot_type : str</span>
+<span class="sd">        If &#39;count&#39;, plot observation count per group (boxplot) or by user (barplot)</span>
+<span class="sd">        If &#39;value&#39;, plot observation values per group (boxplot)</span>
+<span class="sd">        The default is &#39;count&#39;</span>
+<span class="sd">        </span>
+<span class="sd">    aggregation : str</span>
+<span class="sd">        If &#39;group&#39;, plot group level summary</span>
+<span class="sd">        If &#39;user&#39;, plot user level summary</span>
+<span class="sd">        The default is &#39;group&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    user : str</span>
+<span class="sd">        if given ...  </span>
+<span class="sd">        The default is None</span>
+<span class="sd">    column : str, optional </span>
+<span class="sd">        if None, count number of rows.  If given, count only occurances of that column. </span>
+<span class="sd">        The default is None.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas dataframe.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fig_title</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;Title is not a string.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plot_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;plot_type is not a string.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">points</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;points is not a string&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aggregation</span><span class="p">,</span><span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;aggregation is not a string&quot;</span>
+    <span class="k">assert</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">user</span><span class="p">,</span><span class="nb">str</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)),</span> <span class="s2">&quot;user is not a string or None type.&quot;</span>
+    <span class="k">assert</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span><span class="nb">str</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)),</span> <span class="s2">&quot;column in not a string or None type.&quot;</span>
+    
+    <span class="c1"># Plot counts</span>
+    <span class="k">if</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">aggregation</span> <span class="o">==</span> <span class="s1">&#39;group&#39;</span><span class="p">:</span>
+                       
+            <span class="n">n_events</span> <span class="o">=</span> <span class="n">get_counts</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">aggregation</span><span class="p">)</span>
+                      
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">boxplot_</span><span class="p">(</span><span class="n">n_events</span><span class="p">,</span>
+                               <span class="n">fig_title</span><span class="p">,</span>
+                               <span class="n">points</span><span class="p">,</span>
+                               <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;values&#39;</span><span class="p">,</span>
+                               <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Group&quot;</span><span class="p">,</span>
+                               <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">,</span>
+                               <span class="n">binning</span><span class="o">=</span><span class="n">binning</span>
+                               <span class="p">)</span>
+        
+        <span class="k">elif</span> <span class="n">aggregation</span> <span class="o">==</span> <span class="s1">&#39;user&#39;</span><span class="p">:</span>
+                       
+            <span class="n">n_events</span> <span class="o">=</span> <span class="n">get_counts</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">aggregation</span><span class="p">)</span>
+            
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">barplot_</span><span class="p">(</span><span class="n">n_events</span><span class="p">,</span> 
+                               <span class="n">fig_title</span><span class="p">,</span> 
+                               <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;User&quot;</span><span class="p">,</span>
+                               <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+        
+    <span class="c1"># Plot values</span>
+    <span class="k">elif</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">aggregation</span> <span class="o">==</span> <span class="s1">&#39;group&#39;</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">boxplot_</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                               <span class="n">fig_title</span><span class="p">,</span>
+                               <span class="n">points</span><span class="p">,</span>
+                               <span class="n">y</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
+                               <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Group&quot;</span><span class="p">,</span>
+                               <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span>
+                               <span class="n">binning</span><span class="o">=</span><span class="n">binning</span>
+                               <span class="p">)</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+    
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

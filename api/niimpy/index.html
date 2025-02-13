@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy package &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.analysis package" href="../niimpy.analysis/" />
+    <link rel="prev" title="niimpy API docs" href="../modules/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">niimpy package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+      <li class="breadcrumb-item active">niimpy package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="niimpy-package">
+<h1>niimpy package<a class="headerlink" href="#niimpy-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.analysis/#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.analysis.rhythms/">niimpy.analysis.rhythms module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis.rhythms/#niimpy.analysis.rhythms.compute_rhythms"><code class="docutils literal notranslate"><span class="pre">compute_rhythms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis.rhythms/#niimpy.analysis.rhythms.rhythm"><code class="docutils literal notranslate"><span class="pre">rhythm()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.analysis/#module-niimpy.analysis">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.config/#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.config.config/">niimpy.config.config module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.config/#module-niimpy.config">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration/#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.exploration.eda/">niimpy.exploration.eda package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda/#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda/#module-niimpy.exploration.eda">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration/#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.exploration.missingness/">niimpy.exploration.missingness module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.missingness/#niimpy.exploration.missingness.missing_data_format"><code class="docutils literal notranslate"><span class="pre">missing_data_format()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.missingness/#niimpy.exploration.missingness.missing_noise"><code class="docutils literal notranslate"><span class="pre">missing_noise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.missingness/#niimpy.exploration.missingness.screen_missing_data"><code class="docutils literal notranslate"><span class="pre">screen_missing_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.exploration.setup_dataframe/">niimpy.exploration.setup_dataframe module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_categorical_dataframe"><code class="docutils literal notranslate"><span class="pre">create_categorical_dataframe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_dataframe"><code class="docutils literal notranslate"><span class="pre">create_dataframe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_missing_dataframe"><code class="docutils literal notranslate"><span class="pre">create_missing_dataframe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_timeindex_dataframe"><code class="docutils literal notranslate"><span class="pre">create_timeindex_dataframe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration/#module-niimpy.exploration">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.preprocessing/#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.application/">niimpy.preprocessing.application module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.application/#niimpy.preprocessing.application.app_count"><code class="docutils literal notranslate"><span class="pre">app_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.application/#niimpy.preprocessing.application.app_duration"><code class="docutils literal notranslate"><span class="pre">app_duration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.application/#niimpy.preprocessing.application.classify_app"><code class="docutils literal notranslate"><span class="pre">classify_app()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.application/#niimpy.preprocessing.application.extract_features_app"><code class="docutils literal notranslate"><span class="pre">extract_features_app()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.audio/">niimpy.preprocessing.audio module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_count_loud"><code class="docutils literal notranslate"><span class="pre">audio_count_loud()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_count_silent"><code class="docutils literal notranslate"><span class="pre">audio_count_silent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_count_speech"><code class="docutils literal notranslate"><span class="pre">audio_count_speech()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_max_db"><code class="docutils literal notranslate"><span class="pre">audio_max_db()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_max_freq"><code class="docutils literal notranslate"><span class="pre">audio_max_freq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_mean_db"><code class="docutils literal notranslate"><span class="pre">audio_mean_db()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_mean_freq"><code class="docutils literal notranslate"><span class="pre">audio_mean_freq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_median_db"><code class="docutils literal notranslate"><span class="pre">audio_median_db()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_median_freq"><code class="docutils literal notranslate"><span class="pre">audio_median_freq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_min_db"><code class="docutils literal notranslate"><span class="pre">audio_min_db()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_min_freq"><code class="docutils literal notranslate"><span class="pre">audio_min_freq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_std_db"><code class="docutils literal notranslate"><span class="pre">audio_std_db()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.audio_std_freq"><code class="docutils literal notranslate"><span class="pre">audio_std_freq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.audio/#niimpy.preprocessing.audio.extract_features_audio"><code class="docutils literal notranslate"><span class="pre">extract_features_audio()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.battery/">niimpy.preprocessing.battery module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_charge_discharge"><code class="docutils literal notranslate"><span class="pre">battery_charge_discharge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_discharge"><code class="docutils literal notranslate"><span class="pre">battery_discharge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_gaps"><code class="docutils literal notranslate"><span class="pre">battery_gaps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_mean_level"><code class="docutils literal notranslate"><span class="pre">battery_mean_level()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_median_level"><code class="docutils literal notranslate"><span class="pre">battery_median_level()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_occurrences"><code class="docutils literal notranslate"><span class="pre">battery_occurrences()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_shutdown_time"><code class="docutils literal notranslate"><span class="pre">battery_shutdown_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_std_level"><code class="docutils literal notranslate"><span class="pre">battery_std_level()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.extract_features_battery"><code class="docutils literal notranslate"><span class="pre">extract_features_battery()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.find_battery_gaps"><code class="docutils literal notranslate"><span class="pre">find_battery_gaps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.find_non_battery_gaps"><code class="docutils literal notranslate"><span class="pre">find_non_battery_gaps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.find_real_gaps"><code class="docutils literal notranslate"><span class="pre">find_real_gaps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.format_battery_data"><code class="docutils literal notranslate"><span class="pre">format_battery_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.battery/#niimpy.preprocessing.battery.shutdown_info"><code class="docutils literal notranslate"><span class="pre">shutdown_info()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.communication/">niimpy.preprocessing.communication module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_count"><code class="docutils literal notranslate"><span class="pre">call_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_distribution"><code class="docutils literal notranslate"><span class="pre">call_distribution()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_duration_mean"><code class="docutils literal notranslate"><span class="pre">call_duration_mean()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_duration_median"><code class="docutils literal notranslate"><span class="pre">call_duration_median()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_duration_std"><code class="docutils literal notranslate"><span class="pre">call_duration_std()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_duration_total"><code class="docutils literal notranslate"><span class="pre">call_duration_total()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_outgoing_incoming_ratio"><code class="docutils literal notranslate"><span class="pre">call_outgoing_incoming_ratio()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.extract_features_comms"><code class="docutils literal notranslate"><span class="pre">extract_features_comms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.message_count"><code class="docutils literal notranslate"><span class="pre">message_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.message_distribution"><code class="docutils literal notranslate"><span class="pre">message_distribution()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.communication/#niimpy.preprocessing.communication.message_outgoing_incoming_ratio"><code class="docutils literal notranslate"><span class="pre">message_outgoing_incoming_ratio()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.filter/">niimpy.preprocessing.filter module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.filter/#niimpy.preprocessing.filter.filter_dataframe"><code class="docutils literal notranslate"><span class="pre">filter_dataframe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.location/">niimpy.preprocessing.location module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.cluster_locations"><code class="docutils literal notranslate"><span class="pre">cluster_locations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.compute_nbin_maxdist_home"><code class="docutils literal notranslate"><span class="pre">compute_nbin_maxdist_home()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.distance_matrix"><code class="docutils literal notranslate"><span class="pre">distance_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.extract_features_location"><code class="docutils literal notranslate"><span class="pre">extract_features_location()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.filter_location"><code class="docutils literal notranslate"><span class="pre">filter_location()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.find_home"><code class="docutils literal notranslate"><span class="pre">find_home()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.get_speeds_totaldist"><code class="docutils literal notranslate"><span class="pre">get_speeds_totaldist()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.location_distance_features"><code class="docutils literal notranslate"><span class="pre">location_distance_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.location_local_time"><code class="docutils literal notranslate"><span class="pre">location_local_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.location_significant_place_features"><code class="docutils literal notranslate"><span class="pre">location_significant_place_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.location/#niimpy.preprocessing.location.number_of_significant_places"><code class="docutils literal notranslate"><span class="pre">number_of_significant_places()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.sampledata/">niimpy.preprocessing.sampledata module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.screen/">niimpy.preprocessing.screen module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.duration_util_screen"><code class="docutils literal notranslate"><span class="pre">duration_util_screen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.event_classification_screen"><code class="docutils literal notranslate"><span class="pre">event_classification_screen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.extract_features_screen"><code class="docutils literal notranslate"><span class="pre">extract_features_screen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_count"><code class="docutils literal notranslate"><span class="pre">screen_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration"><code class="docutils literal notranslate"><span class="pre">screen_duration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration_max"><code class="docutils literal notranslate"><span class="pre">screen_duration_max()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration_mean"><code class="docutils literal notranslate"><span class="pre">screen_duration_mean()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration_median"><code class="docutils literal notranslate"><span class="pre">screen_duration_median()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration_min"><code class="docutils literal notranslate"><span class="pre">screen_duration_min()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_duration_std"><code class="docutils literal notranslate"><span class="pre">screen_duration_std()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_first_unlock"><code class="docutils literal notranslate"><span class="pre">screen_first_unlock()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.screen_off"><code class="docutils literal notranslate"><span class="pre">screen_off()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.screen/#niimpy.preprocessing.screen.util_screen"><code class="docutils literal notranslate"><span class="pre">util_screen()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.survey/">niimpy.preprocessing.survey module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.survey/#niimpy.preprocessing.survey.clean_survey_column_names"><code class="docutils literal notranslate"><span class="pre">clean_survey_column_names()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.survey/#niimpy.preprocessing.survey.convert_survey_to_numerical_answer"><code class="docutils literal notranslate"><span class="pre">convert_survey_to_numerical_answer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.survey/#niimpy.preprocessing.survey.extract_features_survey"><code class="docutils literal notranslate"><span class="pre">extract_features_survey()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.survey/#niimpy.preprocessing.survey.sum_survey_scores"><code class="docutils literal notranslate"><span class="pre">sum_survey_scores()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.survey/#niimpy.preprocessing.survey.survey_statistic"><code class="docutils literal notranslate"><span class="pre">survey_statistic()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.tracker/">niimpy.preprocessing.tracker module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.tracker/#niimpy.preprocessing.tracker.extract_features_tracker"><code class="docutils literal notranslate"><span class="pre">extract_features_tracker()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.tracker/#niimpy.preprocessing.tracker.step_summary"><code class="docutils literal notranslate"><span class="pre">step_summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.tracker/#niimpy.preprocessing.tracker.tracker_step_distribution"><code class="docutils literal notranslate"><span class="pre">tracker_step_distribution()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.preprocessing.util/">niimpy.preprocessing.util module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.aggregate"><code class="docutils literal notranslate"><span class="pre">aggregate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.date_range"><code class="docutils literal notranslate"><span class="pre">date_range()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.df_normalize"><code class="docutils literal notranslate"><span class="pre">df_normalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.ensure_dataframe"><code class="docutils literal notranslate"><span class="pre">ensure_dataframe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.group_data"><code class="docutils literal notranslate"><span class="pre">group_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.identifier_columns"><code class="docutils literal notranslate"><span class="pre">identifier_columns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.install_extensions"><code class="docutils literal notranslate"><span class="pre">install_extensions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.occurrence"><code class="docutils literal notranslate"><span class="pre">occurrence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.read_preprocess"><code class="docutils literal notranslate"><span class="pre">read_preprocess()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.reset_groups"><code class="docutils literal notranslate"><span class="pre">reset_groups()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.select_columns"><code class="docutils literal notranslate"><span class="pre">select_columns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.set_conserved_index"><code class="docutils literal notranslate"><span class="pre">set_conserved_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.set_encoding"><code class="docutils literal notranslate"><span class="pre">set_encoding()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.set_tz"><code class="docutils literal notranslate"><span class="pre">set_tz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.tmp_timezone"><code class="docutils literal notranslate"><span class="pre">tmp_timezone()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.to_datetime"><code class="docutils literal notranslate"><span class="pre">to_datetime()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing.util/#niimpy.preprocessing.util.uninstall_extensions"><code class="docutils literal notranslate"><span class="pre">uninstall_extensions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.preprocessing/#module-niimpy.preprocessing">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.reading/#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.reading.database/">niimpy.reading.database module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.database/#database-format">Database format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.database/#quick-usage">Quick usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.database/#see-also">See also</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.database/#niimpy.reading.database.ALL"><code class="docutils literal notranslate"><span class="pre">ALL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.database/#niimpy.reading.database.Data1"><code class="docutils literal notranslate"><span class="pre">Data1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.database/#niimpy.reading.database.open"><code class="docutils literal notranslate"><span class="pre">open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.database/#niimpy.reading.database.sqlite3_stdev"><code class="docutils literal notranslate"><span class="pre">sqlite3_stdev</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.reading.mhealth/">niimpy.reading.mhealth module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.mhealth/#niimpy.reading.mhealth.duration_to_timedelta"><code class="docutils literal notranslate"><span class="pre">duration_to_timedelta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.mhealth/#niimpy.reading.mhealth.format_part_of_day"><code class="docutils literal notranslate"><span class="pre">format_part_of_day()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.mhealth/#niimpy.reading.mhealth.format_time_interval"><code class="docutils literal notranslate"><span class="pre">format_time_interval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.mhealth/#niimpy.reading.mhealth.geolocation"><code class="docutils literal notranslate"><span class="pre">geolocation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.mhealth/#niimpy.reading.mhealth.geolocation_from_file"><code class="docutils literal notranslate"><span class="pre">geolocation_from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.mhealth/#niimpy.reading.mhealth.heart_rate"><code class="docutils literal notranslate"><span class="pre">heart_rate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.mhealth/#niimpy.reading.mhealth.heart_rate_from_file"><code class="docutils literal notranslate"><span class="pre">heart_rate_from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.mhealth/#niimpy.reading.mhealth.total_sleep_time"><code class="docutils literal notranslate"><span class="pre">total_sleep_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading.mhealth/#niimpy.reading.mhealth.total_sleep_time_from_file"><code class="docutils literal notranslate"><span class="pre">total_sleep_time_from_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.reading.read/">niimpy.reading.read module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.reading/#module-niimpy.reading">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-niimpy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-niimpy" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../modules/" class="btn btn-neutral float-left" title="niimpy API docs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.analysis/" class="btn btn-neutral float-right" title="niimpy.analysis package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

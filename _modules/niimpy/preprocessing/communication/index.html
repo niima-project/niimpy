@@ -1,0 +1,709 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.communication &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.communication</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.preprocessing.communication</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
+
+<span class="n">group_by_columns</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_distribution</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">time_interval</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">bin_interval</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculates the distribution data entries over a time interval.</span>
+
+<span class="sd">    If a col_name is provided, data is filtered to remove any NaN values in that</span>
+<span class="sd">    column. Otherwise all rows are considered.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+
+<span class="sd">    col_name: str</span>
+<span class="sd">        If provided, filter out NaN values in this column.</span>
+<span class="sd">        If no column name is provided, all rows are considered valid.</span>
+
+<span class="sd">    time_interval: str</span>
+<span class="sd">        Time interval to calculate the distribution over.</span>
+
+<span class="sd">    bin_interval: str</span>
+<span class="sd">        The size of a single bin in the distribution.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        DataFrame containing a distribution column.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    <span class="k">assert</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">bin_interval</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">time_interval</span><span class="p">),</span> <span class="s2">&quot;bin interval must be smaller than time interval&quot;</span>
+
+    <span class="k">if</span> <span class="n">col_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    
+    <span class="n">bins</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">bin_interval</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+    <span class="n">sums</span> <span class="o">=</span> <span class="n">bins</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time_interval</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">bins</span><span class="p">,</span> <span class="n">sums</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bin&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Fill in missing time intervals</span>
+    <span class="n">complete_time_range</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">end</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">freq</span><span class="o">=</span><span class="n">bin_interval</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">complete_time_range</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;bin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;bin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;distribution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;bin&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bin&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+
+
+<div class="viewcode-block" id="call_duration_total">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_duration_total">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">call_duration_total</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">communication_column_name</span> <span class="o">=</span> <span class="s2">&quot;call_duration&quot;</span><span class="p">,</span> <span class="n">call_type_column</span> <span class="o">=</span> <span class="s2">&quot;call_type&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the total duration of each call type, within the </span>
+<span class="sd">    specified timeframe. The call types are incoming, outgoing, and missed. If </span>
+<span class="sd">    there is no specified timeframe, the function sets a 30 min default time </span>
+<span class="sd">    window. The function aggregates this number by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of features.</span>
+<span class="sd">        Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="n">communication_column_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">call_type_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    
+    <span class="n">df</span><span class="p">[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">communication_column_name</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">outgoing</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;outgoing&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">outgoing</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;outgoing_duration_total&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">incoming</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;incoming&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">incoming</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;incoming_duration_total&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">missed</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;missed&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">missed</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;missed_duration_total&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">outgoing</span><span class="p">,</span> <span class="n">incoming</span><span class="p">,</span> <span class="n">missed</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;outgoing_duration_total&quot;</span><span class="p">,</span> <span class="s2">&quot;incoming_duration_total&quot;</span><span class="p">,</span> <span class="s2">&quot;missed_duration_total&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+    
+
+<div class="viewcode-block" id="call_duration_mean">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_duration_mean">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">call_duration_mean</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">communication_column_name</span> <span class="o">=</span> <span class="s2">&quot;call_duration&quot;</span><span class="p">,</span> <span class="n">call_type_column</span> <span class="o">=</span> <span class="s2">&quot;call_type&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the average duration of each call type, within the </span>
+<span class="sd">    specified timeframe. The call types are incoming, outgoing, and missed. If </span>
+<span class="sd">    there is no specified timeframe, the function sets a 30 min default time </span>
+<span class="sd">    window. The function aggregates this number by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of features.</span>
+<span class="sd">        Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="k">if</span> <span class="n">communication_column_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">call_type_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        
+    <span class="n">df</span><span class="p">[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">communication_column_name</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">outgoing</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;outgoing&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">outgoing</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;outgoing_duration_mean&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">incoming</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;incoming&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">incoming</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;incoming_duration_mean&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">missed</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;missed&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">missed</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;missed_duration_mean&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">outgoing</span><span class="p">,</span> <span class="n">incoming</span><span class="p">,</span> <span class="n">missed</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;outgoing_duration_mean&quot;</span><span class="p">,</span> <span class="s2">&quot;incoming_duration_mean&quot;</span><span class="p">,</span> <span class="s2">&quot;missed_duration_mean&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="call_duration_median">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_duration_median">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">call_duration_median</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">communication_column_name</span> <span class="o">=</span> <span class="s2">&quot;call_duration&quot;</span><span class="p">,</span> <span class="n">call_type_column</span> <span class="o">=</span> <span class="s2">&quot;call_type&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the median duration of each call type, within the </span>
+<span class="sd">    specified timeframe. The call types are incoming, outgoing, and missed. If </span>
+<span class="sd">    there is no specified timeframe, the function sets a 30 min default time </span>
+<span class="sd">    window. The function aggregates this number by user, by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of features.</span>
+<span class="sd">        Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="n">communication_column_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">call_type_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        
+    <span class="n">df</span><span class="p">[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">communication_column_name</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">outgoing</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;outgoing&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+        <span class="n">outgoing</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;outgoing_duration_median&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">incoming</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;incoming&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+        <span class="n">incoming</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;incoming_duration_median&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">missed</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;missed&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+        <span class="n">missed</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;missed_duration_median&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">outgoing</span><span class="p">,</span> <span class="n">incoming</span><span class="p">,</span> <span class="n">missed</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;outgoing_duration_median&quot;</span><span class="p">,</span> <span class="s2">&quot;incoming_duration_median&quot;</span><span class="p">,</span> <span class="s2">&quot;missed_duration_median&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="call_duration_std">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_duration_std">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">call_duration_std</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">communication_column_name</span> <span class="o">=</span> <span class="s2">&quot;call_duration&quot;</span><span class="p">,</span> <span class="n">call_type_column</span> <span class="o">=</span> <span class="s2">&quot;call_type&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the standard deviation of the duration of each </span>
+<span class="sd">    call type, within the specified timeframe. The call types are incoming, </span>
+<span class="sd">    outgoing, and missed. If there is no specified timeframe, the function sets </span>
+<span class="sd">    a 30 min default time window. The function aggregates this number by user, </span>
+<span class="sd">    by timewindow. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of features.</span>
+<span class="sd">        Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="n">communication_column_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">call_type_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        
+    <span class="n">df</span><span class="p">[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">communication_column_name</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">outgoing</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;outgoing&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">outgoing</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;outgoing_duration_std&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">incoming</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;incoming&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">incoming</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;incoming_duration_std&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">missed</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;missed&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">missed</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;missed_duration_std&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">outgoing</span><span class="p">,</span> <span class="n">incoming</span><span class="p">,</span> <span class="n">missed</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;outgoing_duration_std&quot;</span><span class="p">,</span> <span class="s2">&quot;incoming_duration_std&quot;</span><span class="p">,</span> <span class="s2">&quot;missed_duration_std&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="call_count">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_count">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">call_count</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">communication_column_name</span> <span class="o">=</span> <span class="s2">&quot;call_duration&quot;</span><span class="p">,</span> <span class="n">call_type_column</span> <span class="o">=</span> <span class="s2">&quot;call_type&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the number of times, within the specified timeframe, </span>
+<span class="sd">    when a call has been received, missed, or initiated. If there is no specified </span>
+<span class="sd">    timeframe, the function sets a 30 min default time window. The function </span>
+<span class="sd">    aggregates this number by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of features.</span>
+<span class="sd">        Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="n">communication_column_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">call_type_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+            
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">outgoing</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;outgoing&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">outgoing</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;outgoing_count&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">incoming</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;incoming&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">incoming</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;incoming_count&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">missed</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">call_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;missed&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">missed</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;missed_count&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">outgoing</span><span class="p">,</span> <span class="n">incoming</span><span class="p">,</span> <span class="n">missed</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;outgoing_count&quot;</span><span class="p">,</span> <span class="s2">&quot;incoming_count&quot;</span><span class="p">,</span> <span class="s2">&quot;missed_count&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="call_outgoing_incoming_ratio">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_outgoing_incoming_ratio">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">call_outgoing_incoming_ratio</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">communication_column_name</span> <span class="o">=</span> <span class="s2">&quot;call_type&quot;</span><span class="p">,</span> <span class="n">call_type_column</span> <span class="o">=</span> <span class="s2">&quot;call_type&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the ratio of outgoing calls over incoming calls, </span>
+<span class="sd">    within the specified timeframe. If there is no specified timeframe,</span>
+<span class="sd">    the function sets a 30 min default time window. The function aggregates this number </span>
+<span class="sd">    by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of features.</span>
+<span class="sd">        Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="n">communication_column_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">call_type_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">call_count</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">communication_column_name</span> <span class="o">=</span> <span class="n">communication_column_name</span><span class="p">,</span> <span class="n">call_type_column</span> <span class="o">=</span> <span class="n">call_type_column</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="n">resample_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">group_by_columns</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)),</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;outgoing_incoming_ratio&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;outgoing_count&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">df2</span><span class="p">[</span><span class="s2">&quot;incoming_count&quot;</span><span class="p">]</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;outgoing_incoming_ratio&quot;</span><span class="p">]</span>
+    <span class="n">df2</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;outgoing_incoming_ratio&#39;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;outgoing_incoming_ratio&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="call_distribution">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.call_distribution">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">call_distribution</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col_name</span> <span class="o">=</span> <span class="s2">&quot;call_type&quot;</span><span class="p">,</span> <span class="n">time_interval</span><span class="o">=</span><span class="s2">&quot;1d&quot;</span><span class="p">,</span> <span class="n">bin_interval</span><span class="o">=</span><span class="s2">&quot;1h&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculates the distribution of calls sent and received over a time</span>
+<span class="sd">    interval. The function first aggregates the number of calls over a</span>
+<span class="sd">    shorter time interval, the bins, and then calculates the distribution of</span>
+<span class="sd">    the message count over a longer interval, the time window.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of features.</span>
+<span class="sd">        Keys can be column names, other dictionaries, etc.</span>
+
+<span class="sd">        This function accepts col_name (default &quot;call_type&quot;), a time interval</span>
+<span class="sd">        (default 1d) and a bin interval (default 1h).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    <span class="k">if</span> <span class="n">col_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_distribution</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">bin_interval</span><span class="p">),</span>
+        <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;distribution&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="message_count">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.message_count">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">message_count</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">communication_column_name</span> <span class="o">=</span> <span class="s2">&quot;message_type&quot;</span><span class="p">,</span> <span class="n">message_type_column</span> <span class="o">=</span> <span class="s2">&quot;message_type&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the number of times, within the specified timeframe, </span>
+<span class="sd">    when an SMS has been sent/received. If there is no specified timeframe,</span>
+<span class="sd">    the function sets a 30 min default time window. The function aggregates this number </span>
+<span class="sd">    by user, by timewindow.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of features.</span>
+<span class="sd">        Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about </span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="n">communication_column_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">message_type_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">outgoing</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">message_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;outgoing&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">outgoing</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;outgoing_count&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">incoming</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">message_type_column</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;incoming&quot;</span><span class="p">])[</span><span class="n">communication_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">incoming</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;incoming_count&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">outgoing</span><span class="p">,</span> <span class="n">incoming</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;outgoing_count&quot;</span><span class="p">,</span> <span class="s2">&quot;incoming_count&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="message_outgoing_incoming_ratio">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.message_outgoing_incoming_ratio">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">message_outgoing_incoming_ratio</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">communication_column_name</span> <span class="o">=</span> <span class="s2">&quot;message_type&quot;</span><span class="p">,</span> <span class="n">message_type_column</span> <span class="o">=</span> <span class="s2">&quot;message_type&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the ratio of outgoing messages over incoming</span>
+<span class="sd">    messages, within the specified timeframe. If there is no specified timeframe,</span>
+<span class="sd">    the function sets a 30 min default time window. The function aggregates this number</span>
+<span class="sd">    by user, by timewindow.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of features.</span>
+<span class="sd">        Keys can be column names, other dictionaries, etc. The functions</span>
+<span class="sd">        needs the column name where the data is stored; if none is given, the default</span>
+<span class="sd">        name employed by Aware Framework will be used. To include information about</span>
+<span class="sd">        the resampling window, please include the selected parameters from</span>
+<span class="sd">        pandas.DataFrame.resample in a dictionary called resample_args.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+
+    
+    <span class="k">if</span> <span class="n">communication_column_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">message_type_column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">message_count</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">communication_column_name</span> <span class="o">=</span> <span class="n">communication_column_name</span><span class="p">,</span> <span class="n">message_type_column</span> <span class="o">=</span> <span class="n">message_type_column</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="n">resample_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">group_by_columns</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)),</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;outgoing_incoming_ratio&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;outgoing_count&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">df2</span><span class="p">[</span><span class="s2">&quot;incoming_count&quot;</span><span class="p">]</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;outgoing_incoming_ratio&quot;</span><span class="p">]</span>
+    <span class="n">df2</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;outgoing_incoming_ratio&#39;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;outgoing_incoming_ratio&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="message_distribution">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.message_distribution">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">message_distribution</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col_name</span> <span class="o">=</span> <span class="s2">&quot;message_type&quot;</span><span class="p">,</span> <span class="n">time_interval</span><span class="o">=</span><span class="s2">&quot;1d&quot;</span><span class="p">,</span> <span class="n">bin_interval</span><span class="o">=</span><span class="s2">&quot;1h&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculates the distribution of messages sent and received over a time</span>
+<span class="sd">    interval. The function first aggregates the number of messages over a</span>
+<span class="sd">    shorter time interval, the bins, and then calculates the distribution of</span>
+<span class="sd">    the message count over a longer interval, the time window.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of features.</span>
+<span class="sd">        Keys can be column names, other dictionaries, etc.</span>
+
+<span class="sd">        This function accepts col_name, a time interval</span>
+<span class="sd">        (default 1d) and a bin interval (default 1h).</span>
+
+<span class="sd">        if col_name is given, the data is first filtered to remove NaN values in that</span>
+<span class="sd">        column.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    <span class="k">if</span> <span class="n">col_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_distribution</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">time_interval</span><span class="p">,</span> <span class="n">bin_interval</span><span class="p">),</span>
+        <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;distribution&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<span class="n">CALL_FEATURES</span> <span class="o">=</span> <span class="p">[</span><span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;call_&#39;</span><span class="p">)]</span>
+<span class="n">CALL_FEATURES</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">CALL_FEATURES</span><span class="p">}</span>
+
+<span class="n">MESSAGE_FEATURES</span> <span class="o">=</span> <span class="p">[</span><span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;message_&#39;</span><span class="p">)]</span>
+<span class="n">MESSAGE_FEATURES</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">MESSAGE_FEATURES</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="extract_features_comms">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.communication/#niimpy.preprocessing.communication.extract_features_comms">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_features_comms</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function computes and organizes the selected features for calls </span>
+<span class="sd">    and SMS events. The function aggregates the features by user, by time window. </span>
+<span class="sd">    If no time window is specified, it will automatically aggregate the features </span>
+<span class="sd">    in 30 mins non-overlapping windows. </span>
+<span class="sd">    </span>
+<span class="sd">    The complete list of features that can be calculated are: call_duration_total,</span>
+<span class="sd">    call_duration_mean, call_duration_median, call_duration_std, call_count,</span>
+<span class="sd">    call_outgoing_incoming_ratio, sms_count</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    features: dict, optional</span>
+<span class="sd">        Dictionary keys contain the names of the features to compute. </span>
+<span class="sd">        If none is given, all features will be computed.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    
+    <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">CALL_FEATURES</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">MESSAGE_FEATURES</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">features</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="s2">&quot;Please input the features as a dictionary&quot;</span>
+    
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">feature</span><span class="p">,</span> <span class="n">feature_arg</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;computing </span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s1">...&#39;</span><span class="p">)</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">feature</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_arg</span><span class="p">)</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">set_conserved_index</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+        <span class="n">computed_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+        
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">computed_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">computed_features</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">computed_features</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

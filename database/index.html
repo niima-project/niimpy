@@ -1,0 +1,757 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database interface &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Database interface</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/database.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Database-interface">
+<h1>Database interface<a class="headerlink" href="#Database-interface" title="Link to this heading"></a></h1>
+<p><strong>The database interface is old and not recommend for new users, due to it being very specialized.</strong> It does, however, provide a way to operate on a lot of data without loading it all into memory. The module remains since it provides the backend to <code class="docutils literal notranslate"><span class="pre">niimpy.read_sqlite</span></code>.</p>
+<p>We currently do not document the database interface well, and this is legacy documentation. If this proves useful to someone, we will go and improve.</p>
+<p>Most data in databases would be read via <code class="docutils literal notranslate"><span class="pre">read.read_sqlite</span></code> instead:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_sqlite</span><span class="p">(</span><span class="n">FILE_NAME</span><span class="p">,</span> <span class="n">TABLE_NAME</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="n">TZ</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="Initial-setup">
+<h2>Initial setup<a class="headerlink" href="#Initial-setup" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">niimpy</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">niimpy</span><span class="o">.</span><span class="n">sampledata</span><span class="o">.</span><span class="n">DATA</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Conventions">
+<h2>Conventions<a class="headerlink" href="#Conventions" title="Link to this heading"></a></h2>
+<section id="Common-column-names">
+<h3>Common column names<a class="headerlink" href="#Common-column-names" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code>: unixtime, integer or float</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ts</span></code>: pandas.Timestamp</p></li>
+<li><p>DataFrame and Series indexes, wherever possible, are returned as pandas.DateTimeIndexes (which is a pandas.Timestamp)</p></li>
+<li></li>
+</ul>
+</section>
+</section>
+<section id="Common-arguments">
+<h2>Common arguments<a class="headerlink" href="#Common-arguments" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">table=</span></code>: First required positional argument.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user=</span></code>: Second required positional argument. User ID (str) to use to filter data. This is always a required argument, but there are two special values:</p>
+<ul>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">niimpy.ALL</span></code> for all users.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">None</span></code> for single-user databases.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start=</span></code>, <code class="docutils literal notranslate"><span class="pre">end=</span></code>: Limit the range of selected data. The times can be given in different formats: unixtime (int or float), string (parsed smartly with dateutil, this seems to be localtime), or a Python <code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> object (python seems to interpert naive datetime objects as localtime).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit=&lt;int&gt;</span></code>: Return at most this many results. This can be useful for initial testing: select a few tens or hundreds of results to see if it works before selecting everything.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">offset=&lt;int&gt;</span></code>: Companion of <code class="docutils literal notranslate"><span class="pre">limit</span></code>: how many values to skip when returning results.</p></li>
+</ul>
+</section>
+<section id="Multi-user-databases">
+<h2>Multi-user databases<a class="headerlink" href="#Multi-user-databases" title="Link to this heading"></a></h2>
+<p>There is a distinction between a single-user database and multi-user database: the difference is that a multi-user database has a <code class="docutils literal notranslate"><span class="pre">user</span></code> and <code class="docutils literal notranslate"><span class="pre">device</span></code> columns, a single-user database doesn’t. (The single-user database wolud be better called “single-device”). This distinction is sort of historical, but serves as a somewhat useful way to distinguish between the “easy” case, and cases where you <em>have</em> to consider multiple devices.</p>
+<p>All functions take a <code class="docutils literal notranslate"><span class="pre">user</span></code> argument, which selects the user to return within the data. They also, in the future, take a <code class="docutils literal notranslate"><span class="pre">device</span></code> argument which filters on device name.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">user</span></code> argument must also be given for single-user databases, but should be given as <code class="docutils literal notranslate"><span class="pre">niimpy.ALL</span></code>.</p>
+</section>
+<section id="Database-functions:-metadata">
+<h2>Database functions: metadata<a class="headerlink" href="#Database-functions:-metadata" title="Link to this heading"></a></h2>
+<p>These functions give you information about the data within the database</p>
+<section id="Users-in-database:-Database.users">
+<h3>Users in database: <code class="docutils literal notranslate"><span class="pre">Database.users</span></code><a class="headerlink" href="#Users-in-database:-Database.users" title="Link to this heading"></a></h3>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if single-user database otherwise a <code class="docutils literal notranslate"><span class="pre">set</span></code> of usernames.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">users</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Tables-in-database:-Database.tables">
+<h3>Tables in database: <code class="docutils literal notranslate"><span class="pre">Database.tables</span></code><a class="headerlink" href="#Tables-in-database:-Database.tables" title="Link to this heading"></a></h3>
+<p>Returns all tables in database</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">tables</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;AwareScreen&#39;}
+</pre></div></div>
+</div>
+</section>
+<section id="Amount-of-data-per-user-and-per-table:-Database.user_table_counts">
+<h3>Amount of data per user and per table: <code class="docutils literal notranslate"><span class="pre">Database.user_table_counts</span></code><a class="headerlink" href="#Amount-of-data-per-user-and-per-table:-Database.user_table_counts" title="Link to this heading"></a></h3>
+<p>Returns a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with rows of different tables (converters) and columns of users. The values are count of data for that (converter, user).</p>
+<p>The single-user version has a more limited form, rows are tables and there is one column, <code class="docutils literal notranslate"><span class="pre">count</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">user_table_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AwareScreen</th>
+      <td>1156</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="First,-last-timestamp-in-database:-Database.first,-Database.last">
+<h3>First, last timestamp in database: <code class="docutils literal notranslate"><span class="pre">Database.first</span></code>, <code class="docutils literal notranslate"><span class="pre">Database.last</span></code><a class="headerlink" href="#First,-last-timestamp-in-database:-Database.first,-Database.last" title="Link to this heading"></a></h3>
+<p>Let’s say you want to find the first and last datapoint for a certain (converter, user). Remember, for single-user databases we use <code class="docutils literal notranslate"><span class="pre">None</span></code> as the user argument.</p>
+<p>Output is a trivial DataFrame with columns <code class="docutils literal notranslate"><span class="pre">time</span></code> (unixtime) and <code class="docutils literal notranslate"><span class="pre">datetime</span></code> (pandas.Timestamp).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="s1">&#39;AwareScreen&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.531171e+09</td>
+      <td>2018-07-10 00:13:17.933000192+03:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="s1">&#39;AwareScreen&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)[</span><span class="s1">&#39;datetime&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Timestamp(&#39;2018-07-10 00:13:17.933000192+0300&#39;, tz=&#39;Europe/Helsinki&#39;)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="s1">&#39;AwareScreen&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)[</span><span class="s1">&#39;datetime&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;2018-07-10&#39;
+</pre></div></div>
+</div>
+</section>
+<section id="Count-of-data-for-(converter,-user):-Database.count">
+<h3>Count of data for (converter, user): <code class="docutils literal notranslate"><span class="pre">Database.count</span></code><a class="headerlink" href="#Count-of-data-for-(converter,-user):-Database.count" title="Link to this heading"></a></h3>
+<p>Basically the same as first/last timestamp:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;AwareScreen&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1156</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;AwareScreen&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)[</span><span class="s1">&#39;count&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1156
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Accessing-data:-database-methods">
+<h2>Accessing data: database methods<a class="headerlink" href="#Accessing-data:-database-methods" title="Link to this heading"></a></h2>
+<p>These functions all access data from a database <code class="docutils literal notranslate"><span class="pre">data</span></code> and return data frames.</p>
+<section id="Raw-data:-Database.raw">
+<h3>Raw data: <code class="docutils literal notranslate"><span class="pre">Database.raw</span></code><a class="headerlink" href="#Raw-data:-Database.raw" title="Link to this heading"></a></h3>
+<p>This returns the raw data in a table. It can tell you the columns, etc.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="s2">&quot;AwareScreen&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>screen_status</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-07-10 00:13:17.933000192+03:00</th>
+      <td>1.531171e+09</td>
+      <td>1</td>
+      <td>2018-07-10 00:13:17.933000192+03:00</td>
+    </tr>
+    <tr>
+      <th>2018-07-10 00:13:28.672000+03:00</th>
+      <td>1.531171e+09</td>
+      <td>0</td>
+      <td>2018-07-10 00:13:28.672000+03:00</td>
+    </tr>
+    <tr>
+      <th>2018-07-10 00:13:28.717999872+03:00</th>
+      <td>1.531171e+09</td>
+      <td>2</td>
+      <td>2018-07-10 00:13:28.717999872+03:00</td>
+    </tr>
+    <tr>
+      <th>2018-07-10 12:05:05.299000064+03:00</th>
+      <td>1.531214e+09</td>
+      <td>1</td>
+      <td>2018-07-10 12:05:05.299000064+03:00</td>
+    </tr>
+    <tr>
+      <th>2018-07-10 12:05:09.783000064+03:00</th>
+      <td>1.531214e+09</td>
+      <td>0</td>
+      <td>2018-07-10 12:05:09.783000064+03:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Timestamps-of-data:-Database.timestamps">
+<h3>Timestamps of data: <code class="docutils literal notranslate"><span class="pre">Database.timestamps</span></code><a class="headerlink" href="#Timestamps-of-data:-Database.timestamps" title="Link to this heading"></a></h3>
+<p>This returns the timestamps of all data, but not the data itself (this assumes that the data is created with a <code class="docutils literal notranslate"><span class="pre">time</span></code> column that has unixtime in it - which is the Koota standard).</p>
+<p>There are two different ways data can be returned:</p>
+<ul class="simple">
+<li><p>If the database is multi-user and a <code class="docutils literal notranslate"><span class="pre">user</span></code> argument is <strong>not</strong> given, return a DataFrame with index of the timestamps and a <code class="docutils literal notranslate"><span class="pre">user</span></code> column.</p></li>
+<li><p>If the database is multi-user and a <code class="docutils literal notranslate"><span class="pre">user</span></code> argument is given, return only a <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> with that user’s and table’s timestamps.</p></li>
+<li><p>If the database is single-user, only return a <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> with the timestamps (there can be no confusion).</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">timestamps</span><span class="p">(</span><span class="s2">&quot;AwareScreen&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0   2018-07-10 00:13:17.933000192+03:00
+1      2018-07-10 00:13:28.672000+03:00
+2   2018-07-10 00:13:28.717999872+03:00
+3   2018-07-10 12:05:05.299000064+03:00
+4   2018-07-10 12:05:09.783000064+03:00
+Name: time, dtype: datetime64[ns, Europe/Helsinki]
+</pre></div></div>
+</div>
+</section>
+<section id="Data-hourly-summaries:-Database.hourly">
+<h3>Data hourly summaries: <code class="docutils literal notranslate"><span class="pre">Database.hourly</span></code><a class="headerlink" href="#Data-hourly-summaries:-Database.hourly" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">hourly</span><span class="p">(</span><span class="s2">&quot;AwareScreen&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;screen_status&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>day</th>
+      <th>hour</th>
+      <th>count</th>
+      <th>screen_status_mean</th>
+      <th>screen_status_std</th>
+      <th>screen_status_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-07-10 00:00:00+03:00</th>
+      <td>2018-07-10</td>
+      <td>0</td>
+      <td>3</td>
+      <td>1.0</td>
+      <td>None</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>If you give it a list of columns, it will give you the mean/standard deviation/count</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">hourly</span><span class="p">(</span><span class="s2">&quot;AwareScreen&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;screen_status&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>day</th>
+      <th>hour</th>
+      <th>count</th>
+      <th>screen_status_mean</th>
+      <th>screen_status_std</th>
+      <th>screen_status_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-07-10 00:00:00+03:00</th>
+      <td>2018-07-10</td>
+      <td>0</td>
+      <td>3</td>
+      <td>1.0</td>
+      <td>None</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Data-occurrence-in-intervals:-Database.occurrence">
+<h3>Data occurrence in intervals: <code class="docutils literal notranslate"><span class="pre">Database.occurrence</span></code><a class="headerlink" href="#Data-occurrence-in-intervals:-Database.occurrence" title="Link to this heading"></a></h3>
+<p><em>Note: this function calculates occurrence from the database. There is also a utility function which calculates occurance from time serieses (described below). They should have the same effect, but the other function is more flexible.</em></p>
+<p>This makes a measure of data occurrence for sensors which should be continually sending data. To do this, it:</p>
+<ul class="simple">
+<li><p>Divides all time into hours</p></li>
+<li><p>Divides all hours into five 12-minute intervals</p></li>
+<li><p>Count the number of 12-minute intervals that have data. This is <span class="math notranslate nohighlight">\(occurrence\)</span></p></li>
+<li><p>For each hour, report <span class="math notranslate nohighlight">\(occurrence\)</span>. If it is 5, then assume we have data which is somewhat uniformly occuring in time. If it is 0, then we had no data.</p></li>
+</ul>
+<p>This isn’t the perfect measure, but is reasonably effective and simple to calculate. For data which isn’t continuous (like screen data we are actually using), it shows how much the sensor has been used.</p>
+<p>Column meanings: <code class="docutils literal notranslate"><span class="pre">day</span></code> is obvious, <code class="docutils literal notranslate"><span class="pre">hour</span></code> is hour of day, <code class="docutils literal notranslate"><span class="pre">occurrence</span></code> is the measure described above, <code class="docutils literal notranslate"><span class="pre">count</span></code> is total number of data points in this hour, <code class="docutils literal notranslate"><span class="pre">withdata</span></code> is which of the 12-min intervals (0-4) have data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">occurrence</span><span class="p">(</span><span class="s2">&quot;AwareScreen&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>day</th>
+      <th>hour</th>
+      <th>occurrence</th>
+      <th>count</th>
+      <th>withdata</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018-07-10 00:00:00+03:00</th>
+      <td>2018-07-10</td>
+      <td>0</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2018-07-10 12:00:00+03:00</th>
+      <td>2018-07-10</td>
+      <td>12</td>
+      <td>4</td>
+      <td>18</td>
+      <td>0,1,2,3</td>
+    </tr>
+    <tr>
+      <th>2018-07-10 14:00:00+03:00</th>
+      <td>2018-07-10</td>
+      <td>14</td>
+      <td>2</td>
+      <td>6</td>
+      <td>1,3</td>
+    </tr>
+    <tr>
+      <th>2018-07-10 15:00:00+03:00</th>
+      <td>2018-07-10</td>
+      <td>15</td>
+      <td>3</td>
+      <td>13</td>
+      <td>2,3,4</td>
+    </tr>
+    <tr>
+      <th>2018-07-10 19:00:00+03:00</th>
+      <td>2018-07-10</td>
+      <td>19</td>
+      <td>2</td>
+      <td>7</td>
+      <td>0,3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="Miscelaneous-calculations-on-databases">
+<h2>Miscelaneous calculations on databases<a class="headerlink" href="#Miscelaneous-calculations-on-databases" title="Link to this heading"></a></h2>
+<section id="Sum-of-survey-scores:-Database.get_survey_score">
+<h3>Sum of survey scores: <code class="docutils literal notranslate"><span class="pre">Database.get_survey_score</span></code><a class="headerlink" href="#Sum-of-survey-scores:-Database.get_survey_score" title="Link to this heading"></a></h3>
+<p>TODO: needs further documenting and an example.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">get_survey_score</span></code> is a convenience method to get the sum of scores of a survey. It can only be used on Survey tables.</p>
+<p>It has the standard <code class="docutils literal notranslate"><span class="pre">table</span></code> and <code class="docutils literal notranslate"><span class="pre">user</span></code> arguments, a <code class="docutils literal notranslate"><span class="pre">survey</span></code> argument (filters for survey questions, this is a prefix for the “id” column).</p>
+<p>TODO: get sample data and use it.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#data.get_survey_score(table=&#39;HyksSurveyAllAnswers&#39;, user=niimpy.ALL, survey=&#39;PHQ9&#39;)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,686 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.application &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.application</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.preprocessing.application</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">battery</span> <span class="k">as</span> <span class="n">b</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">screen</span> <span class="k">as</span> <span class="n">s</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
+
+
+<span class="n">MAP_APP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;CrossCycle&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Runtastic&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Polar Flow&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pedometer - Step Counter&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;STAMINA-tila&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Fit&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Modo STAMINA&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;7 MINUTE WORKOUT&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Moves&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Six Pack in 30 Days&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bodyweight&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sports Tracker&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Fit&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sports Tracker&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pedometer Step Counter&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MyFitnessPal&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Endomondo&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Health Mate&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Upsi&quot;</span><span class="p">:</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Mahjong&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Solitaire&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Solitaire Collection&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Paradise Island 2&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Steam&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hidden City&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dokkan Battle&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Super Mario Run&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Candy Crush Saga&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Jeopardy!&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Clash Royale&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Calcy IV&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;QuizTaisto PREMIUM&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PlayStation&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Cleopatra Jewels&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DraStic&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;XCOM&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The Secret Society&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pokémon GO&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hearthstone&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;I Love Hue&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Destiny&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Castle Cats&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pocket Camp&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hatch&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;1010!&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AirConsole&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sanapala&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Head Ball 2&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PokÃ©mon GO&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Wordfeud FREE&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pyramid Solitaire Saga&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Match and Explore&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Twitch&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Mahjong&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Solitaire&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pokémon GO&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Game Launcher&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hay Day&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;State of Survival&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Wordfeud Free&quot;</span><span class="p">:</span> <span class="s2">&quot;games&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sähköposti&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Gmail&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Puhelin – puheluiden hallinta&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Teléfono&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Email&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Outlook&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Skype&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Romantic love messages&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dialer&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Discord&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WhatsApp&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Telegram&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Phone&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TelÃ©fono&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Messages&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Messenger Lite&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Puhelin&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Mensajería&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Numerovalitsin&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Messenger&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LINE&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dual Messenger&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Telegeram&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MensajerÃ­a&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Googlen tekstistä puheeksi -moottori&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LINE Camera&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Signal&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Viber&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Viestit&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Amino&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Fonecta Caller&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ICE - In Case of Emergency&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Orbot&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Puhelu&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Puhelutallennin&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Kuvat&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TikTok&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SÃ¤hkÃ¶posti&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MysticMessenger&quot;</span><span class="p">:</span> <span class="s2">&quot;comm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pinterest&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Tumblr&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Snapchat&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Twitter&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hootsuite&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;We Heart It&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Instagram&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Jodel&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;happn&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LinkedIn&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Facebook&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Tinder&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SDP Kansalaispaneeli&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Grindr&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ROMEO UNCUT&quot;</span><span class="p">:</span> <span class="s2">&quot;socialmedia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Geo News&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Helsingin Sanomat&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Yle Areena&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Uutisvahti&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Flipboard&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Kauppalehti&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ilta-Sanomat&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Iltalehti&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mtv&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;upday&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MTV Uutiset&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SÃ¤Ã¤&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Weather&quot;</span><span class="p">:</span> <span class="s2">&quot;news&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Booking.com Hotellit&quot;</span><span class="p">:</span> <span class="s2">&quot;travel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Airbnb&quot;</span><span class="p">:</span> <span class="s2">&quot;travel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Booking.com&quot;</span><span class="p">:</span> <span class="s2">&quot;travel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TripAdvisor&quot;</span><span class="p">:</span> <span class="s2">&quot;travel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Couchsurfing&quot;</span><span class="p">:</span> <span class="s2">&quot;travel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bonusway&quot;</span><span class="p">:</span> <span class="s2">&quot;travel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TUI Suomi&quot;</span><span class="p">:</span> <span class="s2">&quot;travel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Norwegian&quot;</span><span class="p">:</span> <span class="s2">&quot;travel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Booking.com&quot;</span><span class="p">:</span> <span class="s2">&quot;travel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OPSkin&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Iso Omena&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Lunchie Market&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AliExpress&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Frank App&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hesburger&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MobilePay&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Zalando&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WeShare&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Wish&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;eBay&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Aktia Wallet&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;S-mobiili&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Klarna&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PINS&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;McDonalds&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;K-Ruoka&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Wrapp&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Wolt&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ticketmaster&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;H&amp;M&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EspressoHouse&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ResQ Club&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Momotoko&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pivo&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Lunchie Market&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EspressoHouse&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sheets&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Slack&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;My Files&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dropbox&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Moodle&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Knudge.me&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Wilma&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Docs&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Zoom&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Teams&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;KDE Connect&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Linkity Pro&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Timely&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OneDrive&quot;</span><span class="p">:</span> <span class="s2">&quot;work&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Uber&quot;</span><span class="p">:</span> <span class="s2">&quot;transport&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;VR Lähijunat&quot;</span><span class="p">:</span> <span class="s2">&quot;transport&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HSL&quot;</span><span class="p">:</span> <span class="s2">&quot;transport&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HSL Mobiililippu&quot;</span><span class="p">:</span> <span class="s2">&quot;transport&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CityTrack&quot;</span><span class="p">:</span> <span class="s2">&quot;transport&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Podcast Player&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Samsung Music&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Google Play Music&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Shazam&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Photos&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Player FM&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Crowst&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Leffapeli&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WEBTOON&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Tarot Reading&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Duolingo&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Crunchyroll&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SoundHound&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LiveTulokset&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Youtify&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Kuvakaappaus&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Tarot Universe&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Norstat&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Enkeli-tarot&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Podcast Republic&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Audiobooks&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;9GAG&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Netflix&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pornhub&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Musiikki&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;YouTube&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Imgur&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Google-sovellus&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Chrome&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;YouTube Music&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Peel Remote&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Music Center&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SoundCloud&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Spotify&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Google Play Musiikki&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MadLipz&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HAVEN KBH&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Internet&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Podcast Go&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TuneIn Radio&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pixiv&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Pic Collage&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Radio&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;myTuner Free&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Audiobooks&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FaceApp&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Podcast Republic&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Libby&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Headspace&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BookBeat&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Edge&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Google&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Nextory&quot;</span><span class="p">:</span> <span class="s2">&quot;leisure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Android System&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Android system&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Android-jÃ¤rjestelmÃ¤&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Android-sÃ¼steem&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Download Manager&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JÃ¤rj. UI&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;KÃ¤yttÃ¶liitt.&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Latauksen hallinta&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Lataustenhallinta&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;System UI&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OhjelmistopÃ¤ivitys&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Optimoija&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Avast Mobile Security&quot;</span><span class="p">:</span> <span class="s2">&quot;security&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Elisa Turvapaketti&quot;</span><span class="p">:</span> <span class="s2">&quot;security&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;F-Secure SAFE&quot;</span><span class="p">:</span> <span class="s2">&quot;security&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Freedome&quot;</span><span class="p">:</span> <span class="s2">&quot;security&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Telia Turvapaketti&quot;</span><span class="p">:</span> <span class="s2">&quot;security&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;McAfee Security&quot;</span><span class="p">:</span> <span class="s2">&quot;security&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Camera&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Clock&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Galleria&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Google Play Kauppa&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Google Play Palvelut&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Google Play Store&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Galaxy Store&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Kalenteri&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Kamera&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Kello&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Kuvat&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Smartâ</span><span class="se">\\</span><span class="s2">x80</span><span class="se">\\</span><span class="s2">x8bThings&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Maps&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Samsung capture&quot;</span><span class="p">:</span> <span class="s2">&quot;utility&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Daylio&quot;</span><span class="p">:</span> <span class="s2">&quot;wellbeing&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MoMoMood&quot;</span><span class="p">:</span> <span class="s2">&quot;wellbeing&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="classify_app">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.application/#niimpy.preprocessing.application.classify_app">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">classify_app</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">app_column_name</span> <span class="o">=</span> <span class="s2">&quot;application_name&quot;</span><span class="p">,</span> <span class="n">group_map</span> <span class="o">=</span> <span class="n">MAP_APP</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function is a helper function for other screen preprocessing.</span>
+<span class="sd">    The function classifies the screen events into the groups specified by group_map.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of screen</span>
+<span class="sd">        information. The following arguments are used:</span>
+
+<span class="sd">        app_column_name: Column containing the app name. Defaults to &#39;application_name&#39;.</span>
+<span class="sd">        group_map: A dictionary mapping the app names to app groups. (required)</span>
+<span class="sd">                   (e.g. &#39;my_app&#39;:&#39;my_app_group&#39;)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas dataframe.&quot;</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;app_group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;na&quot;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">group_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">app_column_name</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="p">,</span> <span class="s2">&quot;app_group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="app_count">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.application/#niimpy.preprocessing.application.app_count">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">app_count</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">screen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group_map</span> <span class="o">=</span> <span class="n">MAP_APP</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function returns the number of times each app group has been used,</span>
+<span class="sd">    within the specified timeframe. The app groups are defined as a dictionary</span>
+<span class="sd">    within the config variable. Examples of app groups are social</span>
+<span class="sd">    media, sports, games, etc. If no mapping is given, a default one will be used.</span>
+<span class="sd">    If no resampling window is given, the function sets a 30 min default time window. The</span>
+<span class="sd">    function aggregates the duration by user, by app group, by timewindow.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information. If no data is available, an empty</span>
+<span class="sd">        dataframe should be passed.</span>
+<span class="sd">    screen: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the screen information. If no data is available, an empty</span>
+<span class="sd">        dataframe should be passed.</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of screen</span>
+<span class="sd">        information. The following arguments are used:</span>
+
+<span class="sd">        app_column_name: Column containing the app name. Defaults to &#39;application_name&#39;.</span>
+<span class="sd">        group_map: A dictionary mapping the app names to app groups.</span>
+<span class="sd">                   Defaults to niimpy.preprocesing.application.MAP_APP, which maps</span>
+<span class="sd">                   several common apps.</span>
+<span class="sd">        screen_column_name: Column containing the screen status. Defaults to &#39;screen_status&#39;.</span>
+<span class="sd">        resample_args: parameteres passed to pandas.DataFrame.resample. Defaults to {&#39;rule&#39;:&#39;30min&#39;}.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+    
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">classify_app</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">group_map</span> <span class="o">=</span> <span class="n">group_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Insert missing data due to the screen being off or battery depleated</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">screen</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">screen_off</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">screen</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">:</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df2</span><span class="p">,</span> <span class="n">screen</span><span class="p">])</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;datetime&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">fillna</span><span class="p">({</span><span class="s2">&quot;app_group&quot;</span><span class="p">:</span> <span class="s2">&quot;off&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">screen</span><span class="o">.</span><span class="n">empty</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">bat</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">shutdown</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">shutdown_info</span><span class="p">(</span><span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">shutdown</span> <span class="o">=</span> <span class="n">shutdown</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;off&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">shutdown</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">:</span>
+            <span class="n">shutdown</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">shutdown</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df2</span><span class="p">,</span> <span class="n">shutdown</span><span class="p">])</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;datetime&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">fillna</span><span class="p">({</span><span class="s2">&quot;app_group&quot;</span><span class="p">:</span> <span class="s2">&quot;off&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">keep_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="n">keep_columns</span><span class="o">+</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;app_group&quot;</span><span class="p">,</span> <span class="s2">&quot;application_name&quot;</span><span class="p">]]</span>
+
+    <span class="n">df2</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="s2">&quot;app_group&quot;</span><span class="p">)[</span><span class="s2">&quot;app_group&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;app_group&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span><span class="p">})</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;app_group&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;app_group&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+    
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="app_duration">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.application/#niimpy.preprocessing.application.app_duration">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">app_duration</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">screen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group_map</span> <span class="o">=</span> <span class="n">MAP_APP</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="n">outlier_threshold</span> <span class="o">=</span> <span class="s2">&quot;10h&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function returns the duration of use of different app groups, within the</span>
+<span class="sd">    specified timeframe. The app groups are defined as a dictionary within the</span>
+<span class="sd">    config variable. Examples of app groups are social media, sports,</span>
+<span class="sd">    games, etc. If no mapping is given, a default one will be used.</span>
+<span class="sd">    If no resampling window is given, the function sets a 30 min default time window. The</span>
+<span class="sd">    function aggregates the duration by user, by app group, by timewindow.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    bat: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the battery information. If no data is available, an empty</span>
+<span class="sd">        dataframe should be passed.</span>
+<span class="sd">    screen: pandas.DataFrame, optional</span>
+<span class="sd">        Dataframe with the screen information. If no data is available, an empty</span>
+<span class="sd">        dataframe should be passed.</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. The following arguments are used:</span>
+
+<span class="sd">        app_column_name: Column containing the app name. Defaults to &#39;application_name&#39;.</span>
+<span class="sd">        group_map: A dictionary mapping the app names to app groups.</span>
+<span class="sd">                   Defaults to niimpy.preprocesing.application.MAP_APP, which maps</span>
+<span class="sd">                   several common apps.</span>
+<span class="sd">        outlier_threshold: Threshold for filtering out outliers. Defaults to &#39;10h&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+    <span class="n">niimpy_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">classify_app</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">group_map</span> <span class="o">=</span> <span class="n">group_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Insert missing data due to the screen being off or battery depleated</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">screen</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">screen</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">screen_off</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">screen</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">:</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df2</span><span class="p">,</span> <span class="n">screen</span><span class="p">])</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">niimpy_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">fillna</span><span class="p">({</span><span class="s2">&quot;app_group&quot;</span><span class="p">:</span> <span class="s2">&quot;off&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">screen</span><span class="o">.</span><span class="n">empty</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">bat</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">shutdown</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">shutdown_info</span><span class="p">(</span><span class="n">bat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">shutdown</span> <span class="o">=</span> <span class="n">shutdown</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;off&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">shutdown</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">==</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">:</span>
+            <span class="n">shutdown</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">shutdown</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df2</span><span class="p">,</span> <span class="n">shutdown</span><span class="p">])</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">niimpy_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">fillna</span><span class="p">({</span><span class="s2">&quot;app_group&quot;</span><span class="p">:</span> <span class="s2">&quot;off&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">keep_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="n">keep_columns</span><span class="o">+</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;app_group&quot;</span><span class="p">]]</span>
+
+    <span class="c1"># Fill in time gap between app foreground session</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resample_group</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="n">resample_args</span><span class="p">[</span><span class="s2">&quot;rule&quot;</span><span class="p">]</span>
+
+        <span class="n">all_times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="n">group</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">rule</span><span class="p">),</span>
+            <span class="n">end</span><span class="o">=</span><span class="n">group</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">rule</span><span class="p">),</span>
+            <span class="n">freq</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">new_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">all_times</span><span class="p">)</span>
+        <span class="n">resampled_group</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_df</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+        <span class="n">resampled_group</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resampled_group</span><span class="o">.</span><span class="n">index</span>
+        <span class="k">return</span> <span class="n">resampled_group</span>
+
+    <span class="c1"># Apply resampling to each group</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">resample_group</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+    <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Filter outliers by duration. Default threshold is 10 hours.</span>
+    <span class="n">outlier_threshold</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">outlier_threshold</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">duration</span> <span class="o">&gt;</span> <span class="n">outlier_threshold</span><span class="p">)]</span>
+    <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">duration</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)]</span>
+    
+    <span class="n">df2</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="s2">&quot;app_group&quot;</span><span class="p">)[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;app_group&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span><span class="p">})</span>
+        <span class="n">df2</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;app_group&quot;</span><span class="p">)</span>
+        <span class="n">df2</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;app_group&quot;</span><span class="p">,</span> <span class="s2">&quot;duration&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">df2</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">[</span><span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;app_&quot;</span><span class="p">)]</span>
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ALL_FEATURES</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="extract_features_app">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.application/#niimpy.preprocessing.application.extract_features_app">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_features_app</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">screen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function computes and organizes the selected features for application</span>
+<span class="sd">    events. The function aggregates the features by user, by app group,</span>
+<span class="sd">    by time window. If no time window is specified, it will automatically aggregate</span>
+<span class="sd">    the features in 30 mins non-overlapping windows. If no group_map is provided,</span>
+<span class="sd">    a default one will be used.</span>
+
+<span class="sd">    The complete list of features that can be calculated are: app_count, and</span>
+<span class="sd">    app_duration.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    features: dict, optional</span>
+<span class="sd">        Dictionary keys contain the names of the features to compute.</span>
+<span class="sd">        If none is given, all features will be computed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">        Resulting dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="n">bat</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">bat</span><span class="p">)</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_dataframe</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">ALL_FEATURES</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="s2">&quot;Please input the features as a dictionary&quot;</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">feature</span><span class="p">,</span> <span class="n">feature_arg</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">feature</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_arg</span><span class="p">)</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">set_conserved_index</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">,</span> <span class="s2">&quot;app_group&quot;</span><span class="p">)</span>
+        <span class="n">computed_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">computed_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># index the result only by the original index (datetime)</span>
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">computed_features</span><span class="p">,</span> <span class="s2">&quot;app_group&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">computed_features</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,430 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.battery module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.preprocessing.communication module" href="../niimpy.preprocessing.communication/" />
+    <link rel="prev" title="niimpy.preprocessing.audio module" href="../niimpy.preprocessing.audio/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.battery module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.preprocessing.battery.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.preprocessing.battery">
+<span id="niimpy-preprocessing-battery-module"></span><h1>niimpy.preprocessing.battery module<a class="headerlink" href="#module-niimpy.preprocessing.battery" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.battery_charge_discharge">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">battery_charge_discharge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_level_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'battery_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#battery_charge_discharge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.battery_charge_discharge" title="Link to this definition"></a></dt>
+<dd><p>Returns a DataFrame showing the mean difference in battery values and mean battery
+charge/discharge rate within specified time windows.
+If there is no specified timeframe, the function sets a 30 min default time window.
+Parameters
+———-
+df: dataframe with date index</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.battery_discharge">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">battery_discharge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'battery_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#battery_discharge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.battery_discharge" title="Link to this definition"></a></dt>
+<dd><p>This function returns the mean discharge rate of the battery within a specified time window. 
+If there is no specified timeframe, the function sets a 30 min default time window. 
+The function aggregates this number by user, by timewindow.
+Parameters
+———-
+df: pandas.DataFrame</p>
+<blockquote>
+<div><p>Dataframe with the battery information</p>
+</div></blockquote>
+<dl class="simple">
+<dt>config: dict, optional</dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc.</p>
+</dd>
+</dl>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h2>
+<p>result: dataframe</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.battery_gaps">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">battery_gaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_duration_between</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#battery_gaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.battery_gaps" title="Link to this definition"></a></dt>
+<dd><p>Returns a DataFrame with the mean time difference between consecutive battery
+timestamps. The mean is calculated within intervals specified in config.
+The minimum size of the considered deltas can be decided with the min_duration_between
+parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of batter
+information. Keys can be column names, other dictionaries, etc.</p>
+</dd>
+<dt><strong>Optional arguments in config:</strong></dt><dd><p>min_duration_between: Timedelta, for example, pd.Timedelta(minutes=5)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.battery_mean_level">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">battery_mean_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'battery_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#battery_mean_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.battery_mean_level" title="Link to this definition"></a></dt>
+<dd><p>This function returns the mean battery level within the specified timeframe. 
+If there is no specified timeframe, the function sets a 30 min default time window. 
+The function aggregates this number by user, by timewindow.
+Parameters
+———-
+df: pandas.DataFrame</p>
+<blockquote>
+<div><p>Dataframe with the battery information</p>
+</div></blockquote>
+<dl class="simple">
+<dt>config: dict, optional</dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc.</p>
+</dd>
+</dl>
+<section id="id1">
+<h2>Returns<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>result: dataframe</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.battery_median_level">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">battery_median_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'battery_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#battery_median_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.battery_median_level" title="Link to this definition"></a></dt>
+<dd><p>This function returns the median battery level within the specified timeframe. 
+If there is no specified timeframe, the function sets a 30 min default time window. 
+The function aggregates this number by user, by timewindow.
+Parameters
+———-
+df: pandas.DataFrame</p>
+<blockquote>
+<div><p>Dataframe with the battery information</p>
+</div></blockquote>
+<dl class="simple">
+<dt>config: dict, optional</dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc.</p>
+</dd>
+</dl>
+<section id="id2">
+<h2>Returns<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>result: dataframe</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.battery_occurrences">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">battery_occurrences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_status_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'battery_status'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#battery_occurrences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.battery_occurrences" title="Link to this definition"></a></dt>
+<dd><p>Returns a dataframe showing the amount of battery data points found within a specified time window.
+If there is no specified timeframe, the function sets a 30 min default time window.
+Parameters
+———-
+df: pandas.DataFrame</p>
+<blockquote>
+<div><p>Dataframe with the battery information</p>
+</div></blockquote>
+<dl class="simple">
+<dt>config: dict, optional</dt><dd><p>Dictionary keys containing optional arguments for the computation of batter
+information. Keys can be column names, other dictionaries, etc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.battery_shutdown_time">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">battery_shutdown_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'battery_status'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#battery_shutdown_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.battery_shutdown_time" title="Link to this definition"></a></dt>
+<dd><p>This function returns the total time the phone has been turned off within a specified time window. 
+If there is no specified timeframe, the function sets a 30 min default time window. 
+The function aggregates this number by user, by timewindow.
+Parameters
+———-
+df: pandas.DataFrame</p>
+<blockquote>
+<div><p>Dataframe with the battery information</p>
+</div></blockquote>
+<dl class="simple">
+<dt>config: dict, optional</dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc.</p>
+</dd>
+</dl>
+<section id="id3">
+<h2>Returns<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>result: dataframe</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.battery_std_level">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">battery_std_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'battery_level'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#battery_std_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.battery_std_level" title="Link to this definition"></a></dt>
+<dd><p>This function returns the standard deviation battery level within the specified timeframe. 
+If there is no specified timeframe, the function sets a 30 min default time window. 
+The function aggregates this number by user, by timewindow.
+Parameters
+———-
+df: pandas.DataFrame</p>
+<blockquote>
+<div><p>Dataframe with the battery information</p>
+</div></blockquote>
+<dl class="simple">
+<dt>config: dict, optional</dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc.</p>
+</dd>
+</dl>
+<section id="id4">
+<h2>Returns<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>result: dataframe</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.extract_features_battery">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">extract_features_battery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#extract_features_battery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.extract_features_battery" title="Link to this definition"></a></dt>
+<dd><p>Calculates battery features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>dataframe of battery data. It must contain these columns:
+<cite>battery_level</cite> and <cite>battery_status</cite>.</p>
+</dd>
+<dt><strong>features</strong><span class="classifier">map (dictionary) of functions that compute features.</span></dt><dd><p>it is a map of map, where the keys to the first map is the name of
+functions that compute features and the nested map contains the keyword
+arguments to that function. If there is no arguments use an empty map.
+Default is None. If None, all the available functions are used.
+Those functions are in the dict <cite>battery.ALL_FEATURES</cite>.
+You can implement your own function and use it instead or add it
+to the mentioned map.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>features</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>Dataframe of computed features where the index is users and columns
+are the the features.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.find_battery_gaps">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">find_battery_gaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">battery_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_df</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#find_battery_gaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.find_battery_gaps" title="Link to this definition"></a></dt>
+<dd><p>Returns a dataframe showing the gaps found only in the battery data.
+The default interval is 6 hours.
+Parameters
+———-
+battery_df: Dataframe
+other_df: Dataframe</p>
+<blockquote>
+<div><p>The data you want to compare with</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.find_non_battery_gaps">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">find_non_battery_gaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">battery_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_df</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#find_non_battery_gaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.find_non_battery_gaps" title="Link to this definition"></a></dt>
+<dd><p>Returns a dataframe showing the gaps found only in the other data.
+The default interval is 6 hours.
+Parameters
+———-
+battery_df: Dataframe
+other_df: Dataframe</p>
+<blockquote>
+<div><p>The data you want to compare with</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.find_real_gaps">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">find_real_gaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">battery_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_df</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#find_real_gaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.find_real_gaps" title="Link to this definition"></a></dt>
+<dd><p>Returns a dataframe showing the gaps found both in the battery data and the other data.
+The default interval is 6 hours.
+Parameters
+———-
+battery_df: Dataframe
+other_df: Dataframe</p>
+<blockquote>
+<div><p>The data you want to compare with</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.format_battery_data">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">format_battery_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batterylevel_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'battery_level'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#format_battery_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.format_battery_data" title="Link to this definition"></a></dt>
+<dd><p>Returns a DataFrame with battery data for a user.
+Parameters
+———-
+battery: DataFrame with battery data</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.battery.shutdown_info">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.battery.</span></span><span class="sig-name descname"><span class="pre">shutdown_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'battery_status'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/battery/#shutdown_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.battery.shutdown_info" title="Link to this definition"></a></dt>
+<dd><p>Returns a pandas DataFrame with battery information for the timestamps when the phone
+has shutdown.
+This includes both events, when the phone has shut down and when the phone
+has been rebooted.
+NOTE: This is a helper function created originally to preprocess the application
+info data
+Parameters
+———-
+bat: pandas.DataFrame</p>
+<blockquote>
+<div><p>Dataframe with the battery information</p>
+</div></blockquote>
+<dl class="simple">
+<dt>config: dict, optional</dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc.</p>
+</dd>
+</dl>
+<section id="id5">
+<h2>Returns<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>shutdown: pandas series</p>
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.preprocessing.audio/" class="btn btn-neutral float-left" title="niimpy.preprocessing.audio module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.preprocessing.communication/" class="btn btn-neutral float-right" title="niimpy.preprocessing.communication module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

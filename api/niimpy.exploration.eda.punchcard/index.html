@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.exploration.eda.punchcard module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.exploration.missingness module" href="../niimpy.exploration.missingness/" />
+    <link rel="prev" title="niimpy.exploration.eda.missingness module" href="../niimpy.exploration.eda.missingness/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.exploration/">niimpy.exploration package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.exploration.eda/">niimpy.exploration.eda package</a></li>
+      <li class="breadcrumb-item active">niimpy.exploration.eda.punchcard module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.exploration.eda.punchcard.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.exploration.eda.punchcard">
+<span id="niimpy-exploration-eda-punchcard-module"></span><h1>niimpy.exploration.eda.punchcard module<a class="headerlink" href="#module-niimpy.exploration.eda.punchcard" title="Link to this heading"></a></h1>
+<p>Created on Thu Nov 18 16:14:47 2021</p>
+<p>&#64;author: arsii</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.punchcard.combine_dataframe_">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.punchcard.</span></span><span class="sig-name descname"><span class="pre">combine_dataframe_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">res</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/punchcard/#combine_dataframe_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.punchcard.combine_dataframe_" title="Link to this definition"></a></dt>
+<dd><p>resample values from multiple users into new dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe containing the data</p>
+</dd>
+<dt><strong>user_list</strong><span class="classifier">list</span></dt><dd><p>List containing user names/id’s (str)</p>
+</dd>
+<dt><strong>columns</strong><span class="classifier">list</span></dt><dd><p>List of column names (str) to be plotted</p>
+</dd>
+<dt><strong>res</strong><span class="classifier">str</span></dt><dd><p>Resample parameter e.g., ‘D’ for resampling by day</p>
+</dd>
+<dt><strong>date_index</strong><span class="classifier">pd.date_range</span></dt><dd><p>Date range used as an index</p>
+</dd>
+<dt><strong>agg_func</strong><span class="classifier">numpy function</span></dt><dd><p>Aggregation function used with resample. The default is “mean”</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>df_comb</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>Resampled and combined dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.punchcard.get_timerange_">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.punchcard.</span></span><span class="sig-name descname"><span class="pre">get_timerange_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/punchcard/#get_timerange_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.punchcard.get_timerange_" title="Link to this definition"></a></dt>
+<dd><p>get first and last timepoint from the dataframe, 
+and return a resampled datetimeindex.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe containing the data</p>
+</dd>
+<dt><strong>ressample</strong><span class="classifier">str</span></dt><dd><p>Resample parameter e.g., ‘D’ for resampling by day</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>date_index</strong><span class="classifier">pd.DatatimeIndex</span></dt><dd><p>Resampled DatetimeIndex</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.punchcard.punchcard_">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.punchcard.</span></span><span class="sig-name descname"><span class="pre">punchcard_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_xticks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtitle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ytitle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/punchcard/#punchcard_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.punchcard.punchcard_" title="Link to this definition"></a></dt>
+<dd><p>create a punchcard plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe containing the data</p>
+</dd>
+<dt><strong>title</strong><span class="classifier">str</span></dt><dd><p>Plot title.</p>
+</dd>
+<dt><strong>n_xticks</strong><span class="classifier">int or None</span></dt><dd><p>Number of xaxis ticks. If None, scaled automatically.</p>
+</dd>
+<dt><strong>xtitle</strong><span class="classifier">str</span></dt><dd><p>Plot xaxis title</p>
+</dd>
+<dt><strong>ytitle</strong><span class="classifier">str</span></dt><dd><p>Plot yaxis title</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fig</strong><span class="classifier">plotly.graph_objs._figure.Figure</span></dt><dd><p>Punchcard plot</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.exploration.eda.punchcard.punchcard_plot">
+<span class="sig-prename descclassname"><span class="pre">niimpy.exploration.eda.punchcard.</span></span><span class="sig-name descname"><span class="pre">punchcard_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Punchcard</span> <span class="pre">Plot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'D'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timerange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/exploration/eda/punchcard/#punchcard_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.exploration.eda.punchcard.punchcard_plot" title="Link to this definition"></a></dt>
+<dd><p>Punchcard plot for given users and column with optional resampling</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe containing the data</p>
+</dd>
+<dt><strong>user_list</strong><span class="classifier">list, optional</span></dt><dd><p>List containing user id’s as string. The default is None.</p>
+</dd>
+<dt><strong>columns</strong><span class="classifier">list, optional</span></dt><dd><p>List containing columns as strings. The default is None.</p>
+</dd>
+<dt><strong>title</strong><span class="classifier">str, optional</span></dt><dd><p>Plot title. The default is “Punchcard Plot”.</p>
+</dd>
+<dt><strong>resample</strong><span class="classifier">str, optional</span></dt><dd><p>Indicator for resampling frequency. The default is ‘D’ (day).</p>
+</dd>
+<dt><strong>agg_func</strong><span class="classifier">numpy function</span></dt><dd><p>Aggregation function used with resample. The default is np.mean</p>
+</dd>
+<dt><strong>normalize</strong><span class="classifier">boolean, optional</span></dt><dd><p>If true, data is normalized using min-max-scaling. The default is False.</p>
+</dd>
+<dt><strong>timerange</strong><span class="classifier">boolean or tuple, optional</span></dt><dd><p>If false, timerange is not filtered. 
+If tuple containing timestamps, timerange is filtered.
+The default is False.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fig</strong><span class="classifier">plotly.graph_objs._figure.Figure</span></dt><dd><p>Punchcard plot</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.exploration.eda.missingness/" class="btn btn-neutral float-left" title="niimpy.exploration.eda.missingness module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.exploration.missingness/" class="btn btn-neutral float-right" title="niimpy.exploration.missingness module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

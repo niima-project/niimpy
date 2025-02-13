@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.exploration.missingness &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.exploration.missingness</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.exploration.missingness</h1><div class="highlight"><pre>
+<span></span><span class="c1"># TODO: probably put them in some other files within missingess folder</span>
+
+<div class="viewcode-block" id="missing_data_format">
+<a class="viewcode-back" href="../../../../api/niimpy.exploration.missingness/#niimpy.exploration.missingness.missing_data_format">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">missing_data_format</span><span class="p">(</span><span class="n">question</span><span class="p">,</span><span class="n">keep_values</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns a series of timestamps in the right format to allow missing data visualization</span>
+<span class="sd">    .</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    question: Dataframe</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">question</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">question</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">question</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">question</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">question</span> <span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">question</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">question</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="n">question</span><span class="o">.</span><span class="n">day</span><span class="p">))</span>
+    <span class="n">question</span> <span class="o">=</span> <span class="n">question</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+
+    <span class="n">question</span> <span class="o">=</span>  <span class="n">question</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">keep_values</span> <span class="o">==</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">question</span><span class="p">[</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">question</span> <span class="o">=</span> <span class="n">question</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">question</span></div>
+
+
+<div class="viewcode-block" id="screen_missing_data">
+<a class="viewcode-back" href="../../../../api/niimpy.exploration.missingness/#niimpy.exploration.missingness.screen_missing_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">screen_missing_data</span><span class="p">(</span><span class="n">database</span><span class="p">,</span><span class="n">subject</span><span class="p">,</span><span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns a DataFrame contanining the percentage (range [0,1]) of loss data</span>
+<span class="sd">    calculated based on the transitions of screen status. In general, if</span>
+<span class="sd">    screen_status(t) == screen_status(t+1), we declared we have at least one</span>
+<span class="sd">    missing point.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    database: Niimpy database</span>
+<span class="sd">    user: string</span>
+<span class="sd">    start: datetime, optional</span>
+<span class="sd">    end: datetime, optional</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    count: Dataframe</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">Data1</span><span class="p">),</span><span class="s2">&quot;database not given in Niimpy database format&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span><span class="s2">&quot;usr not given in string format&quot;</span>
+
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s1">&#39;AwareScreen&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">subject</span><span class="p">)</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">start</span><span class="o">!=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">),</span><span class="s2">&quot;start not given in timestamp format&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">end</span><span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">),</span><span class="s2">&quot;end not given in timestamp format&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span>
+
+    <span class="n">screen</span><span class="o">=</span><span class="n">screen</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">],</span><span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;device&#39;</span><span class="p">,</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;time&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">screen</span><span class="o">=</span><span class="n">screen</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+    <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;screen_status&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">screen</span><span class="p">[</span><span class="s1">&#39;screen_status&#39;</span><span class="p">])</span>
+
+    <span class="c1">#Include the missing points that are due to shutting down the phone</span>
+    <span class="n">shutdown</span> <span class="o">=</span> <span class="n">shutdown_info</span><span class="p">(</span><span class="n">database</span><span class="p">,</span><span class="n">subject</span><span class="p">,</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">)</span>
+    <span class="n">shutdown</span><span class="o">=</span><span class="n">shutdown</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;battery_status&#39;</span><span class="p">:</span><span class="s1">&#39;screen_status&#39;</span><span class="p">})</span>
+    <span class="n">shutdown</span><span class="p">[</span><span class="s1">&#39;screen_status&#39;</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">shutdown</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;screen_status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="s1">&#39;screen_status_x&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">screen</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="s1">&#39;screen_status_y&#39;</span><span class="p">]</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;screen_status_x&#39;</span><span class="p">,</span><span class="s1">&#39;screen_status_y&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">dates</span><span class="o">=</span><span class="n">screen</span><span class="o">.</span><span class="n">datetime_x</span><span class="o">.</span><span class="n">combine_first</span><span class="p">(</span><span class="n">screen</span><span class="o">.</span><span class="n">datetime_y</span><span class="p">)</span>
+    <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">dates</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;datetime_x&#39;</span><span class="p">,</span><span class="s1">&#39;datetime_y&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1">#Detect missing data points</span>
+    <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;next&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">screen</span><span class="p">[</span><span class="s1">&#39;screen_status&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;dummy&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">screen</span><span class="p">[</span><span class="s1">&#39;screen_status&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">screen</span><span class="p">[</span><span class="s1">&#39;next&#39;</span><span class="p">]</span>
+    <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">screen</span><span class="p">[</span><span class="s1">&#39;dummy&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;dummy&#39;</span><span class="p">,</span><span class="s1">&#39;next&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">screen</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">screen</span> <span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">screen</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">screen</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="n">screen</span><span class="o">.</span><span class="n">day</span><span class="p">))</span>
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;screen_status&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">count</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span><span class="n">values</span><span class="o">=</span><span class="s1">&#39;missing&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span><span class="s1">&#39;missing&#39;</span><span class="p">])[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">count</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="mf">0.0</span><span class="p">]</span><span class="o">+</span><span class="n">count</span><span class="p">[</span><span class="mf">1.0</span><span class="p">])</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">count</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">tzname</span><span class="p">(</span><span class="n">count</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">!=</span> <span class="s1">&#39;EET&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">tzname</span><span class="p">(</span><span class="n">count</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">!=</span> <span class="s1">&#39;EEST&#39;</span><span class="p">:</span>
+            <span class="n">count</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">count</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">count</span></div>
+
+
+<div class="viewcode-block" id="missing_noise">
+<a class="viewcode-back" href="../../../../api/niimpy.exploration.missingness/#niimpy.exploration.missingness.missing_noise">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">missing_noise</span><span class="p">(</span><span class="n">database</span><span class="p">,</span><span class="n">subject</span><span class="p">,</span><span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns a Dataframe with the estimated missing data from the ambient</span>
+<span class="sd">    noise sensor.</span>
+
+
+
+<span class="sd">    NOTE: This function aggregates data by day.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    database: Niimpy database</span>
+<span class="sd">    user: string</span>
+<span class="sd">    start: datetime, optional</span>
+<span class="sd">    end: datetime, optional</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    avg_noise: Dataframe</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">Data1</span><span class="p">),</span><span class="s2">&quot;database not given in Niimpy database format&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span><span class="s2">&quot;user not given in string format&quot;</span>
+
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s1">&#39;AwareAmbientNoise&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">subject</span><span class="p">)</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">start</span><span class="o">!=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">),</span><span class="s2">&quot;start not given in timestamp format&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">end</span><span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">),</span><span class="s2">&quot;end not given in timestamp format&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span>
+
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;device&#39;</span><span class="p">,</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="s1">&#39;silence_threshold&#39;</span><span class="p">,</span><span class="s1">&#39;rms&#39;</span><span class="p">,</span><span class="s1">&#39;blob_raw&#39;</span><span class="p">,</span><span class="s1">&#39;is_silent&#39;</span><span class="p">,</span><span class="s1">&#39;frequency&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+    <span class="n">noise</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">noise</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+    <span class="n">noise</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_seconds</span><span class="p">(</span><span class="n">noise</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">])</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">shutdown</span> <span class="o">=</span> <span class="n">shutdown_info</span><span class="p">(</span><span class="n">database</span><span class="p">,</span><span class="n">subject</span><span class="p">,</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">)</span>
+    <span class="n">shutdown</span><span class="o">=</span><span class="n">shutdown</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;battery_status&#39;</span><span class="p">:</span><span class="s1">&#39;duration&#39;</span><span class="p">})</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">shutdown</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">noise</span><span class="p">[</span><span class="s1">&#39;duration_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="s1">&#39;duration_x&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">noise</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="s1">&#39;duration_y&#39;</span><span class="p">]</span>
+    <span class="n">noise</span><span class="o">=</span><span class="n">noise</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;duration_x&#39;</span><span class="p">:</span><span class="s1">&#39;duration&#39;</span><span class="p">})</span>
+    <span class="n">dates</span><span class="o">=</span><span class="n">noise</span><span class="o">.</span><span class="n">datetime_x</span><span class="o">.</span><span class="n">combine_first</span><span class="p">(</span><span class="n">noise</span><span class="o">.</span><span class="n">datetime_y</span><span class="p">)</span>
+    <span class="n">noise</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">dates</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;datetime_x&#39;</span><span class="p">,</span><span class="s1">&#39;datetime_y&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">noise</span><span class="o">=</span><span class="n">noise</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;decibels&#39;</span><span class="p">,</span> <span class="s1">&#39;duration_y&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">noise</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">noise</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">1860</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">#detect the missing points</span>
+    <span class="n">noise</span><span class="p">[</span><span class="s1">&#39;dummy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">missing</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#assumes that everytime the cellphone shuts down, two timestamps are generated with -1 in the battery_health</span>
+    <span class="n">noise</span><span class="p">[</span><span class="s1">&#39;dummy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">dummy</span><span class="o">*</span><span class="n">noise</span><span class="o">.</span><span class="n">duration</span>
+    <span class="n">noise</span><span class="p">[</span><span class="s1">&#39;dummy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">dummy</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">noise</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">noise</span><span class="p">[</span><span class="s1">&#39;missing&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">noise</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">1800</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">#calculate the number of datapoints missing</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">noise</span><span class="p">[</span><span class="n">noise</span><span class="o">.</span><span class="n">dummy</span><span class="o">==-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="c1">#delete those missing datapoints due to the phone being shut down</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;duration&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="s1">&#39;dummy&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">noise</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,552 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.screen module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.preprocessing.survey module" href="../niimpy.preprocessing.survey/" />
+    <link rel="prev" title="niimpy.preprocessing.sampledata module" href="../niimpy.preprocessing.sampledata/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.screen module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.preprocessing.screen.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.preprocessing.screen">
+<span id="niimpy-preprocessing-screen-module"></span><h1>niimpy.preprocessing.screen module<a class="headerlink" href="#module-niimpy.preprocessing.screen" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.duration_util_screen">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">duration_util_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#duration_util_screen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.duration_util_screen" title="Link to this definition"></a></dt>
+<dd><p>This function is a helper function for other screen preprocessing.
+The function computes the duration of an event, based on the classification
+function event_classification_screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>df: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.event_classification_screen">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">event_classification_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'screen_status'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#event_classification_screen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.event_classification_screen" title="Link to this definition"></a></dt>
+<dd><p>This function is a helper function for other screen preprocessing.
+The function classifies the screen events into four transition types: on, 
+off, in use, and undefined, based on the screen events recorded. For example,
+if two consecutive events are 0 and 3, there has been a transition from off
+to unlocked, i.e. the phone has been unlocked and the events will be 
+classified into the “use” transition.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. The following arguments are used:</p>
+<dl class="simple">
+<dt>screen_column_name: Column containing the screen status. Default is</dt><dd><p>“screen_status”.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>df: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.extract_features_screen">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">extract_features_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#extract_features_screen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.extract_features_screen" title="Link to this definition"></a></dt>
+<dd><p>This function computes and organizes the selected features for screen events
+that have been recorded using Aware Framework. The function aggregates the features
+by user, by time window. If no time window is specified, it will automatically aggregate
+the features in 30 mins non-overlapping windows.</p>
+<p>The complete list of features that can be calculated are: screen_off, screen_count,
+screen_duration, screen_duration_min, screen_duration_max, screen_duration_median,
+screen_duration_mean, screen_duration_std, and screen_first_unlock.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>features: dict</strong></dt><dd><p>Dictionary keys contain the names of the features to compute. 
+If none is given, all features will be computed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>computed_features: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.screen_count">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">screen_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#screen_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.screen_count" title="Link to this definition"></a></dt>
+<dd><p>This function returns the number of times, within the specified timeframe, 
+when the screen has turned off, turned on, and been in use. If there is no 
+specified timeframe, the function sets a 30 min default time window. The 
+function aggregates this number by user, by timewindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>bat: pandas.DataFrame, optional</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc. The functions
+needs the column name where the data is stored; if none is given, the default
+name employed by Aware Framework will be used. To include information about 
+the resampling window, please include the selected parameters from
+pandas.DataFrame.resample in a dictionary called resample_args.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>df: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.screen_duration">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">screen_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#screen_duration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.screen_duration" title="Link to this definition"></a></dt>
+<dd><p>This function returns the duration (in seconds) of each transition, within the 
+specified timeframe. The transitions are off, on, and in use. If there is no 
+specified timeframe, the function sets a 30 min default time window. The 
+function aggregates this number by user, by timewindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>bat: pandas.DataFrame, optional</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc. The functions
+needs the column name where the data is stored; if none is given, the default
+name employed by Aware Framework will be used. To include information about 
+the resampling window, please include the selected parameters from
+pandas.DataFrame.resample in a dictionary called resample_args.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>result: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.screen_duration_max">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">screen_duration_max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#screen_duration_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.screen_duration_max" title="Link to this definition"></a></dt>
+<dd><p>This function returns the duration (in seconds) of each transition, within the 
+specified timeframe. The transitions are off, on, and in use. If there is no 
+specified timeframe, the function sets a 30 min default time window. The 
+function aggregates this number by user, by timewindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>bat: pandas.DataFrame, optional</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc. The functions
+needs the column name where the data is stored; if none is given, the default
+name employed by Aware Framework will be used. To include information about 
+the resampling window, please include the selected parameters from
+pandas.DataFrame.resample in a dictionary called resample_args.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>result: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.screen_duration_mean">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">screen_duration_mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#screen_duration_mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.screen_duration_mean" title="Link to this definition"></a></dt>
+<dd><p>This function returns the duration (in seconds) of each transition, within the 
+specified timeframe. The transitions are off, on, and in use. If there is no 
+specified timeframe, the function sets a 30 min default time window. The 
+function aggregates this number by user, by timewindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>bat: pandas.DataFrame, optional</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc. The functions
+needs the column name where the data is stored; if none is given, the default
+name employed by Aware Framework will be used. To include information about 
+the resampling window, please include the selected parameters from
+pandas.DataFrame.resample in a dictionary called resample_args.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>result: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.screen_duration_median">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">screen_duration_median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#screen_duration_median"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.screen_duration_median" title="Link to this definition"></a></dt>
+<dd><p>This function returns the duration (in seconds) of each transition, within the 
+specified timeframe. The transitions are off, on, and in use. If there is no 
+specified timeframe, the function sets a 30 min default time window. The 
+function aggregates this number by user, by timewindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>bat: pandas.DataFrame, optional</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc. The functions
+needs the column name where the data is stored; if none is given, the default
+name employed by Aware Framework will be used. To include information about 
+the resampling window, please include the selected parameters from
+pandas.DataFrame.resample in a dictionary called resample_args.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>result: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.screen_duration_min">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">screen_duration_min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#screen_duration_min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.screen_duration_min" title="Link to this definition"></a></dt>
+<dd><p>This function returns the duration (in seconds) of each transition, within the 
+specified timeframe. The transitions are off, on, and in use. If there is no 
+specified timeframe, the function sets a 30 min default time window. The 
+function aggregates this number by user, by timewindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>bat: pandas.DataFrame, optional</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc. The functions
+needs the column name where the data is stored; if none is given, the default
+name employed by Aware Framework will be used. To include information about 
+the resampling window, please include the selected parameters from
+pandas.DataFrame.resample in a dictionary called resample_args.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>result: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.screen_duration_std">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">screen_duration_std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'30min'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#screen_duration_std"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.screen_duration_std" title="Link to this definition"></a></dt>
+<dd><p>This function returns the duration (in seconds) of each transition, within the 
+specified timeframe. The transitions are off, on, and in use. If there is no 
+specified timeframe, the function sets a 30 min default time window. The 
+function aggregates this number by user, by timewindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>bat: pandas.DataFrame, optional</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc. The functions
+needs the column name where the data is stored; if none is given, the default
+name employed by Aware Framework will be used. To include information about 
+the resampling window, please include the selected parameters from
+pandas.DataFrame.resample in a dictionary called resample_args.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>result: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.screen_first_unlock">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">screen_first_unlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#screen_first_unlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.screen_first_unlock" title="Link to this definition"></a></dt>
+<dd><p>This function returns the first time the phone was unlocked each day. 
+The data is aggregated by user, by day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>bat: pandas.DataFrame, optional</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc. The functions
+needs the column name where the data is stored; if none is given, the default
+name employed by Aware Framework will be used.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>result: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.screen_off">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">screen_off</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#screen_off"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.screen_off" title="Link to this definition"></a></dt>
+<dd><p>This function returns the timestamps, within the specified timeframe, 
+when the screen has turned off. If there is no specified timeframe,
+the function sets a 30 min default time window. The function aggregates this number 
+by user, by timewindow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>bat: pandas.DataFrame, optional</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of scrren
+information. Keys can be column names, other dictionaries, etc.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>df: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.screen.util_screen">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.screen.</span></span><span class="sig-name descname"><span class="pre">util_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'screen_status'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/screen/#util_screen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.screen.util_screen" title="Link to this definition"></a></dt>
+<dd><p>This function is a helper function for all other screen preprocessing.
+The function has the option to merge information from the battery sensors to
+include data when the phone is shut down. The function also detects the missing 
+datapoints (i.e. not allowed transitions like ON to ON).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>bat: pandas.DataFrame, optional</strong></dt><dd><p>Dataframe with the battery information</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of screen
+information. The following arguments are used:</p>
+<dl class="simple">
+<dt>screen_column_name: Column containing the screen status. Default is</dt><dd><p>“screen_status”.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>df: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.preprocessing.sampledata/" class="btn btn-neutral float-left" title="niimpy.preprocessing.sampledata module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.preprocessing.survey/" class="btn btn-neutral float-right" title="niimpy.preprocessing.survey module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

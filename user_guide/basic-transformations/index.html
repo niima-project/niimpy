@@ -1,0 +1,1458 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basic transformations &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="Preprocessing" href="../preprocessing/" />
+    <link rel="prev" title="Reading" href="../reading/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../reading/">Reading</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic transformations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Extracting-single-rows-and-columns">Extracting single rows and columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Listing-unique-users">Listing unique users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#List-unique-values">List unique values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Extract-data-of-only-one-subject">Extract data of only one subject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Renaming-a-column-or-columns">Renaming a column or columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Change-datatypes">Change datatypes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Transforming-a-column-to-a-new-value">Transforming a column to a new value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Resample">Resample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Groupby">Groupby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Summary-statistics">Summary statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Hourly-data">Hourly data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Occurrence">Occurrence</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Basic transformations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user_guide/basic-transformations.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Basic-transformations">
+<h1>Basic transformations<a class="headerlink" href="#Basic-transformations" title="Link to this heading"></a></h1>
+<p>This page shows some basic transformations you can do once you have read data. Really, it is simply a pandas crash course, since pandas provides all the operations you may need and there is no need for us to re-invent things. Pandas provides a solid but flexible base for us to build advanced operations on top of.</p>
+<p>You can read more at the <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/index.html">Pandas documentation</a>.</p>
+<section id="Extracting-single-rows-and-columns">
+<h2>Extracting single rows and columns<a class="headerlink" href="#Extracting-single-rows-and-columns" title="Link to this heading"></a></h2>
+<p>Let’s first import mobile phone battery status data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TZ</span> <span class="o">=</span> <span class="s1">&#39;Europe/Helsinki&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">niimpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/u/24/rantahj1/unix/miniconda3/envs/niimpy/lib/python3.12/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MULTIUSER_AWARE_BATTERY_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Then check first rows of the dataframe.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>battery_level</th>
+      <th>battery_status</th>
+      <th>battery_health</th>
+      <th>battery_adaptor</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:20:02.924999952+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>74</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:20:02.924999952+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:21:30.405999899+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>73</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:21:30.405999899+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:24:12.805999994+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>72</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:24:12.805999994+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:35:38.561000109+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>72</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:35:38.561000109+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:35:38.953000069+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>72</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2020-01-09 02:35:38.953000069+02:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Get a single column, in this case all <strong>users</strong>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2020-01-09 02:20:02.924999952+02:00    jd9INuQ5BBlW
+2020-01-09 02:21:30.405999899+02:00    jd9INuQ5BBlW
+2020-01-09 02:24:12.805999994+02:00    jd9INuQ5BBlW
+2020-01-09 02:35:38.561000109+02:00    jd9INuQ5BBlW
+2020-01-09 02:35:38.953000069+02:00    jd9INuQ5BBlW
+                                           ...
+2019-08-09 00:30:48.073999882+03:00    dvWdLQesv21a
+2019-08-09 00:32:40.717999935+03:00    dvWdLQesv21a
+2019-08-09 00:34:23.114000082+03:00    dvWdLQesv21a
+2019-08-09 00:36:05.505000114+03:00    dvWdLQesv21a
+2019-08-07 06:53:35.671000004+03:00    dvWdLQesv21a
+Name: user, Length: 634, dtype: object
+</pre></div></div>
+</div>
+<p>Get a single row, in this case the <strong>5th</strong> (the first row is zero):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+user                                      jd9INuQ5BBlW
+device                                    3p83yASkOb_B
+time                                    1578530138.953
+battery_level                                       72
+battery_status                                       2
+battery_health                                       2
+battery_adaptor                                      2
+datetime           2020-01-09 02:35:38.953000069+02:00
+Name: 2020-01-09 02:35:38.953000069+02:00, dtype: object
+</pre></div></div>
+</div>
+</section>
+<section id="Listing-unique-users">
+<h2>Listing unique users<a class="headerlink" href="#Listing-unique-users" title="Link to this heading"></a></h2>
+<p>We can list unique users by using <code class="docutils literal notranslate"><span class="pre">pandas.unique()</span></code> function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([&#39;jd9INuQ5BBlW&#39;, &#39;iGyXetHE3S8u&#39;, &#39;dvWdLQesv21a&#39;], dtype=object)
+</pre></div></div>
+</div>
+</section>
+<section id="List-unique-values">
+<h2>List unique values<a class="headerlink" href="#List-unique-values" title="Link to this heading"></a></h2>
+<p>Same applies to other data features/columns.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;battery_status&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([ 3,  2,  5, -1, -3])
+</pre></div></div>
+</div>
+</section>
+<section id="Extract-data-of-only-one-subject">
+<h2>Extract data of only one subject<a class="headerlink" href="#Extract-data-of-only-one-subject" title="Link to this heading"></a></h2>
+<p>We can extract data of only one subject by following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;jd9INuQ5BBlW&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>battery_level</th>
+      <th>battery_status</th>
+      <th>battery_health</th>
+      <th>battery_adaptor</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:20:02.924999952+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>74</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:20:02.924999952+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:21:30.405999899+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>73</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:21:30.405999899+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:24:12.805999994+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>72</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:24:12.805999994+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:35:38.561000109+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>72</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:35:38.561000109+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:35:38.953000069+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>72</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2020-01-09 02:35:38.953000069+02:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 23:02:13.938999891+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578604e+09</td>
+      <td>73</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 23:02:13.938999891+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 23:10:37.262000084+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578604e+09</td>
+      <td>73</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 23:10:37.262000084+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 23:22:13.966000080+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578605e+09</td>
+      <td>72</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 23:22:13.966000080+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 23:32:13.959000111+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578606e+09</td>
+      <td>71</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 23:32:13.959000111+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 23:39:06.799999952+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578606e+09</td>
+      <td>71</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 23:39:06.799999952+02:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>373 rows × 8 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Renaming-a-column-or-columns">
+<h2>Renaming a column or columns<a class="headerlink" href="#Renaming-a-column-or-columns" title="Link to this heading"></a></h2>
+<p>Dataframe column can be renamed using <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.rename()</span></code> function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>timestamp</th>
+      <th>battery_level</th>
+      <th>battery_status</th>
+      <th>battery_health</th>
+      <th>battery_adaptor</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:20:02.924999952+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>74</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:20:02.924999952+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:21:30.405999899+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>73</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:21:30.405999899+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:24:12.805999994+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>72</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:24:12.805999994+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:35:38.561000109+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>72</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:35:38.561000109+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:35:38.953000069+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>72</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2020-01-09 02:35:38.953000069+02:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Change-datatypes">
+<h2>Change datatypes<a class="headerlink" href="#Change-datatypes" title="Link to this heading"></a></h2>
+<p>Let’s then check the dataframe datatypes:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+user                                        object
+device                                      object
+timestamp                                  float64
+battery_level                                int64
+battery_status                               int64
+battery_health                               int64
+battery_adaptor                              int64
+datetime           datetime64[ns, Europe/Helsinki]
+dtype: object
+</pre></div></div>
+</div>
+<p>We can change the datatypes with <code class="docutils literal notranslate"><span class="pre">pandas.astype()</span></code> function. Here we change <strong>battery_health</strong> datatype to categorical:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">astype</span><span class="p">({</span><span class="s1">&#39;battery_health&#39;</span><span class="p">:</span> <span class="s1">&#39;category&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+user                                        object
+device                                      object
+timestamp                                  float64
+battery_level                                int64
+battery_status                               int64
+battery_health                            category
+battery_adaptor                              int64
+datetime           datetime64[ns, Europe/Helsinki]
+dtype: object
+</pre></div></div>
+</div>
+</section>
+<section id="Transforming-a-column-to-a-new-value">
+<h2>Transforming a column to a new value<a class="headerlink" href="#Transforming-a-column-to-a-new-value" title="Link to this heading"></a></h2>
+<p>Dataframe values can be transformed (decoded etc.) into new values by using <code class="docutils literal notranslate"><span class="pre">pandas.transform()</span></code>function.</p>
+<p>Here we add one to the column values.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;battery_adaptor&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2020-01-09 02:20:02.924999952+02:00    1
+2020-01-09 02:21:30.405999899+02:00    1
+2020-01-09 02:24:12.805999994+02:00    1
+2020-01-09 02:35:38.561000109+02:00    1
+2020-01-09 02:35:38.953000069+02:00    3
+                                      ..
+2019-08-09 00:30:48.073999882+03:00    2
+2019-08-09 00:32:40.717999935+03:00    2
+2019-08-09 00:34:23.114000082+03:00    2
+2019-08-09 00:36:05.505000114+03:00    2
+2019-08-07 06:53:35.671000004+03:00    2
+Name: battery_adaptor, Length: 634, dtype: int64
+</pre></div></div>
+</div>
+</section>
+<section id="Resample">
+<h2>Resample<a class="headerlink" href="#Resample" title="Link to this heading"></a></h2>
+<p>Dataframe down/upsampling can be done with <code class="docutils literal notranslate"><span class="pre">pandas.resample()</span></code> function.</p>
+<p>Here we downsample the data by hour and aggregate the mean:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;battery_level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2019-08-05 14:00:00+03:00    45.500000
+2019-08-05 15:00:00+03:00    44.000000
+2019-08-05 16:00:00+03:00    43.000000
+2019-08-05 17:00:00+03:00    42.000000
+2019-08-05 18:00:00+03:00    41.000000
+                               ...
+2020-01-09 19:00:00+02:00    86.166667
+2020-01-09 20:00:00+02:00    82.000000
+2020-01-09 21:00:00+02:00    78.428571
+2020-01-09 22:00:00+02:00    75.000000
+2020-01-09 23:00:00+02:00    72.000000
+Freq: h, Name: battery_level, Length: 3779, dtype: float64
+</pre></div></div>
+</div>
+</section>
+<section id="Groupby">
+<h2>Groupby<a class="headerlink" href="#Groupby" title="Link to this heading"></a></h2>
+<p>For groupwise data inspection, we can use <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.groupby()</span></code> function.</p>
+<p>Let’s first load dataframe having several subjects belonging to different groups.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">SL_ACTIVITY_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>activity</th>
+      <th>group</th>
+    </tr>
+    <tr>
+      <th>timestamp</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-03-27 06:00:00-05:00</th>
+      <td>u00</td>
+      <td>2</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 07:00:00-05:00</th>
+      <td>u00</td>
+      <td>1</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 08:00:00-05:00</th>
+      <td>u00</td>
+      <td>2</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 09:00:00-05:00</th>
+      <td>u00</td>
+      <td>3</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 10:00:00-05:00</th>
+      <td>u00</td>
+      <td>4</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2013-05-31 18:00:00-05:00</th>
+      <td>u59</td>
+      <td>5</td>
+      <td>mild</td>
+    </tr>
+    <tr>
+      <th>2013-05-31 19:00:00-05:00</th>
+      <td>u59</td>
+      <td>5</td>
+      <td>mild</td>
+    </tr>
+    <tr>
+      <th>2013-05-31 20:00:00-05:00</th>
+      <td>u59</td>
+      <td>4</td>
+      <td>mild</td>
+    </tr>
+    <tr>
+      <th>2013-05-31 21:00:00-05:00</th>
+      <td>u59</td>
+      <td>5</td>
+      <td>mild</td>
+    </tr>
+    <tr>
+      <th>2013-05-31 22:00:00-05:00</th>
+      <td>u59</td>
+      <td>1</td>
+      <td>mild</td>
+    </tr>
+  </tbody>
+</table>
+<p>55907 rows × 3 columns</p>
+</div></div>
+</div>
+<p>We can summarize the data by grouping the observations by <strong>group</strong> and <strong>user</strong>, and then aggregating the mean:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;group&#39;</span><span class="p">,</span><span class="s1">&#39;user&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>activity</th>
+    </tr>
+    <tr>
+      <th>group</th>
+      <th>user</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="13" valign="top">mild</th>
+      <th>u02</th>
+      <td>0.922348</td>
+    </tr>
+    <tr>
+      <th>u04</th>
+      <td>1.466960</td>
+    </tr>
+    <tr>
+      <th>u07</th>
+      <td>0.914457</td>
+    </tr>
+    <tr>
+      <th>u16</th>
+      <td>0.702918</td>
+    </tr>
+    <tr>
+      <th>u20</th>
+      <td>0.277946</td>
+    </tr>
+    <tr>
+      <th>u24</th>
+      <td>0.938028</td>
+    </tr>
+    <tr>
+      <th>u27</th>
+      <td>0.653724</td>
+    </tr>
+    <tr>
+      <th>u31</th>
+      <td>0.929495</td>
+    </tr>
+    <tr>
+      <th>u35</th>
+      <td>0.519455</td>
+    </tr>
+    <tr>
+      <th>u43</th>
+      <td>0.809045</td>
+    </tr>
+    <tr>
+      <th>u49</th>
+      <td>1.159767</td>
+    </tr>
+    <tr>
+      <th>u58</th>
+      <td>0.620621</td>
+    </tr>
+    <tr>
+      <th>u59</th>
+      <td>1.626263</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">moderate</th>
+      <th>u18</th>
+      <td>0.445323</td>
+    </tr>
+    <tr>
+      <th>u52</th>
+      <td>1.051735</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">moderately severe</th>
+      <th>u17</th>
+      <td>0.489510</td>
+    </tr>
+    <tr>
+      <th>u23</th>
+      <td>0.412884</td>
+    </tr>
+    <tr>
+      <th rowspan="15" valign="top">none</th>
+      <th>u00</th>
+      <td>1.182973</td>
+    </tr>
+    <tr>
+      <th>u03</th>
+      <td>0.176737</td>
+    </tr>
+    <tr>
+      <th>u05</th>
+      <td>0.606742</td>
+    </tr>
+    <tr>
+      <th>u09</th>
+      <td>1.095908</td>
+    </tr>
+    <tr>
+      <th>u10</th>
+      <td>0.662612</td>
+    </tr>
+    <tr>
+      <th>u14</th>
+      <td>1.005859</td>
+    </tr>
+    <tr>
+      <th>u15</th>
+      <td>0.295990</td>
+    </tr>
+    <tr>
+      <th>u30</th>
+      <td>0.933036</td>
+    </tr>
+    <tr>
+      <th>u32</th>
+      <td>1.113593</td>
+    </tr>
+    <tr>
+      <th>u36</th>
+      <td>0.936281</td>
+    </tr>
+    <tr>
+      <th>u42</th>
+      <td>0.378851</td>
+    </tr>
+    <tr>
+      <th>u44</th>
+      <td>0.292580</td>
+    </tr>
+    <tr>
+      <th>u47</th>
+      <td>0.396026</td>
+    </tr>
+    <tr>
+      <th>u51</th>
+      <td>0.828662</td>
+    </tr>
+    <tr>
+      <th>u56</th>
+      <td>0.840967</td>
+    </tr>
+    <tr>
+      <th rowspan="6" valign="top">severe</th>
+      <th>u01</th>
+      <td>1.063660</td>
+    </tr>
+    <tr>
+      <th>u19</th>
+      <td>0.571792</td>
+    </tr>
+    <tr>
+      <th>u33</th>
+      <td>0.733115</td>
+    </tr>
+    <tr>
+      <th>u34</th>
+      <td>0.454789</td>
+    </tr>
+    <tr>
+      <th>u45</th>
+      <td>0.441134</td>
+    </tr>
+    <tr>
+      <th>u53</th>
+      <td>0.389404</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Summary-statistics">
+<h2>Summary statistics<a class="headerlink" href="#Summary-statistics" title="Link to this heading"></a></h2>
+<p>There are many ways you may want to get an overview of your data.</p>
+<p>Let’s first load mobile phone screen activity data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MULTIUSER_AWARE_SCREEN_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>screen_status</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:06:41.573999882+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578528e+09</td>
+      <td>0</td>
+      <td>2020-01-09 02:06:41.573999882+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:09:29.151999950+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578529e+09</td>
+      <td>1</td>
+      <td>2020-01-09 02:09:29.151999950+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:09:32.790999889+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578529e+09</td>
+      <td>3</td>
+      <td>2020-01-09 02:09:32.790999889+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:11:41.996000051+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578529e+09</td>
+      <td>0</td>
+      <td>2020-01-09 02:11:41.996000051+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:16:19.010999918+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578529e+09</td>
+      <td>1</td>
+      <td>2020-01-09 02:16:19.010999918+02:00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 17:42:41.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>1.565189e+09</td>
+      <td>2</td>
+      <td>2019-08-07 17:42:41.009999990+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 18:32:41.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>1.565192e+09</td>
+      <td>1</td>
+      <td>2019-08-07 18:32:41.009999990+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 19:22:41.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>1.565195e+09</td>
+      <td>0</td>
+      <td>2019-08-07 19:22:41.009999990+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 20:12:41.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>1.565198e+09</td>
+      <td>1</td>
+      <td>2019-08-07 20:12:41.009999990+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 21:02:41.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>1.565201e+09</td>
+      <td>2</td>
+      <td>2019-08-07 21:02:41.009999990+03:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>343 rows × 5 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Hourly-data">
+<h2>Hourly data<a class="headerlink" href="#Hourly-data" title="Link to this heading"></a></h2>
+<p>It is easy to get the amount of data (observations) in each hour</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hourly</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="n">hourly</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2019-08-05  14    20
+            15     1
+            16     1
+            17     1
+            18     1
+                  ..
+2020-01-09  18     4
+            20     4
+            21    19
+            22     3
+            23    12
+Length: 94, dtype: int64
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The index is the (day, hour) pairs and the</span>
+<span class="c1"># value is the number at that time</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> had </span><span class="si">%d</span><span class="s1"> data points&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">hourly</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">hourly</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(datetime.date(2019, 8, 5), 14) had 20 data points
+</pre></div></div>
+</div>
+</section>
+<section id="Occurrence">
+<h2>Occurrence<a class="headerlink" href="#Occurrence" title="Link to this heading"></a></h2>
+<p>In niimpy, <strong>occurrence</strong> is a way to see the completeness of data.</p>
+<p>Occurence is calculated as:</p>
+<ul class="simple">
+<li><p>Divide the data into time intervals (1 hour by default).</p></li>
+<li><p>Divide each interval into bins (5 bins by default).</p></li>
+<li><p>Count the number of bins that have data. This is <span class="math notranslate nohighlight">\(occurrence\)</span>.</p></li>
+<li><p>For each interval, report <span class="math notranslate nohighlight">\(occurrence\)</span>.</p></li>
+</ul>
+<p>This isn’t the perfect measure, but is reasonably effective and simple to calculate. For data which isn’t continuous (like screen data we are actually using), it shows how much the sensor has been used.</p>
+<p>Note that the “uniformly present data” is not true for all data sources.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">occurrences</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">occurrence</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">occurrences</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>occurrence</th>
+    </tr>
+    <tr>
+      <th>time</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:00:00+03:00</th>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:00:00+03:00</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 16:00:00+03:00</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 17:00:00+03:00</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 18:00:00+03:00</th>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>We can create a simplified presentation (pivot table) for the data by using <code class="docutils literal notranslate"><span class="pre">pandas.pivot()</span></code>function:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">occurrences</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">occurrences</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">date</span>
+<span class="n">occurrences</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">occurrences</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span>
+<span class="n">occurrences</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;day&#39;</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;hour&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="5" halign="left">occurrence</th>
+    </tr>
+    <tr>
+      <th>hour</th>
+      <th>14</th>
+      <th>15</th>
+      <th>16</th>
+      <th>17</th>
+      <th>18</th>
+    </tr>
+    <tr>
+      <th>day</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05</th>
+      <td>4.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../reading/" class="btn btn-neutral float-left" title="Reading" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../preprocessing/" class="btn btn-neutral float-right" title="Preprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

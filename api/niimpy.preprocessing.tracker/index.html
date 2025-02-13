@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.tracker module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.preprocessing.util module" href="../niimpy.preprocessing.util/" />
+    <link rel="prev" title="niimpy.preprocessing.survey module" href="../niimpy.preprocessing.survey/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.tracker module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.preprocessing.tracker.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.preprocessing.tracker">
+<span id="niimpy-preprocessing-tracker-module"></span><h1>niimpy.preprocessing.tracker module<a class="headerlink" href="#module-niimpy.preprocessing.tracker" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.tracker.extract_features_tracker">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.tracker.</span></span><span class="sig-name descname"><span class="pre">extract_features_tracker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/tracker/#extract_features_tracker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.tracker.extract_features_tracker" title="Link to this definition"></a></dt>
+<dd><p>This function computes and organizes the selected features for tracker data
+recorded using Polar Ignite.</p>
+<p>The complete list of features that can be calculated are: tracker_daily_step_distribution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>features: dict, optional</strong></dt><dd><p>Dictionary keys contain the names of the features to compute.
+The value of the keys is the list of parameters that will be passed to the function.
+If none is given, all features will be computed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>result: dataframe</dt><dd><p>Resulting dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.tracker.step_summary">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.tracker.</span></span><span class="sig-name descname"><span class="pre">step_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'values'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/tracker/#step_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.tracker.step_summary" title="Link to this definition"></a></dt>
+<dd><p>Return the summary of step count in a time range. The summary includes the following information
+of step count per day: mean, standard deviation, min, max</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe containing the hourly step count of an individual. The dataframe must be date time index.</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments. These can be:</p>
+<dl class="simple">
+<dt>value_col: str.</dt><dd><p>Column contains step values. Default value is “values”.</p>
+</dd>
+<dt>user_id: list. Optional</dt><dd><p>List of user id. If none given, returns summary for all users.</p>
+</dd>
+<dt>start_date: string. Optional</dt><dd><p>Start date of time segment used for computing the summary. If not given, acquire summary for the whole time range.</p>
+</dd>
+<dt>end_date: string.  Optional</dt><dd><p>End date of time segment used for computing the summary. If not given, acquire summary for the whole time range.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>summary_df: pandas DataFrame</dt><dd><p>A dataframe containing user id and associated step summary.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.tracker.tracker_step_distribution">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.tracker.</span></span><span class="sig-name descname"><span class="pre">tracker_step_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'steps'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'h'}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeframe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/tracker/#tracker_step_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.tracker.tracker_step_distribution" title="Link to this definition"></a></dt>
+<dd><p>Return distribution of steps within a time range.
+The number of step is sampled according to the frequency rule in resample_args.
+This is divided by the total number of steps in a larger time frame, given by
+the timeframe argument.</p>
+<p>Using default parameters produces a daily step distribution.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>steps_df</strong><span class="classifier">Pandas Dataframe</span></dt><dd><p>Dataframe the step distribution of each individual.</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments. These can be:</p>
+<dl class="simple">
+<dt>steps_column: str. Optional</dt><dd><p>Column contains step values. Default value is “steps”.</p>
+</dd>
+<dt>resample_args: dict. Optional</dt><dd><p>Dictionary containing the resample arguments. Default value is {‘rule’: ‘h’}.</p>
+</dd>
+<dt>timeframe: string. Optional</dt><dd><p>Time frame used for computing the distribution. Default value is ‘D’.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>df: pandas DataFrame</dt><dd><p>A dataframe containing the distribution of step count.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.preprocessing.survey/" class="btn btn-neutral float-left" title="niimpy.preprocessing.survey module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.preprocessing.util/" class="btn btn-neutral float-right" title="niimpy.preprocessing.util module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

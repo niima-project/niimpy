@@ -1,0 +1,1050 @@
+{
+ "cells": [
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Database interface\n",
+    "\n",
+    "**The database interface is old and not recommend for new users, due to it being very specialized.**  It does, however, provide a way to operate on a lot of data without loading it all into memory.  The module remains since it provides the backend to `niimpy.read_sqlite`.\n",
+    "\n",
+    "We currently do not document the database interface well, and this is legacy documentation.  If this proves useful to someone, we will go and improve.\n",
+    "\n",
+    "Most data in databases would be read via `read.read_sqlite` instead:\n",
+    "```python\n",
+    "df = niimpy.read_sqlite(FILE_NAME, TABLE_NAME, tz=TZ)\n",
+    "```\n",
+    "\n"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Initial setup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:44.690787Z",
+     "start_time": "2018-11-19T22:29:44.618292Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import niimpy\n",
+    "data = niimpy.open(niimpy.sampledata.DATA, tz='Europe/Helsinki')"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "## Conventions"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### Common column names\n",
+    "* `time`: unixtime, integer or float\n",
+    "* `ts`: pandas.Timestamp\n",
+    "* DataFrame and Series indexes, wherever possible, are returned as pandas.DateTimeIndexes (which is a pandas.Timestamp)\n",
+    "*"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "## Common arguments"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "* `table=`: First required positional argument.\n",
+    "\n",
+    "* `user=`: Second required positional argument. User ID (str) to use to filter data.  This is always a required argument, but there are two special values:\n",
+    "  * Use `niimpy.ALL` for all users.\n",
+    "  * Use `None` for single-user databases.\n",
+    "  \n",
+    "* `start=`, `end=`: Limit the range of selected data.  The times can be given in different formats: unixtime (int or float), string (parsed smartly with dateutil, this seems to be localtime), or a Python `datetime.datetime` object (python seems to interpert naive datetime objects as localtime).\n",
+    "\n",
+    "* `limit=<int>`: Return at most this many results.  This can be useful for initial testing: select a few tens or hundreds of results to see if it works before selecting everything.\n",
+    "\n",
+    "* `offset=<int>`: Companion of `limit`: how many values to skip when returning results. "
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "## Multi-user databases\n",
+    "\n",
+    "There is a distinction between a single-user database and multi-user database: the difference is that a multi-user database has a `user` and `device` columns, a single-user database doesn't.  (The single-user database wolud be better called \"single-device\").  This distinction is sort of historical, but serves as a somewhat useful way to distinguish between the \"easy\" case, and cases where you *have* to consider multiple devices.\n",
+    "\n",
+    "All functions take a `user` argument, which selects the user to return within the data.  They also, in the future, take a `device` argument which filters on device name.\n",
+    "\n",
+    "The `user` argument must also be given for single-user databases, but should be given as `niimpy.ALL`."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "## Database functions: metadata\n",
+    "These functions give you information about the data within the database"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### Users in database: `Database.users`\n",
+    "Returns `None` if single-user database otherwise a `set` of usernames."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:44.705357Z",
+     "start_time": "2018-11-19T22:29:44.698742Z"
+    },
+    "editable": true
+   },
+   "outputs": [],
+   "source": [
+    "data.users()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### Tables in database: `Database.tables`\n",
+    "Returns all tables in database"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:44.740295Z",
+     "start_time": "2018-11-19T22:29:44.718238Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'AwareScreen'}"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.tables()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### Amount of data per user and per table: `Database.user_table_counts`\n",
+    "Returns a `pandas.DataFrame` with rows of different tables (converters) and columns of users.  The values are count of data for that (converter, user).\n",
+    "\n",
+    "The single-user version has a more limited form, rows are tables and there is one column, `count`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:44.836862Z",
+     "start_time": "2018-11-19T22:29:44.748873Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>count</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>AwareScreen</th>\n",
+       "      <td>1156</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "            count\n",
+       "AwareScreen  1156"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.user_table_counts()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### First, last timestamp in database: `Database.first`, `Database.last`\n",
+    "Let's say you want to find the first and last datapoint for a certain (converter, user).  Remember, for single-user databases we use `None` as the user argument.\n",
+    "\n",
+    "Output is a trivial DataFrame with columns `time` (unixtime) and `datetime` (pandas.Timestamp)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:45.085162Z",
+     "start_time": "2018-11-19T22:29:44.841513Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>time</th>\n",
+       "      <th>datetime</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1.531171e+09</td>\n",
+       "      <td>2018-07-10 00:13:17.933000192+03:00</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "           time                            datetime\n",
+       "0  1.531171e+09 2018-07-10 00:13:17.933000192+03:00"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.first('AwareScreen', None)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:45.100634Z",
+     "start_time": "2018-11-19T22:29:45.089956Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Timestamp('2018-07-10 00:13:17.933000192+0300', tz='Europe/Helsinki')"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.first('AwareScreen', None)['datetime'][0]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:45.115354Z",
+     "start_time": "2018-11-19T22:29:45.105380Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'2018-07-10'"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.first('AwareScreen', None)['datetime'][0].strftime('%Y-%m-%d')"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### Count of data for (converter, user): `Database.count`\n",
+    "Basically the same as first/last timestamp:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:45.130267Z",
+     "start_time": "2018-11-19T22:29:45.119817Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>count</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1156</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   count\n",
+       "0   1156"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.count('AwareScreen', None)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:45.142922Z",
+     "start_time": "2018-11-19T22:29:45.134634Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1156"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.count('AwareScreen', None)['count'][0]"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "## Accessing data: database methods\n",
+    "These functions all access data from a database `data` and return data frames."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### Raw data: `Database.raw`\n",
+    "This returns the raw data in a table.  It can tell you the columns, etc."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:32:15.701184Z",
+     "start_time": "2018-11-19T22:32:15.670251Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>time</th>\n",
+       "      <th>screen_status</th>\n",
+       "      <th>datetime</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 00:13:17.933000192+03:00</th>\n",
+       "      <td>1.531171e+09</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2018-07-10 00:13:17.933000192+03:00</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 00:13:28.672000+03:00</th>\n",
+       "      <td>1.531171e+09</td>\n",
+       "      <td>0</td>\n",
+       "      <td>2018-07-10 00:13:28.672000+03:00</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 00:13:28.717999872+03:00</th>\n",
+       "      <td>1.531171e+09</td>\n",
+       "      <td>2</td>\n",
+       "      <td>2018-07-10 00:13:28.717999872+03:00</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 12:05:05.299000064+03:00</th>\n",
+       "      <td>1.531214e+09</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2018-07-10 12:05:05.299000064+03:00</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 12:05:09.783000064+03:00</th>\n",
+       "      <td>1.531214e+09</td>\n",
+       "      <td>0</td>\n",
+       "      <td>2018-07-10 12:05:09.783000064+03:00</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                             time screen_status   \n",
+       "2018-07-10 00:13:17.933000192+03:00  1.531171e+09             1  \\\n",
+       "2018-07-10 00:13:28.672000+03:00     1.531171e+09             0   \n",
+       "2018-07-10 00:13:28.717999872+03:00  1.531171e+09             2   \n",
+       "2018-07-10 12:05:05.299000064+03:00  1.531214e+09             1   \n",
+       "2018-07-10 12:05:09.783000064+03:00  1.531214e+09             0   \n",
+       "\n",
+       "                                                               datetime  \n",
+       "2018-07-10 00:13:17.933000192+03:00 2018-07-10 00:13:17.933000192+03:00  \n",
+       "2018-07-10 00:13:28.672000+03:00       2018-07-10 00:13:28.672000+03:00  \n",
+       "2018-07-10 00:13:28.717999872+03:00 2018-07-10 00:13:28.717999872+03:00  \n",
+       "2018-07-10 12:05:05.299000064+03:00 2018-07-10 12:05:05.299000064+03:00  \n",
+       "2018-07-10 12:05:09.783000064+03:00 2018-07-10 12:05:09.783000064+03:00  "
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.raw(\"AwareScreen\", None).head(5)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### Timestamps of data: `Database.timestamps`\n",
+    "This returns the timestamps of all data, but not the data itself (this assumes that the data is created with a `time` column that has unixtime in it - which is the Koota standard).\n",
+    "\n",
+    "There are two different ways data can be returned:\n",
+    "* If the database is multi-user and a `user` argument is **not** given, return a DataFrame with index of the timestamps and a `user` column.\n",
+    "* If the database is multi-user and a `user` argument is given, return only a `pandas.Series` with that user's and table's timestamps.\n",
+    "* If the database is single-user, only return a `pandas.Series` with the timestamps (there can be no confusion)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:45.261087Z",
+     "start_time": "2018-11-19T22:29:45.241201Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0   2018-07-10 00:13:17.933000192+03:00\n",
+       "1      2018-07-10 00:13:28.672000+03:00\n",
+       "2   2018-07-10 00:13:28.717999872+03:00\n",
+       "3   2018-07-10 12:05:05.299000064+03:00\n",
+       "4   2018-07-10 12:05:09.783000064+03:00\n",
+       "Name: time, dtype: datetime64[ns, Europe/Helsinki]"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.timestamps(\"AwareScreen\", None).head()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### Data hourly summaries: `Database.hourly`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:45.289518Z",
+     "start_time": "2018-11-19T22:29:45.265298Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>day</th>\n",
+       "      <th>hour</th>\n",
+       "      <th>count</th>\n",
+       "      <th>screen_status_mean</th>\n",
+       "      <th>screen_status_std</th>\n",
+       "      <th>screen_status_count</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 00:00:00+03:00</th>\n",
+       "      <td>2018-07-10</td>\n",
+       "      <td>0</td>\n",
+       "      <td>3</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>None</td>\n",
+       "      <td>3</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                  day  hour  count  screen_status_mean   \n",
+       "2018-07-10 00:00:00+03:00  2018-07-10     0      3                 1.0  \\\n",
+       "\n",
+       "                          screen_status_std  screen_status_count  \n",
+       "2018-07-10 00:00:00+03:00              None                    3  "
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.hourly(\"AwareScreen\", None, columns=['screen_status']).head(1)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "If you give it a list of columns, it will give you the mean/standard deviation/count "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:45.314827Z",
+     "start_time": "2018-11-19T22:29:45.293717Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>day</th>\n",
+       "      <th>hour</th>\n",
+       "      <th>count</th>\n",
+       "      <th>screen_status_mean</th>\n",
+       "      <th>screen_status_std</th>\n",
+       "      <th>screen_status_count</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 00:00:00+03:00</th>\n",
+       "      <td>2018-07-10</td>\n",
+       "      <td>0</td>\n",
+       "      <td>3</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>None</td>\n",
+       "      <td>3</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                  day  hour  count  screen_status_mean   \n",
+       "2018-07-10 00:00:00+03:00  2018-07-10     0      3                 1.0  \\\n",
+       "\n",
+       "                          screen_status_std  screen_status_count  \n",
+       "2018-07-10 00:00:00+03:00              None                    3  "
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.hourly(\"AwareScreen\", None, columns=['screen_status']).head(1)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### Data occurrence in intervals: `Database.occurrence`\n",
+    "\n",
+    "*Note: this function calculates occurrence from the database.  There is also a utility function which calculates occurance from time serieses (described below).  They should have the same effect, but the other function is more flexible.*\n",
+    "\n",
+    "This makes a measure of data occurrence for sensors which should be continually sending data.  To do this, it:\n",
+    "* Divides all time into hours\n",
+    "* Divides all hours into five 12-minute intervals\n",
+    "* Count the number of 12-minute intervals that have data.  This is $occurrence$\n",
+    "* For each hour, report $occurrence$.  If it is 5, then assume we have data which is somewhat uniformly occuring in time.  If it is 0, then we had no data.\n",
+    "\n",
+    "This isn't the perfect measure, but is reasonably effective and simple to calculate.  For data which isn't continuous (like screen data we are actually using), it shows how much the sensor has been used.\n",
+    "\n",
+    "Column meanings: `day` is obvious, `hour` is hour of day, `occurrence` is the measure described above, `count` is total number of data points in this hour, `withdata` is which of the 12-min intervals (0-4) have data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:45.340778Z",
+     "start_time": "2018-11-19T22:29:45.319128Z"
+    },
+    "collapsed": false,
+    "editable": true,
+    "jupyter": {
+     "outputs_hidden": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>day</th>\n",
+       "      <th>hour</th>\n",
+       "      <th>occurrence</th>\n",
+       "      <th>count</th>\n",
+       "      <th>withdata</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 00:00:00+03:00</th>\n",
+       "      <td>2018-07-10</td>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 12:00:00+03:00</th>\n",
+       "      <td>2018-07-10</td>\n",
+       "      <td>12</td>\n",
+       "      <td>4</td>\n",
+       "      <td>18</td>\n",
+       "      <td>0,1,2,3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 14:00:00+03:00</th>\n",
+       "      <td>2018-07-10</td>\n",
+       "      <td>14</td>\n",
+       "      <td>2</td>\n",
+       "      <td>6</td>\n",
+       "      <td>1,3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 15:00:00+03:00</th>\n",
+       "      <td>2018-07-10</td>\n",
+       "      <td>15</td>\n",
+       "      <td>3</td>\n",
+       "      <td>13</td>\n",
+       "      <td>2,3,4</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2018-07-10 19:00:00+03:00</th>\n",
+       "      <td>2018-07-10</td>\n",
+       "      <td>19</td>\n",
+       "      <td>2</td>\n",
+       "      <td>7</td>\n",
+       "      <td>0,3</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                  day  hour  occurrence  count withdata\n",
+       "2018-07-10 00:00:00+03:00  2018-07-10     0           1      3        1\n",
+       "2018-07-10 12:00:00+03:00  2018-07-10    12           4     18  0,1,2,3\n",
+       "2018-07-10 14:00:00+03:00  2018-07-10    14           2      6      1,3\n",
+       "2018-07-10 15:00:00+03:00  2018-07-10    15           3     13    2,3,4\n",
+       "2018-07-10 19:00:00+03:00  2018-07-10    19           2      7      0,3"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.occurrence(\"AwareScreen\", None).head()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "## Miscelaneous calculations on databases"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "editable": true
+   },
+   "source": [
+    "### Sum of survey scores: `Database.get_survey_score`\n",
+    "\n",
+    "TODO: needs further documenting and an example.\n",
+    "\n",
+    "The `get_survey_score` is a convenience method to get the sum of scores of a survey.  It can only be used on Survey tables.\n",
+    "\n",
+    "It has the standard `table` and `user` arguments, a `survey` argument (filters for survey questions, this is a prefix for the \"id\" column).\n",
+    "\n",
+    "TODO: get sample data and use it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2018-11-19T22:29:45.348715Z",
+     "start_time": "2018-11-19T22:29:45.345087Z"
+    },
+    "editable": true,
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "#data.get_survey_score(table='HyksSurveyAllAnswers', user=niimpy.ALL, survey='PHQ9')"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

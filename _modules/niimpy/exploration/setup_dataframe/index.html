@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.exploration.setup_dataframe &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.exploration.setup_dataframe</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.exploration.setup_dataframe</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
+
+<div class="viewcode-block" id="create_dataframe">
+<a class="viewcode-back" href="../../../../api/niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_dataframe">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_dataframe</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a sample Pandas dataframe used by the test functions.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        Pandas dataframe containing sample data.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">dti</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2018-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
+    
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;user_1&#39;</span><span class="p">,</span><span class="s1">&#39;user_2&#39;</span><span class="p">,</span><span class="s1">&#39;user_3&#39;</span><span class="p">,</span><span class="s1">&#39;user_4&#39;</span><span class="p">,</span><span class="s1">&#39;user_5&#39;</span><span class="p">,</span><span class="s1">&#39;user_6&#39;</span><span class="p">,</span><span class="s1">&#39;user_7&#39;</span><span class="p">,</span><span class="s1">&#39;user_8&#39;</span><span class="p">,</span><span class="s1">&#39;user_9&#39;</span><span class="p">],</span> 
+         <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;group_1&#39;</span><span class="p">,</span><span class="s1">&#39;group_1&#39;</span><span class="p">,</span><span class="s1">&#39;group_1&#39;</span><span class="p">,</span><span class="s1">&#39;group_2&#39;</span><span class="p">,</span><span class="s1">&#39;group_2&#39;</span><span class="p">,</span><span class="s1">&#39;group_2&#39;</span><span class="p">,</span><span class="s1">&#39;group_3&#39;</span><span class="p">,</span><span class="s1">&#39;group_3&#39;</span><span class="p">,</span><span class="s1">&#39;group_3&#39;</span><span class="p">],</span>
+         <span class="s1">&#39;col_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">],</span> 
+         <span class="s1">&#39;col_2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">]}</span>
+    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">d</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">dti</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="create_categorical_dataframe">
+<a class="viewcode-back" href="../../../../api/niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_categorical_dataframe">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_categorical_dataframe</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a sample Pandas dataframe used by the test functions.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        Pandas dataframe containing sample data.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">dti</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2018-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
+    
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;user_1&#39;</span><span class="p">,</span><span class="s1">&#39;user_2&#39;</span><span class="p">,</span><span class="s1">&#39;user_3&#39;</span><span class="p">,</span><span class="s1">&#39;user_4&#39;</span><span class="p">,</span><span class="s1">&#39;user_5&#39;</span><span class="p">,</span><span class="s1">&#39;user_6&#39;</span><span class="p">,</span><span class="s1">&#39;user_7&#39;</span><span class="p">,</span><span class="s1">&#39;user_8&#39;</span><span class="p">,</span><span class="s1">&#39;user_9&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;group_1&#39;</span><span class="p">,</span><span class="s1">&#39;group_1&#39;</span><span class="p">,</span><span class="s1">&#39;group_1&#39;</span><span class="p">,</span><span class="s1">&#39;group_2&#39;</span><span class="p">,</span><span class="s1">&#39;group_2&#39;</span><span class="p">,</span><span class="s1">&#39;group_2&#39;</span><span class="p">,</span><span class="s1">&#39;group_3&#39;</span><span class="p">,</span><span class="s1">&#39;group_3&#39;</span><span class="p">,</span><span class="s1">&#39;group_3&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;id_1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;str_1&quot;</span><span class="p">,</span><span class="s2">&quot;str_2&quot;</span><span class="p">,</span><span class="s2">&quot;str_3&quot;</span><span class="p">,</span><span class="s2">&quot;str_1&quot;</span><span class="p">,</span><span class="s2">&quot;str_2&quot;</span><span class="p">,</span><span class="s2">&quot;str_3&quot;</span><span class="p">,</span><span class="s2">&quot;str_1&quot;</span><span class="p">,</span><span class="s2">&quot;str_2&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="s1">&#39;id_2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;str_1&quot;</span><span class="p">,</span><span class="s2">&quot;str_2&quot;</span><span class="p">,</span><span class="s2">&quot;str_3&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;str_2&quot;</span><span class="p">,</span><span class="s2">&quot;str_3&quot;</span><span class="p">,</span><span class="s2">&quot;str_1&quot;</span><span class="p">,</span><span class="s2">&quot;str_2&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">],</span>
+        <span class="s1">&#39;id_3&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;str_3&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;str_2&quot;</span><span class="p">,</span><span class="s2">&quot;str_3&quot;</span><span class="p">,</span><span class="s2">&quot;str_1&quot;</span><span class="p">,</span><span class="s2">&quot;str_2&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">],</span>
+    <span class="p">}</span>
+    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">d</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">dti</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="create_timeindex_dataframe">
+<a class="viewcode-back" href="../../../../api/niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_timeindex_dataframe">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_timeindex_dataframe</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a datetime index Pandas dataframe </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    nrows : int</span>
+<span class="sd">        Number of rows</span>
+<span class="sd">    ncols : int</span>
+<span class="sd">        Number of columns</span>
+<span class="sd">    random_state: float, optional</span>
+<span class="sd">        Random seed. If not given, default to 33.</span>
+<span class="sd">    freq: string, optional:</span>
+<span class="sd">        Sampling frequency.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        Pandas dataframe containing sample data with random missing rows.    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Create a nrows x ncols matrix</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">freq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;h&#39;</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">_makeDatetimeIndex</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">def create_missing_dataframe():</span>
+<span class="sd">    &quot;&quot;&quot;Create a Pandas dataframe with random missingness.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        Pandas dataframe containing sample data with random missing rows.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    dti = pd.date_range(&quot;2018-01-01&quot;, periods=9, freq=&quot;h&quot;)</span>
+<span class="sd">    </span>
+<span class="sd">    d = {&#39;user&#39;: [&#39;user_1&#39;,&#39;user_2&#39;,&#39;user_3&#39;,&#39;user_4&#39;,&#39;user_5&#39;,&#39;user_6&#39;,&#39;user_7&#39;,&#39;user_8&#39;,&#39;user_9&#39;], </span>
+<span class="sd">         &#39;group&#39;: [&#39;group_1&#39;,&#39;group_1&#39;,&#39;group_1&#39;,&#39;group_2&#39;,&#39;group_2&#39;,&#39;group_2&#39;,&#39;group_3&#39;,&#39;group_3&#39;,&#39;group_3&#39;],</span>
+<span class="sd">         &#39;col_1&#39;: [1, 2, 3,4,5,6,7,8,9], </span>
+<span class="sd">         &#39;col_2&#39;: [10, 11, 12, 13, 14, 15, 16, 17, 18]}</span>
+<span class="sd">    </span>
+<span class="sd">    df = pd.DataFrame(data=d,index=dti)</span>
+<span class="sd">    </span>
+<span class="sd">    # Randomly set some values to NaN</span>
+<span class="sd">    for col in df.columns:</span>
+<span class="sd">        df.loc[df.sample(frac=0.25).index, col] = pd.np.nan</span>
+
+<span class="sd">    data = (np.random.random(1000).reshape((50, 20)) &gt; 0.5).astype(bool)</span>
+<span class="sd">    df = pd.DataFrame(data).replace({False: None})</span>
+<span class="sd">    df = df.set_index(pd.period_range(&#39;1/1/2011&#39;, &#39;2/1/2015&#39;, freq=&#39;M&#39;))</span>
+<span class="sd">    df.index = df.index.to_timestamp()</span>
+
+<span class="sd">    return df</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="create_missing_dataframe">
+<a class="viewcode-back" href="../../../../api/niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_missing_dataframe">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_missing_dataframe</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a Pandas dataframe with random missingness.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    nrows : int</span>
+<span class="sd">        Number of rows</span>
+<span class="sd">    ncols : int</span>
+<span class="sd">        Number of columns</span>
+<span class="sd">    density: float</span>
+<span class="sd">        Amount of available data</span>
+<span class="sd">    random_state: float, optional</span>
+<span class="sd">        Random seed. If not given, default to 33.</span>
+<span class="sd">    index_type: float, optional</span>
+<span class="sd">        Accepts the following values: &quot;dt&quot; for timestamp, &quot;int&quot; for integer.</span>
+<span class="sd">    freq: string, optional:</span>
+<span class="sd">        Sampling frequency. This option is only available is index_type is &quot;dt&quot;. </span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        Pandas dataframe containing sample data with random missing rows.    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Create a nrows x ncols matrix</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">index_type</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">index_type</span> <span class="o">==</span> <span class="s2">&quot;dt&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">freq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;h&#39;</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">_makeDatetimeIndex</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">index_type</span> <span class="o">==</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t recognize index_type. Try the following values: &#39;dt&#39;, &#39;int&#39;.&quot;</span><span class="p">)</span>
+            
+    <span class="n">i_idx</span><span class="p">,</span> <span class="n">j_idx</span> <span class="o">=</span> <span class="n">_create_missing_idx</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">random_state</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i_idx</span><span class="p">,</span> <span class="n">j_idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_makeDatetimeIndex</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">dr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">bdate_range</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">dr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_missing_idx</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">random_state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">random_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">random_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+
+    <span class="c1"># below is cribbed from scipy.sparse</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">density</span><span class="p">)</span> <span class="o">*</span> <span class="n">nrows</span> <span class="o">*</span> <span class="n">ncols</span><span class="p">))</span>
+    <span class="c1"># generate a few more to ensure unique values</span>
+    <span class="n">min_rows</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">fac</span> <span class="o">=</span> <span class="mf">1.02</span>
+    <span class="n">extra_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">size</span> <span class="o">+</span> <span class="n">min_rows</span><span class="p">,</span> <span class="n">fac</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_gen_unique_rand</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">_extra_size</span><span class="p">):</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">_extra_size</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ind</span> <span class="o">*</span> <span class="n">nrows</span> <span class="o">*</span> <span class="n">ncols</span><span class="p">))[:</span><span class="n">size</span><span class="p">]</span>
+
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">_gen_unique_rand</span><span class="p">(</span><span class="n">random_state</span><span class="p">,</span> <span class="n">extra_size</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">ind</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+        <span class="n">extra_size</span> <span class="o">*=</span> <span class="mf">1.05</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">_gen_unique_rand</span><span class="p">(</span><span class="n">random_state</span><span class="p">,</span> <span class="n">extra_size</span><span class="p">)</span>
+
+    <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ind</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">nrows</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">ind</span> <span class="o">-</span> <span class="n">j</span> <span class="o">*</span> <span class="n">nrows</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">i</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">j</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

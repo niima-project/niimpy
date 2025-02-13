@@ -1,0 +1,1161 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Location Data &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+    <link rel="next" title="Application data" href="../application/" />
+    <link rel="prev" title="Preprocessing" href="../" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">Preprocessing</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Location Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Read-data">Read data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Filter-data">Filter data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Downsample">Downsample</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Feature-extraction">Feature extraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Implementing-your-own-features">Implementing your own features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../application/">Application data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/">Audio Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../battery/">Battery Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/">Call and Message Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../screen/">Screen On/Off Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../survey/">Survey Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracker/">Tracker Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../">Preprocessing</a></li>
+      <li class="breadcrumb-item active">Location Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user_guide/preprocessing/location.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Location-Data">
+<h1>Location Data<a class="headerlink" href="#Location-Data" title="Link to this heading"></a></h1>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading"></a></h2>
+<p>GPS location data contain rich information about people’s behavioral and mobility patterns. However, working with such data is a challenging task since there exists a lot of noise and missingness. Also, designing relevant features to gain knowledge about the mobility pattern of subjects is a crucial task.</p>
+<p>Location data is expected to have the following columns (column names can be different, but in that case they must be provided as parameters):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user</span></code>: Subject ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">device</span></code>: Device ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">latitude</span></code>: Latitude as a floating point number</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">longitude</span></code>: Longitude as a floating point number</p></li>
+</ul>
+<p>Optional columns include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">speed</span></code>: Speed measured at the location</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Niimpy</span></code> provides these main functions to clean, downsample, and extract features from GPS location data:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">niimpy.preprocessing.location.filter_location</span></code>: removes low-quality location data points</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">niimpy.util.aggregate</span></code>: downsamples data points to reduce noise</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">niimpy.preprocessing.location.extract_features_location</span></code>: feature extraction from location data</p></li>
+</ul>
+<p>In the following, we go through analysing a subset of location data provided in <a class="reference external" href="https://studentlife.cs.dartmouth.edu/dataset.html">StudentLife</a> dataset.</p>
+</section>
+<section id="Read-data">
+<h2>Read data<a class="headerlink" href="#Read-data" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">niimpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy.preprocessing.location</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nilo</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/u/24/rantahj1/unix/miniconda3/envs/niimpy/lib/python3.12/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">GPS_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(9857, 6)
+</pre></div></div>
+</div>
+<p>There are 9857 location datapoints with 6 columns in the dataset. Let us have a quick look at the data:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>double_latitude</th>
+      <th>double_longitude</th>
+      <th>double_speed</th>
+      <th>user</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-03-27 06:03:29+02:00</th>
+      <td>1364357009</td>
+      <td>43.706667</td>
+      <td>-72.289097</td>
+      <td>0.00</td>
+      <td>gps_u01</td>
+      <td>2013-03-27 06:03:29+02:00</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 06:23:29+02:00</th>
+      <td>1364358209</td>
+      <td>43.706637</td>
+      <td>-72.289066</td>
+      <td>0.00</td>
+      <td>gps_u01</td>
+      <td>2013-03-27 06:23:29+02:00</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 06:43:25+02:00</th>
+      <td>1364359405</td>
+      <td>43.706678</td>
+      <td>-72.289018</td>
+      <td>0.25</td>
+      <td>gps_u01</td>
+      <td>2013-03-27 06:43:25+02:00</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 07:03:29+02:00</th>
+      <td>1364360609</td>
+      <td>43.706665</td>
+      <td>-72.289087</td>
+      <td>0.00</td>
+      <td>gps_u01</td>
+      <td>2013-03-27 07:03:29+02:00</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 07:23:25+02:00</th>
+      <td>1364361805</td>
+      <td>43.706808</td>
+      <td>-72.289370</td>
+      <td>0.00</td>
+      <td>gps_u01</td>
+      <td>2013-03-27 07:23:25+02:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>For further analysis we need a <code class="docutils literal notranslate"><span class="pre">latitude</span></code>, <code class="docutils literal notranslate"><span class="pre">longitude</span></code>, <code class="docutils literal notranslate"><span class="pre">speed</span></code>, and <code class="docutils literal notranslate"><span class="pre">user</span></code> column. <code class="docutils literal notranslate"><span class="pre">user</span></code> refers to a unique identifier for a subject.</p>
+<p>These columsn exist in the data, but some column names are different. We could provide these column names as arguments, but it is easier to rename them here:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;double_latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;double_longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;double_speed&quot;</span><span class="p">:</span> <span class="s2">&quot;speed&quot;</span><span class="p">})</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>speed</th>
+      <th>user</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-03-27 06:03:29+02:00</th>
+      <td>1364357009</td>
+      <td>43.706667</td>
+      <td>-72.289097</td>
+      <td>0.00</td>
+      <td>gps_u01</td>
+      <td>2013-03-27 06:03:29+02:00</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 06:23:29+02:00</th>
+      <td>1364358209</td>
+      <td>43.706637</td>
+      <td>-72.289066</td>
+      <td>0.00</td>
+      <td>gps_u01</td>
+      <td>2013-03-27 06:23:29+02:00</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 06:43:25+02:00</th>
+      <td>1364359405</td>
+      <td>43.706678</td>
+      <td>-72.289018</td>
+      <td>0.25</td>
+      <td>gps_u01</td>
+      <td>2013-03-27 06:43:25+02:00</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 07:03:29+02:00</th>
+      <td>1364360609</td>
+      <td>43.706665</td>
+      <td>-72.289087</td>
+      <td>0.00</td>
+      <td>gps_u01</td>
+      <td>2013-03-27 07:03:29+02:00</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 07:23:25+02:00</th>
+      <td>1364361805</td>
+      <td>43.706808</td>
+      <td>-72.289370</td>
+      <td>0.00</td>
+      <td>gps_u01</td>
+      <td>2013-03-27 07:23:25+02:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Filter-data">
+<h2>Filter data<a class="headerlink" href="#Filter-data" title="Link to this heading"></a></h2>
+<p>Three different methods for filtering low-quality data points are implemented in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">remove_disabled</span></code>: removes data points whose <code class="docutils literal notranslate"><span class="pre">disabled</span></code> column is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remove_network</span></code>: removes data points whose <code class="docutils literal notranslate"><span class="pre">provider</span></code> column is <code class="docutils literal notranslate"><span class="pre">network</span></code>. This method keeps only <code class="docutils literal notranslate"><span class="pre">gps</span></code>-derived data points.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remove_zeros</span></code>: removes data points close to the point &lt;lat=0, lon=0&gt;.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">nilo</span><span class="o">.</span><span class="n">filter_location</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">remove_disabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">remove_network</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">remove_zeros</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(9857, 6)
+</pre></div></div>
+</div>
+<p>There is no such data points in this dataset; therefore the dataset does not change after this step and the number of datapoints remains the same.</p>
+</section>
+<section id="Downsample">
+<h2>Downsample<a class="headerlink" href="#Downsample" title="Link to this heading"></a></h2>
+<p>Because GPS records are not always very accurate and they have random errors, it is a good practice to downsample or aggregate data points which are recorded in close time windows. In other words, all the records in the same time window are aggregated to form one GPS record associated to that time window. There are a few parameters to adjust the aggregation setting:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">freq</span></code>: represents the length of time window. This parameter follows the formatting of the pandas <a class="reference external" href="https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases">time offset aliases</a> function. For example ‘5T’ means 5 minute intervals.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method_numerical</span></code>: specifies how numerical columns should be aggregated. Options are ‘mean’, ‘median’, ‘sum’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method_categorical</span></code>: specifies how categorical columns should be aggregated. Options are ‘first’, ‘mode’ (most frequent), ‘last’.</p></li>
+</ul>
+<p>The aggregation is performed for each <code class="docutils literal notranslate"><span class="pre">user</span></code> (subject) separately.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">binned_data</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;5min&#39;</span><span class="p">,</span> <span class="n">method_numerical</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">)</span>
+<span class="n">binned_data</span> <span class="o">=</span> <span class="n">binned_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">binned_data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(9755, 5)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">binned_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>speed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-03-27 06:00:00+02:00</th>
+      <td>gps_u00</td>
+      <td>1.364357e+09</td>
+      <td>43.759135</td>
+      <td>-72.329240</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 06:20:00+02:00</th>
+      <td>gps_u00</td>
+      <td>1.364358e+09</td>
+      <td>43.759503</td>
+      <td>-72.329018</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 06:40:00+02:00</th>
+      <td>gps_u00</td>
+      <td>1.364359e+09</td>
+      <td>43.759134</td>
+      <td>-72.329238</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 07:00:00+02:00</th>
+      <td>gps_u00</td>
+      <td>1.364361e+09</td>
+      <td>43.759135</td>
+      <td>-72.329240</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 07:20:00+02:00</th>
+      <td>gps_u00</td>
+      <td>1.364362e+09</td>
+      <td>43.759135</td>
+      <td>-72.329240</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>After binning, the number of datapoints (bins) reduces to 9755.</p>
+</section>
+<section id="Feature-extraction">
+<h2>Feature extraction<a class="headerlink" href="#Feature-extraction" title="Link to this heading"></a></h2>
+<p>Here is the list of features <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> extracts from location data:</p>
+<ol class="arabic simple">
+<li><p>Distance based features (<code class="docutils literal notranslate"><span class="pre">niimpy.preprocessing.location.location_distance_features</span></code>):</p></li>
+</ol>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dist_total</span></code></p></td>
+<td><p>Total distance a person traveled in meters</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">variance</span></code>, <code class="docutils literal notranslate"><span class="pre">log_variance</span></code></p></td>
+<td><p>Variance is defined as sum of variance in latitudes and longitudes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">speed_average</span></code>, <code class="docutils literal notranslate"><span class="pre">speed_variance</span></code>, and <code class="docutils literal notranslate"><span class="pre">speed_max</span></code></p></td>
+<td><p>Statistics of speed (m/s). Speed, if not given, can be calculated by dividing the distance between two consequitive bins by
+their time difference</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_bins</span></code></p></td>
+<td><p>Number of location bins that a user recorded in dataset</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="2">
+<li><p>Significant place related features (<code class="docutils literal notranslate"><span class="pre">niimpy.preprocessing.location.location_significant_place_features</span></code>):</p></li>
+</ol>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_static</span></code></p></td>
+<td><p>Number of static points. Static points are defined as bins whose speed is lower than a threshold</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_moving</span></code></p></td>
+<td><p>Number of moving points. Equivalent to <code class="docutils literal notranslate"><span class="pre">n_bins</span> <span class="pre">-</span> <span class="pre">n_static</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_home</span></code></p></td>
+<td><p>Number of static bins which are close to the person’s home. Home is defined the place most visited during nights. More formally,
+all the locations recorded during 12 Am and 6 AM are clusterd and the center of largest cluster is assumed to be home</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_dist_home</span></code></p></td>
+<td><p>Maximum distance from home</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_sps</span></code></p></td>
+<td><p>Bumber of significant places. All of the static bins are clusterd using DBSCAN algorithm. Each cluster represents a Signicant
+Place (SP) for a user</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_rare</span></code></p></td>
+<td><p>Number of rarely visited (referred as outliers in DBSCAN)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_transitions</span></code></p></td>
+<td><p>Number of transitions between significant places</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_top1</span></code>, <code class="docutils literal notranslate"><span class="pre">n_top2</span></code>, <code class="docutils literal notranslate"><span class="pre">n_top3</span></code>, <code class="docutils literal notranslate"><span class="pre">n_top4</span></code>, <code class="docutils literal notranslate"><span class="pre">n_top5</span></code></p></td>
+<td><p>: Number of bins in the top <code class="docutils literal notranslate"><span class="pre">N</span></code> cluster. In other words, <code class="docutils literal notranslate"><span class="pre">n_top1</span></code> shows the number of times the person has visited the most
+freqently visited place</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">entropy</span></code>, <code class="docutils literal notranslate"><span class="pre">normalized_entropy</span></code></p></td>
+<td><p>: Entropy of time spent in clusters. Normalized entropy is the entropy divided by the number of clusters</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="3">
+<li><p>Local time feature (<code class="docutils literal notranslate"><span class="pre">niimpy.preprocessing.location.location_local_time</span></code>):</p></li>
+</ol>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">time_local</span></code></p></td>
+<td><p>Local time at the location. This feature is calculated from the time index and the longitude of the location.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+
+<span class="c1"># extract all the available features</span>
+<span class="n">all_features</span> <span class="o">=</span> <span class="n">nilo</span><span class="o">.</span><span class="n">extract_features_location</span><span class="p">(</span><span class="n">binned_data</span><span class="p">)</span>
+<span class="n">all_features</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>n_sps</th>
+      <th>max_dist_home</th>
+      <th>n_rare</th>
+      <th>n_transitions</th>
+      <th>n_static</th>
+      <th>n_top3</th>
+      <th>normalized_entropy</th>
+      <th>entropy</th>
+      <th>n_top1</th>
+      <th>...</th>
+      <th>n_moving</th>
+      <th>n_top4</th>
+      <th>dist_total</th>
+      <th>n_bins</th>
+      <th>speed_max</th>
+      <th>log_variance</th>
+      <th>speed_average</th>
+      <th>speed_variance</th>
+      <th>variance</th>
+      <th>timezone</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-03-31 00:00:00+02:00</th>
+      <td>gps_u00</td>
+      <td>5.0</td>
+      <td>2.074186e+04</td>
+      <td>3.0</td>
+      <td>48.0</td>
+      <td>280.0</td>
+      <td>34.0</td>
+      <td>3.163631</td>
+      <td>5.091668</td>
+      <td>106.0</td>
+      <td>...</td>
+      <td>8.0</td>
+      <td>20.0</td>
+      <td>4.132581e+05</td>
+      <td>288.0</td>
+      <td>1.750000</td>
+      <td>-5.761688</td>
+      <td>0.033496</td>
+      <td>0.044885</td>
+      <td>0.003146</td>
+      <td>America/New_York</td>
+    </tr>
+    <tr>
+      <th>2013-04-30 00:00:00+03:00</th>
+      <td>gps_u00</td>
+      <td>10.0</td>
+      <td>2.914790e+05</td>
+      <td>45.0</td>
+      <td>194.0</td>
+      <td>1966.0</td>
+      <td>135.0</td>
+      <td>3.163793</td>
+      <td>7.284903</td>
+      <td>1016.0</td>
+      <td>...</td>
+      <td>66.0</td>
+      <td>45.0</td>
+      <td>2.179693e+06</td>
+      <td>2032.0</td>
+      <td>33.250000</td>
+      <td>-1.439133</td>
+      <td>0.269932</td>
+      <td>6.129277</td>
+      <td>0.237133</td>
+      <td>America/New_York</td>
+    </tr>
+    <tr>
+      <th>2013-05-31 00:00:00+03:00</th>
+      <td>gps_u00</td>
+      <td>12.0</td>
+      <td>1.041741e+06</td>
+      <td>86.0</td>
+      <td>107.0</td>
+      <td>1827.0</td>
+      <td>86.0</td>
+      <td>2.696752</td>
+      <td>6.701177</td>
+      <td>1030.0</td>
+      <td>...</td>
+      <td>76.0</td>
+      <td>65.0</td>
+      <td>6.986551e+06</td>
+      <td>1903.0</td>
+      <td>34.000000</td>
+      <td>2.114892</td>
+      <td>0.351280</td>
+      <td>7.590639</td>
+      <td>8.288687</td>
+      <td>America/New_York</td>
+    </tr>
+    <tr>
+      <th>2013-06-30 00:00:00+03:00</th>
+      <td>gps_u00</td>
+      <td>1.0</td>
+      <td>2.035837e+04</td>
+      <td>15.0</td>
+      <td>10.0</td>
+      <td>22.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>15.0</td>
+      <td>...</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>2.252893e+05</td>
+      <td>24.0</td>
+      <td>0.559017</td>
+      <td>-4.200287</td>
+      <td>0.044126</td>
+      <td>0.021490</td>
+      <td>0.014991</td>
+      <td>America/New_York</td>
+    </tr>
+    <tr>
+      <th>2013-03-31 00:00:00+02:00</th>
+      <td>gps_u01</td>
+      <td>2.0</td>
+      <td>6.975303e+02</td>
+      <td>0.0</td>
+      <td>8.0</td>
+      <td>307.0</td>
+      <td>0.0</td>
+      <td>4.392317</td>
+      <td>3.044522</td>
+      <td>286.0</td>
+      <td>...</td>
+      <td>18.0</td>
+      <td>0.0</td>
+      <td>1.328713e+04</td>
+      <td>325.0</td>
+      <td>2.692582</td>
+      <td>-12.520989</td>
+      <td>0.056290</td>
+      <td>0.073370</td>
+      <td>0.000004</td>
+      <td>America/New_York</td>
+    </tr>
+    <tr>
+      <th>2013-04-30 00:00:00+03:00</th>
+      <td>gps_u01</td>
+      <td>1.0</td>
+      <td>1.156568e+04</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>1999.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1998.0</td>
+      <td>...</td>
+      <td>71.0</td>
+      <td>0.0</td>
+      <td>1.238429e+05</td>
+      <td>2070.0</td>
+      <td>32.750000</td>
+      <td>-10.510017</td>
+      <td>0.066961</td>
+      <td>0.629393</td>
+      <td>0.000027</td>
+      <td>America/New_York</td>
+    </tr>
+    <tr>
+      <th>2013-05-31 00:00:00+03:00</th>
+      <td>gps_u01</td>
+      <td>1.0</td>
+      <td>3.957650e+03</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>3079.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>3078.0</td>
+      <td>...</td>
+      <td>34.0</td>
+      <td>0.0</td>
+      <td>1.228235e+05</td>
+      <td>3113.0</td>
+      <td>20.250000</td>
+      <td>-11.364454</td>
+      <td>0.026392</td>
+      <td>0.261978</td>
+      <td>0.000012</td>
+      <td>America/New_York</td>
+    </tr>
+  </tbody>
+</table>
+<p>7 rows × 23 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># extract only distance related features</span>
+<span class="n">distance_features</span> <span class="o">=</span> <span class="n">nilo</span><span class="o">.</span><span class="n">location_distance_features</span><span class="p">(</span><span class="n">binned_data</span><span class="p">)</span>
+<span class="n">distance_features</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>dist_total</th>
+      <th>n_bins</th>
+      <th>speed_max</th>
+      <th>user</th>
+      <th>log_variance</th>
+      <th>speed_average</th>
+      <th>speed_variance</th>
+      <th>variance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-03-31 00:00:00+02:00</th>
+      <td>4.132581e+05</td>
+      <td>288.0</td>
+      <td>1.750000</td>
+      <td>gps_u00</td>
+      <td>-5.761688</td>
+      <td>0.033496</td>
+      <td>0.044885</td>
+      <td>0.003146</td>
+    </tr>
+    <tr>
+      <th>2013-04-30 00:00:00+03:00</th>
+      <td>2.179693e+06</td>
+      <td>2032.0</td>
+      <td>33.250000</td>
+      <td>gps_u00</td>
+      <td>-1.439133</td>
+      <td>0.269932</td>
+      <td>6.129277</td>
+      <td>0.237133</td>
+    </tr>
+    <tr>
+      <th>2013-05-31 00:00:00+03:00</th>
+      <td>6.986551e+06</td>
+      <td>1903.0</td>
+      <td>34.000000</td>
+      <td>gps_u00</td>
+      <td>2.114892</td>
+      <td>0.351280</td>
+      <td>7.590639</td>
+      <td>8.288687</td>
+    </tr>
+    <tr>
+      <th>2013-06-30 00:00:00+03:00</th>
+      <td>2.252893e+05</td>
+      <td>24.0</td>
+      <td>0.559017</td>
+      <td>gps_u00</td>
+      <td>-4.200287</td>
+      <td>0.044126</td>
+      <td>0.021490</td>
+      <td>0.014991</td>
+    </tr>
+    <tr>
+      <th>2013-03-31 00:00:00+02:00</th>
+      <td>1.328713e+04</td>
+      <td>325.0</td>
+      <td>2.692582</td>
+      <td>gps_u01</td>
+      <td>-12.520989</td>
+      <td>0.056290</td>
+      <td>0.073370</td>
+      <td>0.000004</td>
+    </tr>
+    <tr>
+      <th>2013-04-30 00:00:00+03:00</th>
+      <td>1.238429e+05</td>
+      <td>2070.0</td>
+      <td>32.750000</td>
+      <td>gps_u01</td>
+      <td>-10.510017</td>
+      <td>0.066961</td>
+      <td>0.629393</td>
+      <td>0.000027</td>
+    </tr>
+    <tr>
+      <th>2013-05-31 00:00:00+03:00</th>
+      <td>1.228235e+05</td>
+      <td>3113.0</td>
+      <td>20.250000</td>
+      <td>gps_u01</td>
+      <td>-11.364454</td>
+      <td>0.026392</td>
+      <td>0.261978</td>
+      <td>0.000012</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The 2 rows correspond to the 2 users present in the dataset. Each column represents a feature. For example user <code class="docutils literal notranslate"><span class="pre">gps_u00</span></code> has higher variance in speeds (<code class="docutils literal notranslate"><span class="pre">speed_variance</span></code>) and location variance (<code class="docutils literal notranslate"><span class="pre">variance</span></code>) compared to the user <code class="docutils literal notranslate"><span class="pre">gps_u01</span></code>.</p>
+</section>
+<section id="Implementing-your-own-features">
+<h2>Implementing your own features<a class="headerlink" href="#Implementing-your-own-features" title="Link to this heading"></a></h2>
+<p>If you want to implement a customized feature you can do so with defining a function that accepts a dataframe and returns a dataframe or a series. The returned object should be indexed by <code class="docutils literal notranslate"><span class="pre">user</span></code>. Then, when calling <code class="docutils literal notranslate"><span class="pre">extract_features_location</span></code> function, you add the newly implemented function to the <code class="docutils literal notranslate"><span class="pre">feature_functions</span></code> argument. The default feature functions implemented in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> are in this variable:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nilo</span><span class="o">.</span><span class="n">ALL_FEATURES</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&lt;function niimpy.preprocessing.location.location_significant_place_features(df, latitude_column=&#39;latitude&#39;, longitude_column=&#39;latitude&#39;, speed_column=&#39;speed&#39;, speed_threshold=0.277, resample_args={&#39;rule&#39;: &#39;1ME&#39;}, **kwargs)&gt;: {},
+ &lt;function niimpy.preprocessing.location.location_distance_features(df, latitude_column=&#39;latitude&#39;, longitude_column=&#39;latitude&#39;, speed_column=&#39;speed&#39;, resample_args={&#39;rule&#39;: &#39;1ME&#39;}, **kwargs)&gt;: {},
+ &lt;function niimpy.preprocessing.location.location_local_time(df, longitude_column=&#39;longitude&#39;, latitude_column=&#39;latitude&#39;, resample_args={&#39;rule&#39;: &#39;1ME&#39;})&gt;: {}}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">binned_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>time</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>speed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-03-27 06:00:00+02:00</th>
+      <td>gps_u00</td>
+      <td>2013-03-27 06:00:00+02:00</td>
+      <td>43.759135</td>
+      <td>-72.329240</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 06:20:00+02:00</th>
+      <td>gps_u00</td>
+      <td>2013-03-27 06:20:00+02:00</td>
+      <td>43.759503</td>
+      <td>-72.329018</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 06:40:00+02:00</th>
+      <td>gps_u00</td>
+      <td>2013-03-27 06:40:00+02:00</td>
+      <td>43.759134</td>
+      <td>-72.329238</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 07:00:00+02:00</th>
+      <td>gps_u00</td>
+      <td>2013-03-27 07:00:00+02:00</td>
+      <td>43.759135</td>
+      <td>-72.329240</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 07:20:00+02:00</th>
+      <td>gps_u00</td>
+      <td>2013-03-27 07:20:00+02:00</td>
+      <td>43.759135</td>
+      <td>-72.329240</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>You can add your new function to the <code class="docutils literal notranslate"><span class="pre">nilo.ALL_FEATURES</span></code> dictionary and call <code class="docutils literal notranslate"><span class="pre">extract_features_location</span></code> function. Or if you are interested in only extracting your desired feature you can pass a dictionary containing just that function, like here:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># customized function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">max_speed</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="n">customized_features</span> <span class="o">=</span> <span class="n">nilo</span><span class="o">.</span><span class="n">extract_features_location</span><span class="p">(</span>
+    <span class="n">binned_data</span><span class="p">,</span>
+    <span class="n">features</span><span class="o">=</span><span class="p">{</span><span class="n">max_speed</span><span class="p">:</span> <span class="p">{}}</span>
+<span class="p">)</span>
+<span class="n">customized_features</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>speed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>gps_u00</td>
+      <td>34.00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>gps_u01</td>
+      <td>32.75</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../" class="btn btn-neutral float-left" title="Preprocessing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../application/" class="btn btn-neutral float-right" title="Application data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

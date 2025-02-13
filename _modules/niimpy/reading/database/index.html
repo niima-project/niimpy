@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.reading.database &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.reading.database</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.reading.database</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Read data from sqlite3 databases.</span>
+
+<span class="sd">**Direct use of this module is mostly deprecated.**</span>
+
+<span class="sd">Read data from sqlite3 databases, both into pandas.DataFrame:s (Database.raw(),</span>
+<span class="sd">among other functions), and Database objects.  The Database object does not</span>
+<span class="sd">immediately load data, but provides some methods to load data on demand later,</span>
+<span class="sd">possibly doing various filtering and preprocessing already at the loading</span>
+<span class="sd">stage.  This can save memory and processing time, but is much more complex.</span>
+
+<span class="sd">This module is mostly out-of-use now: read.read_sqlite is used instead, which</span>
+<span class="sd">wraps the .raw() method and reads all data into memory.</span>
+
+<span class="sd">Database format</span>
+<span class="sd">---------------</span>
+
+<span class="sd">When reading data, a table name must be specified (which allows multiple</span>
+<span class="sd">datasets to be put in one file).  Table column names map to dataframe column</span>
+<span class="sd">names, with various standard processing (for example the &#39;time&#39; column being</span>
+<span class="sd">converted to the index)</span>
+
+
+<span class="sd">Quick usage</span>
+<span class="sd">-----------</span>
+
+<span class="sd">db = database.open(FILE_NAME, tz=TZ)</span>
+<span class="sd">df = db.raw(TABLE_NAME, user=database.ALL)</span>
+
+<span class="sd">Recommend usage:</span>
+
+<span class="sd">df = niimpy.read_sqlite(FILE_NAME, TABLE_NAME, tz=TZ)</span>
+
+<span class="sd">See also</span>
+<span class="sd">--------</span>
+
+<span class="sd">niimpy.reading.read_*: currently recommended functions to access all types of</span>
+<span class="sd">data, including databases.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># Conventions:</span>
+<span class="c1">#  time     column is unixtime</span>
+<span class="c1">#  datetime column is pandas.Timestamp</span>
+<span class="c1">#  date     column is string &#39;YYYY-MM-DD&#39;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">dateutil.parser</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
+
+<div class="viewcode-block" id="ALL">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.ALL">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ALL</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sentinel value for all users&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<span class="c1">#def datetime_selector(x):</span>
+<span class="c1">#    selectors = [ ]</span>
+<span class="c1">#    if isinstance(x, int):</span>
+<span class="c1">#        pass</span>
+<span class="c1">#    else:  pd</span>
+<span class="c1">#    selectors.append(&#39;{0} &lt; time&#39;.format(x))</span>
+<span class="c1">#    return &#39; AND time&lt;&#39;</span>
+
+<div class="viewcode-block" id="open">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.open">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Open a database and return a Data1 object&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Data1</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="n">tz</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Online variance calculation</span>
+<span class="c1"># https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Welford&#39;s_online_algorithm</span>
+<div class="viewcode-block" id="sqlite3_stdev">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.sqlite3_stdev">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">sqlite3_stdev</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sqlite sample standard deviation function in pure Python.</span>
+
+<span class="sd">    With `conn.create_aggregate(&quot;stdev&quot;, 1, sqlite3_stdev)`, this adds a</span>
+<span class="sd">    stdev function to sqlite.</span>
+
+<span class="sd">    Edge cases:</span>
+
+<span class="sd">    - Empty list = nan (different than C function, which is zero)</span>
+<span class="sd">    - Ignores nan input values (does not count them).  (different than</span>
+<span class="sd">      numpy: returns nan)</span>
+<span class="sd">    - ignores non-numeric types (no conversion)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M2</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="viewcode-block" id="sqlite3_stdev.step">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.sqlite3_stdev.step">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Number</span><span class="p">):</span>
+           <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">+=</span> <span class="n">delta</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span>
+        <span class="n">delta2</span> <span class="o">=</span> <span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M2</span> <span class="o">+=</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">delta2</span></div>
+
+<div class="viewcode-block" id="sqlite3_stdev.finalize">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.sqlite3_stdev.finalize">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">)</span></div>
+</div>
+
+
+
+
+<div class="viewcode-block" id="Data1">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Data1</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Database wrapper for niimpy data.</span>
+
+<span class="sd">    This opens a database and provides methods to do common operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Open the database.</span>
+
+<span class="sd">        Don&#39;t do anything yet, but stores the open connection object on</span>
+<span class="sd">        self.conn for future functions to use.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">db</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Database does not exist: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">db</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">SQLITE3_EXTENSIONS_FILENAME</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">enable_load_extension</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">load_extension</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">SQLITE3_EXTENSIONS_FILENAME</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">create_aggregate</span><span class="p">(</span><span class="s2">&quot;stdev&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sqlite3_stdev</span><span class="p">)</span>
+            <span class="c1">#print(&quot;SQLite3 extension module not available, some functions will not work.&quot;, file=sys.stderr)</span>
+            <span class="c1">#print(&quot;Future niimpy versions will improve this.&quot;, file=sys.stderr)</span>
+            <span class="c1">#print(&quot;({0})&quot;.format(util.SQLITE3_EXTENSIONS_FILENAME), file=sys.stderr)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_singleuser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_single_user</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tz</span> <span class="o">=</span> <span class="n">tz</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_single_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Detect if this is a single-user database</span>
+
+<span class="sd">        Currently this is run at the start and set per-database, not</span>
+<span class="sd">        per-table.  A single-user database is missing a &#39;user&#39; column</span>
+<span class="sd">        and thus requires a little bit of special-casing.  Not much, but</span>
+<span class="sd">        some.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tables</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">table</span> <span class="o">==</span> <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="c1"># Using pragma_table_info would be better, but this</span>
+            <span class="c1"># requires about sqlite 3.16 or above, which is a bit much</span>
+            <span class="c1"># (requires ubuntu 18.04 or anaconda).</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT user FROM </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2"> LIMIT 1&quot;</span><span class="o">%</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;no such column&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_singleuser</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="c1">#print(&quot;Detected single-user database&quot;, file=sys.stderr)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Data1.execute">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.execute">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute rauw SQL code.</span>
+
+<span class="sd">        Execute raw SQL.  Smply proxy all arguments to</span>
+<span class="sd">        self.conn.execute().  This is simply a convenience shortcut.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Data1.tables">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.tables">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List all tables that are inside of this database.</span>
+
+<span class="sd">        Returns a set.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT name FROM sqlite_master WHERE type=&quot;table&quot;&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;errors&#39;</span><span class="p">}</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sql_where_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Query generation convenience.</span>
+
+<span class="sd">        Generates a SQL &quot;WHERE user={user}&quot; line, if needed for this</span>
+<span class="sd">        database and query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_singleuser</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="n">ALL</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="n">user</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;AND user=:user&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Specify user or user=niimpy.ALL for all users&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sql_where_daterange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Query generation convenience.</span>
+
+<span class="sd">        Generates a SQL &quot;WHERE start &lt;= time AND time &lt; end&quot; line if</span>
+<span class="sd">        needed for this query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">where</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">to_timestamp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span> <span class="k">return</span> <span class="n">x</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span> <span class="k">return</span> <span class="n">dateutil</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span> <span class="c1"># localtime</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown timestamp format: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">start</span><span class="p">:</span>
+            <span class="n">where</span> <span class="o">+=</span> <span class="s2">&quot; AND </span><span class="si">%s</span><span class="s2"> &lt;= time &quot;</span><span class="o">%</span><span class="p">(</span><span class="n">to_timestamp</span><span class="p">(</span><span class="n">start</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">end</span><span class="p">:</span>
+            <span class="n">where</span> <span class="o">+=</span> <span class="s2">&quot; AND time &lt; </span><span class="si">%s</span><span class="s2"> &quot;</span><span class="o">%</span><span class="p">(</span><span class="n">to_timestamp</span><span class="p">(</span><span class="n">end</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">where</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sql_select_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Query generation convenience.</span>
+
+<span class="sd">        Generates a SQL &quot;SELECT &#39;user, &#39;&quot; line, if needed.  This is</span>
+<span class="sd">        needed to support both single-user and multi-user databases.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_singleuser</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="n">ALL</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;user, &quot;</span>
+        <span class="k">elif</span> <span class="n">user</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Specify user or user=niimpy.ALL for all users&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sql_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Query generation convenience.</span>
+
+<span class="sd">        Generates a SQL &quot;LIMIT ... OFFSET&quot; line, if needed.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="k">return</span> <span class="s2">&quot;LIMIT -1 OFFSET </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="p">),</span> <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="k">return</span> <span class="s2">&quot;LIMIT </span><span class="si">%s</span><span class="s2"> OFFSET </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">limit</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;LIMIT </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="nb">int</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sql_order_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Query generation convenience.</span>
+
+<span class="sd">        Generates a SQL ORDER BY time line if needed.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">order</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;ORDER BY time&quot;</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sql_group_by_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Query generation convenience.</span>
+
+<span class="sd">        Generates a SQL &quot;GROUP BY user&quot; line, if needed for this query.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_singleuser</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;GROUP BY user&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate string substitutions for SQL queries.</span>
+
+<span class="sd">        This looks at the various function parameters and will return a</span>
+<span class="sd">        dict of substitutions for the query.  This makes the same query</span>
+<span class="sd">        work for both single- and multi-user databases, and avoid</span>
+<span class="sd">        reproducing logic where not needed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">select_user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql_select_user</span><span class="p">(</span><span class="n">user</span><span class="p">),</span>
+                    <span class="n">where_user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql_where_user</span><span class="p">(</span><span class="n">user</span><span class="p">),</span>
+                    <span class="n">where_daterange</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql_where_daterange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">),</span>
+                    <span class="n">limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql_limit</span><span class="p">(</span><span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+                    <span class="n">order_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql_order_by</span><span class="p">(</span><span class="n">order</span><span class="p">),</span>
+                    <span class="n">group_by_user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql_group_by_user</span><span class="p">(),</span>
+                   <span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="Data1.users">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.users">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return set of all users in all tables&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_singleuser</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="n">table</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>                  <span class="n">tables</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">()</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">table_</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+            <span class="n">users</span> <span class="o">|=</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT DISTINCT user FROM &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span><span class="o">%</span><span class="n">table_</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="n">users</span></div>
+
+
+<div class="viewcode-block" id="Data1.validate_username">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.validate_username">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_username</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate a username, for single/multiuser database and so on.</span>
+
+<span class="sd">        This function considers if the database is single or multi-user,</span>
+<span class="sd">        and ensures a valid username or ALL.</span>
+
+<span class="sd">        It returns a valid username, so can be used as a wrapper, to handle</span>
+<span class="sd">        future special cases, e.g.::</span>
+
+<span class="sd">           user = db.validate_username(user)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_singleuser</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ALL</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This is a single-user database and a user was given.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">ALL</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># multiuser</span>
+            <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">ALL</span>  <span class="ow">and</span>  <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This is a multi-user database, a user must be given as a string (or niimpy.ALL).&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">user</span></div>
+
+
+<div class="viewcode-block" id="Data1.user_table_counts">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.user_table_counts">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">user_table_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return table of number of data points per user, per table.</span>
+
+<span class="sd">        Return a dataframe of row=table, column=user, value=number of</span>
+<span class="sd">        counts of that user in that table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_singleuser</span><span class="p">:</span>
+            <span class="c1">#print(self.tables())</span>
+            <span class="n">user_stats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">()),</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,))</span>
+            <span class="c1">#print(user_stats)</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">table_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="ow">in</span> <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT count(*) FROM &quot;</span><span class="si">{table}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table_</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">ALL</span><span class="p">))):</span>
+                    <span class="n">user_stats</span><span class="p">[</span><span class="n">table_</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
+            <span class="k">return</span> <span class="n">user_stats</span>
+        <span class="n">user_stats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">()),</span> <span class="n">columns</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="p">()))</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">table_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT </span><span class="si">{select_user}</span><span class="s1"> count(*) FROM &quot;</span><span class="si">{table}</span><span class="s1">&quot; GROUP BY user&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table_</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">ALL</span><span class="p">))):</span>
+                <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="n">user_stats</span><span class="p">[</span><span class="n">user</span><span class="p">][</span><span class="n">table_</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="k">return</span> <span class="n">user_stats</span></div>
+
+
+<div class="viewcode-block" id="Data1.first">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.first">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_aggregate</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="n">_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return earliest data point.</span>
+
+<span class="sd">        Return None if there is no data.&quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{select_user}</span><span class="s2"> </span><span class="si">{aggregate}</span><span class="s2">(time) AS </span><span class="si">{result_column_name}</span>
+<span class="s2">                              FROM (</span>
+<span class="s2">                                  SELECT * FROM &quot;</span><span class="si">{table}</span><span class="s2">&quot;</span>
+<span class="s2">                                  WHERE 1 </span><span class="si">{where_user}</span><span class="s2"> </span><span class="si">{where_daterange}</span>
+<span class="s2">                                  </span><span class="si">{order_by}</span><span class="s2"> </span><span class="si">{limit}</span>
+<span class="s2">                              )</span>
+<span class="s2">                              </span><span class="si">{group_by_user}</span>
+<span class="s2">                        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+                                   <span class="n">aggregate</span><span class="o">=</span><span class="n">_aggregate</span><span class="p">,</span>
+                                   <span class="n">result_column_name</span><span class="o">=</span><span class="s1">&#39;time&#39;</span> <span class="k">if</span> <span class="n">_aggregate</span><span class="o">!=</span><span class="s1">&#39;count&#39;</span> <span class="k">else</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span>
+                                   <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">_limit</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span><span class="n">user</span><span class="p">,</span> <span class="p">})</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s1">&#39;time&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="Data1.last">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.last">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the latest timestamp.</span>
+
+<span class="sd">        See the &quot;first&quot; for more information.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_aggregate</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Data1.count">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.count">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of rows</span>
+
+<span class="sd">        See the &quot;first&quot; for more information.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_aggregate</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Data1.exists">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.exists">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if any data exists</span>
+
+<span class="sd">        Follows the same syntax as .first(), .last(), and .count(), but</span>
+<span class="sd">        the limit argument is not used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;limit&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span></div>
+
+
+
+<div class="viewcode-block" id="Data1.occurrence">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.occurrence">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">occurrence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">bin_width</span><span class="o">=</span><span class="mi">720</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">n_intervals</span> <span class="o">=</span> <span class="mi">3600</span> <span class="o">/</span> <span class="n">bin_width</span>
+        <span class="n">interval_width</span> <span class="o">=</span> <span class="mi">60</span><span class="o">/</span><span class="n">n_intervals</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{select_user}</span><span class="s2"> day, hour,</span>
+<span class="s2">                                count(*) as occurrence, sum(bin_count) as count, group_concat(interval) AS withdata</span>
+<span class="s2">                            FROM (</span>
+<span class="s2">                                SELECT</span>
+<span class="s2">                                  strftime(&#39;%Y-%m-</span><span class="si">%d</span><span class="s2">&#39;, time, &#39;unixepoch&#39;, &#39;localtime&#39;) AS day,</span>
+<span class="s2">                                  CAST(strftime(&#39;%H&#39;, time, &#39;unixepoch&#39;, &#39;localtime&#39;) AS INTEGER) AS hour,</span>
+<span class="s2">                                  CAST(strftime(&#39;%M&#39;, time, &#39;unixepoch&#39;, &#39;localtime&#39;)/:interval_width AS INTEGER) AS interval,</span>
+<span class="s2">                                  count(*) as bin_count</span>
+<span class="s2">                                 FROM &quot;</span><span class="si">{table}</span><span class="s2">&quot;</span>
+<span class="s2">                                 WHERE 1 </span><span class="si">{where_user}</span><span class="s2"> </span><span class="si">{where_daterange}</span>
+<span class="s2">                                 GROUP BY day, hour, interval</span>
+<span class="s2">                                 </span><span class="si">{limit}</span>
+<span class="s2">                                )</span>
+<span class="s2">                            GROUP BY day, hour</span>
+<span class="s2">                        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+                                   <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;interval_width&#39;</span><span class="p">:</span><span class="n">interval_width</span><span class="p">})</span>
+        <span class="n">util</span><span class="o">.</span><span class="n">df_normalize</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">old_tz</span><span class="o">=</span><span class="n">util</span><span class="o">.</span><span class="n">SYSTEM_TZ</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tz</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="Data1.hourly">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.hourly">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hourly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[],</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">columns</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">column_selector</span> <span class="o">=</span> <span class="s2">&quot;,</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;    avg(</span><span class="si">{0}</span><span class="s2">) AS </span><span class="si">{0}</span><span class="s2">_mean, stdev(</span><span class="si">{0}</span><span class="s2">) AS </span><span class="si">{0}</span><span class="s2">_std, count(</span><span class="si">{0}</span><span class="s2">) AS </span><span class="si">{0}</span><span class="s2">_count&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">)</span>
+            <span class="n">column_selector</span> <span class="o">=</span> <span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">+</span><span class="n">column_selector</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">column_selector</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SELECT</span>
+<span class="s2">                                </span><span class="si">{select_user}</span>
+<span class="s2">                                strftime(&#39;%Y-%m-</span><span class="si">%d</span><span class="s2">&#39;, time, &#39;unixepoch&#39;, &#39;localtime&#39;) AS day,</span>
+<span class="s2">                                CAST(strftime(&#39;%H&#39;, time, &#39;unixepoch&#39;, &#39;localtime&#39;) AS INTEGER) AS hour,</span>
+<span class="s2">                                count(*) as count </span><span class="si">{column_selector}</span>
+<span class="s2">                            FROM (</span>
+<span class="s2">                                SELECT * FROM &quot;</span><span class="si">{table}</span><span class="s2">&quot; </span><span class="si">{order_by}</span><span class="s2"> </span><span class="si">{limit}</span>
+<span class="s2">                                )</span>
+<span class="s2">                            WHERE 1 </span><span class="si">{where_user}</span><span class="s2"> </span><span class="si">{where_daterange}</span>
+<span class="s2">                            GROUP BY day, hour</span>
+<span class="s2">                            </span><span class="si">{limit}</span>
+<span class="s2">                         &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">column_selector</span><span class="o">=</span><span class="n">column_selector</span><span class="p">,</span>
+                                   <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span><span class="n">user</span><span class="p">})</span>
+        <span class="n">util</span><span class="o">.</span><span class="n">df_normalize</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">old_tz</span><span class="o">=</span><span class="n">util</span><span class="o">.</span><span class="n">SYSTEM_TZ</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tz</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="Data1.timestamps">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.timestamps">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timestamps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SELECT</span>
+<span class="s2">                                </span><span class="si">{select_user}</span><span class="s2"> time</span>
+<span class="s2">                            FROM &quot;</span><span class="si">{table}</span><span class="s2">&quot;</span>
+<span class="s2">                            WHERE 1 </span><span class="si">{where_user}</span><span class="s2"> </span><span class="si">{where_daterange}</span>
+<span class="s2">                            </span><span class="si">{order_by}</span>
+<span class="s2">                            </span><span class="si">{limit}</span>
+<span class="s2">                        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+                                   <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+                                   <span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span><span class="n">user</span><span class="p">})</span>
+        <span class="k">if</span> <span class="s1">&#39;user&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+            <span class="c1"># Single user data:</span>
+            <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">util</span><span class="o">.</span><span class="n">df_normalize</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tz</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="Data1.raw">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.raw">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">raw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read all data in a table and return it as a DataFrame.</span>
+
+<span class="sd">        This reads all data (subject to several possible filters) and</span>
+<span class="sd">        returns it as a DataFrame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SELECT</span>
+<span class="s2">                                *</span>
+<span class="s2">                            FROM &quot;</span><span class="si">{table}</span><span class="s2">&quot;</span>
+<span class="s2">                            WHERE 1 </span><span class="si">{where_user}</span><span class="s2"> </span><span class="si">{where_daterange}</span>
+<span class="s2">                            </span><span class="si">{order_by}</span>
+<span class="s2">                            </span><span class="si">{limit}</span>
+<span class="s2">                        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+                                   <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_sql</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+                                   <span class="c1">#select_user=self._sql_select_user(user),  where_user=self._sql_where_user(user),</span>
+                                   <span class="c1">#limit=self._sql_limit(limit)</span>
+                                   <span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span><span class="n">user</span><span class="p">})</span>
+        <span class="k">if</span> <span class="s1">&#39;time&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+            <span class="n">util</span><span class="o">.</span><span class="n">df_normalize</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tz</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="Data1.get_survey_score">
+<a class="viewcode-back" href="../../../../api/niimpy.reading.database/#niimpy.reading.database.Data1.get_survey_score">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_survey_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">survey</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the survey results, summing scores.</span>
+
+<span class="sd">        survey: The servey prefix in the &#39;id&#39; column, e.g. &#39;PHQ9&#39;.  An &#39;_&#39; is appended.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="n">questions</span><span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">survey</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+        <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="s1">&#39;answer&#39;</span><span class="p">])</span>
+        <span class="n">survey_score</span> <span class="o">=</span> <span class="n">answers</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;time&#39;</span><span class="p">])[</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">survey_score</span> <span class="o">=</span> <span class="n">survey_score</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">survey_score</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

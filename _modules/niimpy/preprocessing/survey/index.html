@@ -1,0 +1,492 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.survey &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.survey</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.preprocessing.survey</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Utilities for dealing with survey data</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
+
+
+<span class="c1"># Below, we provide some mappings between standardized survey raw questions and their respective codes</span>
+<span class="c1"># You will need to adjust these mappings to your own needs if your questions do not match with these values.</span>
+
+<span class="c1"># PHQ2: Patient Health Questionnaire. Link: https://en.wikipedia.org/wiki/Patient_Health_Questionnaire</span>
+<span class="n">PHQ2_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Little interest or pleasure in doing things&#39;</span> <span class="p">:</span> <span class="s1">&#39;PHQ2_1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Feeling down depressed or hopeless&#39;</span> <span class="p">:</span> <span class="s1">&#39;PHQ2_2&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># PHQ9: Patient Health Questionnaire. Link: https://en.wikipedia.org/wiki/PHQ-9</span>
+<span class="n">PHQ9_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Little interest or pleasure in doing things&#39;</span> <span class="p">:</span> <span class="s2">&quot;PHQ9_1&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;Feeling down depressed or hopeless&#39;</span> <span class="p">:</span> <span class="s2">&quot;PHQ9_2&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;Trouble falling or staying asleep or sleeping too much&#39;</span> <span class="p">:</span> <span class="s2">&quot;PHQ9_3&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;Feeling tired or having little energy&#39;</span> <span class="p">:</span> <span class="s2">&quot;PHQ9_4&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;Poor appetite or overeating&#39;</span> <span class="p">:</span> <span class="s2">&quot;PHQ9_5&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;Feeling bad about yourself or that you are a failure or have let yourself or your family down&#39;</span> <span class="p">:</span> <span class="s2">&quot;PHQ9_6&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;Trouble concentrating on things such as reading the newspaper or watching television&#39;</span> <span class="p">:</span> <span class="s2">&quot;PHQ9_7&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;Moving or speaking so slowly that other people could have noticed. Or the opposite being so fidgety or restless that you have been moving around a lot more than usual&#39;</span> <span class="p">:</span> <span class="s2">&quot;PHQ9_8&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;Thoughts that you would be better off dead or of hurting yourself&#39;</span> <span class="p">:</span> <span class="s2">&quot;PHQ9_9&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+
+<span class="c1"># PSQI: Pittsburgh Sleep Quality Index. Link: https://en.wikipedia.org/wiki/Pittsburgh_Sleep_Quality_Index</span>
+<span class="n">PSQI_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Currently is your sleep typically interrupted? (For example for attending to a child or due to loud neighbours or medical reasons.)&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSQI_1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;During the past month how often have you taken medicine (prescribed or “over the counter”) to help you sleep&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSQI_2&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;During the past month how often have you had trouble staying awake while driving eating meals or engaging in social activity&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSQI_3&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;During the past month how much of a problem has it been for you to keep up enthusiasm to get things done&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSQI_4&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;During the past month how would you rate your sleep quality overall&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSQI_5&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;When have you usually gone to bed? (hh:mm)&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSQI_6&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;What time have you usually gotten up in the morning? (hh:mm)&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSQI_7&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;How long (in minutes) has it taken you to fall asleep each night&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSQI_8&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;How many hours of actual sleep did you get at night&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSQI_9&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># PSS-10: Perceived Stress Scale. Link: https://en.wikipedia.org/wiki/Perceived_Stress_Scale</span>
+<span class="n">PSS10_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;In the last month how often have you been upset because of something that happened unexpectedly&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSS10_1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;In the last month how often have you felt that you were unable to control the important things in your life&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSS10_2&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;In the last month how often have you felt nervous and “stressed”&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSS10_3&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;In the last month how often have you felt confident about your ability to handle your personal problems&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSS10_4&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;In the last month how often have you felt that things were going your way&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSS10_5&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;In the last month how often have you been able to control irritations in your life&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSS10_6&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;In the last month how often have you felt that you were on top of things&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSS10_7&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;In the last month how often have you been angered because of things that were outside of your control&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSS10_8&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;In the last month how often have you felt difficulties were piling up so high that you could not overcome them&#39;</span> <span class="p">:</span> <span class="s1">&#39;PSS10_9&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;In the last month how often have you found that you could not cope with all the things that you had to do&#39;</span><span class="p">:</span> <span class="s1">&#39;PSS10_10&#39;</span>
+<span class="p">}</span>
+
+<span class="c1"># PANAS: Positive and Negative Affect Schedule. Link: https://en.wikipedia.org/wiki/Positive_and_Negative_Affect_Schedule</span>
+<span class="n">PANAS_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Upset&#39;</span><span class="p">:</span> <span class="s1">&#39;upset&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Hostile&#39;</span><span class="p">:</span> <span class="s1">&#39;hostile&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Alert&#39;</span><span class="p">:</span> <span class="s1">&#39;alert&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Ashamed&#39;</span><span class="p">:</span> <span class="s1">&#39;ashamed&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Inspired&#39;</span><span class="p">:</span> <span class="s1">&#39;inspired&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Nervous&#39;</span><span class="p">:</span> <span class="s1">&#39;nervous&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Determined&#39;</span><span class="p">:</span> <span class="s1">&#39;determined&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Attentive&#39;</span><span class="p">:</span> <span class="s1">&#39;attentive&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Afraid&#39;</span><span class="p">:</span> <span class="s1">&#39;afraid&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Active&#39;</span><span class="p">:</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># GAD: Generalized anxiety disorder. Link: https://en.wikipedia.org/wiki/Generalized_anxiety_disorder</span>
+<span class="n">GAD2_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Feeling nervous anxious or on edge&#39;</span><span class="p">:</span> <span class="s1">&#39;GAD2_1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Not being able to stop or control worrying&#39;</span><span class="p">:</span> <span class="s1">&#39;GAD2_2&#39;</span>
+<span class="p">}</span>
+
+<span class="c1"># The below mappings map between answers to the questionnaires and their numerical values</span>
+<span class="c1"># You will need to adjust these mappings to your own needs if the answers do not match with these values.</span>
+<span class="n">PSS_ANSWER_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;never&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;almost never&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;sometimes&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;fairly often&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s1">&#39;very often&#39;</span><span class="p">:</span> <span class="mi">4</span>
+<span class="p">}</span>
+
+<span class="n">PHQ2_ANSWER_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;not at all&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;several days&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;more than half the days&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;nearly every day&#39;</span><span class="p">:</span> <span class="mi">3</span>
+<span class="p">}</span>
+
+<span class="n">PHQ9_ANSWER_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Not at all&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;Several days&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;More than half the days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;Nearly every day&quot;</span><span class="p">:</span> <span class="mi">3</span>
+<span class="p">}</span>
+
+<span class="c1"># use this mapping for prefix option, so that multiple question id&#39;s can be processed</span>
+<span class="c1"># simultaneuously</span>
+<span class="n">ID_MAP_PREFIX</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;PSS&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">,</span>
+                 <span class="s1">&#39;PHQ2&#39;</span> <span class="p">:</span> <span class="n">PHQ2_ANSWER_MAP</span><span class="p">,</span>
+                 <span class="s1">&#39;GAD2&#39;</span> <span class="p">:</span> <span class="n">PHQ2_ANSWER_MAP</span><span class="p">}</span>
+
+<span class="c1"># use this mapping if you want to explicitly specify the mapping for each question</span>
+<span class="n">ID_MAP</span> <span class="o">=</span>  <span class="p">{</span><span class="s1">&#39;PSS10_1&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">,</span>
+           <span class="s1">&#39;PSS10_2&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">,</span>
+           <span class="s1">&#39;PSS10_3&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">,</span>
+           <span class="s1">&#39;PSS10_4&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">,</span>
+           <span class="s1">&#39;PSS10_5&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">,</span>
+           <span class="s1">&#39;PSS10_6&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">,</span>
+           <span class="s1">&#39;PSS10_7&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">,</span>
+           <span class="s1">&#39;PSS10_8&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">,</span>
+           <span class="s1">&#39;PSS10_9&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">,</span>
+           <span class="s1">&#39;PSS10_10&#39;</span> <span class="p">:</span> <span class="n">PSS_ANSWER_MAP</span><span class="p">}</span>
+
+<span class="n">group_by_columns</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="clean_survey_column_names">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.survey/#niimpy.preprocessing.survey.clean_survey_column_names">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">clean_survey_column_names</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function takes a pandas DataFrame as input and cleans the column names</span>
+<span class="sd">    by removing or replacing specified characters. It helps to ensure standardized</span>
+<span class="sd">    and clean column names for further analysis or processing.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        df : pandas dataframe</span>
+<span class="sd">          The input DataFrame with column names to be cleaned.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        df : pandas.DataFrame</span>
+<span class="sd">          The DataFrame with cleaned column names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;!&#39;</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;}&#39;</span><span class="p">]:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;—&#39;</span><span class="p">]:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="convert_survey_to_numerical_answer">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.survey/#niimpy.preprocessing.survey.convert_survey_to_numerical_answer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_survey_to_numerical_answer</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">id_map</span><span class="p">,</span> <span class="n">use_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert text answers into numerical value (assuming a long dataframe).</span>
+<span class="sd">    Use answer mapping dictionaries provided by the users to convert the answers.</span>
+<span class="sd">    Can convert multiple questions having the same prefix (e.g., PSS10_1, PSS10_2, ...,PSS10_9)</span>
+<span class="sd">    if prefix mapping is provided. Function returns original values for the </span>
+<span class="sd">    answers that have not been specified for conversion.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas dataframe</span>
+<span class="sd">        Dataframe containing the questions</span>
+<span class="sd">        </span>
+<span class="sd">    answer_col : str</span>
+<span class="sd">        Name of the column containing the answers</span>
+<span class="sd">        </span>
+<span class="sd">    question_id : str</span>
+<span class="sd">        Name of the column containing the question id.</span>
+<span class="sd">        </span>
+<span class="sd">    id_map : dictionary</span>
+<span class="sd">        Dictionary containing answer mappings (value) for each question_id (key),</span>
+<span class="sd">        or a dictionary containing a map for each question id prefix if use_prefix </span>
+<span class="sd">        option is used.</span>
+<span class="sd">           </span>
+<span class="sd">    use_prefix : boolean</span>
+<span class="sd">        If False, uses given map (id_map) to convert questions. The default is False.  </span>
+<span class="sd">        If True, use question id prefix map, so that multiple question_id&#39;s having </span>
+<span class="sd">        the same prefix may be converted on the same time. </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : pandas series</span>
+<span class="sd">        Series containing converted values and original values for aswers hat are not </span>
+<span class="sd">        supposed to be converted.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas dataframe.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_map</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="s2">&quot;id_map is not a dictionary.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">use_prefix</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span> <span class="s2">&quot;use_prefix is not a bool.&quot;</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="nb">map</span> <span class="ow">in</span> <span class="n">id_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">use_prefix</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">columns</span>  <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="n">key</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;!&#39;</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;}&#39;</span><span class="p">]:</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;—&#39;</span><span class="p">]:</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="survey_statistic">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.survey/#niimpy.preprocessing.survey.survey_statistic">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">survey_statistic</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resample_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1D&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return statistics for a single survey question or a list of questions.</span>
+<span class="sd">    Assuming that each of the columns contains numerical values representing</span>
+<span class="sd">    answers, this function returns the mean, maximum, minimum and standard</span>
+<span class="sd">    deviation for each question in separate columns.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Input data frame</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of screen</span>
+<span class="sd">        information</span>
+
+<span class="sd">        configuration options include:</span>
+<span class="sd">            columns: string or list(string), optional</span>
+<span class="sd">                A list of columns to process. If empty, the prefix will be</span>
+<span class="sd">                used to identify columns</span>
+<span class="sd">            prefix: string or list(string)</span>
+<span class="sd">                required unless columns is given. The function will process</span>
+<span class="sd">                columns whose name starts with the prefix (QID_0, QID_1, ...)</span>
+<span class="sd">                </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict: pandas.DataFrame</span>
+<span class="sd">        A dataframe containing summaries of each questionaire.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    
+    <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">,</span> <span class="s2">&quot;columns is not a string or a list of strings.&quot;</span>
+    <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">,</span> <span class="s2">&quot;prefix is not a string or a list of strings.&quot;</span>
+    <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either columns or prefix must be specified.&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">pref</span> <span class="ow">in</span> <span class="n">prefix</span><span class="p">:</span>
+                <span class="n">columns</span> <span class="o">+=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">pref</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)]</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">columns</span><span class="p">]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_statistic</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">answer_col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">answer_col</span><span class="o">+</span><span class="s2">&quot;_mean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">answer_col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">answer_col</span><span class="o">+</span><span class="s2">&quot;_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">answer_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">answer_col</span><span class="o">+</span><span class="s2">&quot;_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">answer_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">answer_col</span><span class="o">+</span><span class="s2">&quot;_std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">answer_col</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calculate_statistic</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+
+<div class="viewcode-block" id="sum_survey_scores">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.survey/#niimpy.preprocessing.survey.sum_survey_scores">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sum_survey_scores</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">survey_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sum all columns (like ``PHQ9_*``) to get a survey score.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -------</span>
+<span class="sd">    </span>
+<span class="sd">    df: pandas DataFrame </span>
+<span class="sd">        DataFrame should be a DateTime index, an answer_column with numeric</span>
+<span class="sd">        scores, and an id_column with question IDs like &quot;PHQ9_1&quot;, &quot;PHQ9_2&quot;,</span>
+<span class="sd">        etc.  The given survey_prefix is the &quot;PHQ9&quot; (no underscore) part</span>
+<span class="sd">        which selects the right questions (rows not matching this prefix</span>
+<span class="sd">        won&#39;t be included).</span>
+
+<span class="sd">    survey_prefix: string</span>
+<span class="sd">        The survey prefix in the &#39;id&#39; column, e.g. &#39;PHQ9&#39;.  An &#39;_&#39; is appended.</span>
+<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    Return</span>
+<span class="sd">    -------</span>
+<span class="sd">    survey_score: pandas DataFrame</span>
+<span class="sd">        DataFrame contains the sum of each questionnaires marked with survey_prefix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df_u is not a pandas dataframe&quot;</span>
+    <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">survey_prefix</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">survey_prefix</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">,</span> <span class="s2">&quot;survey_prefix is not a string or a list of strings.&quot;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">survey_prefix</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">survey_prefix</span> <span class="o">=</span> <span class="p">[</span><span class="n">survey_prefix</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">survey_prefix</span><span class="p">:</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)]</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">[</span><span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span>
+                         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;survey_&#39;</span><span class="p">)]</span>
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ALL_FEATURES</span><span class="p">}</span>
+
+<div class="viewcode-block" id="extract_features_survey">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.survey/#niimpy.preprocessing.survey.extract_features_survey">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_features_survey</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates survey features</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pd.DataFrame</span>
+<span class="sd">        dataframe of survey data. Must follow Niimpy format. In additions,</span>
+<span class="sd">        each survey question must be in a single column and the column name</span>
+<span class="sd">        must be formatted as survey-id_question-number (for example PHQ9_3).</span>
+<span class="sd">    features : map (dictionary) of functions that compute features.</span>
+<span class="sd">        it is a map of map, where the keys to the first map is the name of</span>
+<span class="sd">        functions that compute features and the nested map contains the keyword</span>
+<span class="sd">        arguments to that function. If there is no arguments use an empty map.</span>
+<span class="sd">        Default is None. If None, all the available functions are used.</span>
+<span class="sd">        Those functions are in the dict `survey.ALL_FEATURES`.</span>
+<span class="sd">        You can implement your own function and use it instead or add it</span>
+<span class="sd">        to the mentioned map.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    features : pd.DataFrame</span>
+<span class="sd">        Dataframe of computed features where the index is users and columns</span>
+<span class="sd">        are the the features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">ALL_FEATURES</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="s2">&quot;Please input the features as a dictionary&quot;</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">features</span><span class="p">,</span> <span class="n">feature_arg</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">features</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_arg</span><span class="p">)</span>
+        <span class="n">index_by</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">group_by_columns</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">computed_feature</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">computed_feature</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">index_by</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">computed_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+    
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">computed_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">computed_features</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="o">~</span><span class="n">computed_features</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()]</span>
+
+    <span class="k">if</span> <span class="s1">&#39;group&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+        <span class="n">computed_features</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">computed_features</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">computed_features</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

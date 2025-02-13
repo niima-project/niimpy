@@ -1,0 +1,206 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data schema &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="Contribution Guide" href="../contribution_guide/" />
+    <link rel="prev" title="Architecture and workflow" href="../architecture/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#format">Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#standard-columns-in-dataframes">Standard columns in DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#standard-columns-in-on-disk-formats">Standard columns in on-disk formats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Data schema</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/about/schema.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data-schema">
+<h1>Data schema<a class="headerlink" href="#data-schema" title="Link to this heading"></a></h1>
+<p>This page documents the expected data schema of Niimpy.  This is a
+general description that applies to all different types of data that
+Niimpy can handle, and mainly describes measurement metadata.
+Specific types of data (e.g. location data) will have additional
+columns containing the actual data.</p>
+<p>By using a standardized schema (mainly column names), we can promote
+interoperability of various tools.</p>
+<section id="format">
+<h2>Format<a class="headerlink" href="#format" title="Link to this heading"></a></h2>
+<p>Data is in a tabular (relational) format.  A row is an observation,
+and columns are properties of observations.  (At this level of
+abstraction, an “observation” may be one measurement, or processed
+combination of multiple measurements).</p>
+<p>In Niimpy, this is internally stored and handled as a
+pandas.DataFrame.  The schema naturally maps to the columns/rows of
+the DataFrames.</p>
+<p>The on-disk format is currently irrelevant, as long as the producers
+can create a DataFrame of the necessary format.  Currently, we provide
+support sqlite3 and csv.</p>
+<p>Additionally, we provide readers for MHealth data and Google Takeout
+data. These readers convert the data to the standard DataFrame format.</p>
+</section>
+<section id="standard-columns-in-dataframes">
+<h2>Standard columns in DataFrames<a class="headerlink" href="#standard-columns-in-dataframes" title="Link to this heading"></a></h2>
+<p>By having standard columns, we can create portable functions that
+easily operate on diverse data types.</p>
+<ul>
+<li><p>The <strong>DataFrame index</strong> should be a <code class="docutils literal notranslate"><span class="pre">pandas.DatetimeIndex</span></code>.</p>
+<p>The index should represent the time the measurement was taken.
+If the measurement represents a period of time, the index should
+be the starting time of the period.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user</span></code>: opaque identifier for the user.  Often a string or
+integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">device</span></code>: unique identifier for a user’s device (not the
+device type).  For example, a user could have multiple phones, and
+each would have a separate <code class="docutils literal notranslate"><span class="pre">device</span></code> identifier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code>: This is optional at runtime but is used in on disk formats.</p>
+<p>The timestamp of the observation, in unixtime (seconds
+since 00:00 on 1970-01-01), stored as an integer.  Unixtime is a
+globally unique measure
+of an instance of time on Earth, and to get localtime it is combined
+with a timezone.</p>
+<p>In on-disk formats, <code class="docutils literal notranslate"><span class="pre">time</span></code> is considered the master timestamp,
+many other time-based properties are computed from it (though you
+could produce your own DataFrames other ways).  In some of the
+standard formats (CSV/sqlite3), when a file is read, this integer
+column is automatically converted to the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> column below
+and the DataFrame index.</p>
+</li>
+</ul>
+<p>Exploration, analysis and exploration modules expect specific input data columns, representing the actual data.
+For example, the location module expects latitude and longitude columns.
+These columns are documented in the User Guide sections for each module.</p>
+</section>
+<section id="standard-columns-in-on-disk-formats">
+<h2>Standard columns in on-disk formats<a class="headerlink" href="#standard-columns-in-on-disk-formats" title="Link to this heading"></a></h2>
+<p>For the most part, this maps directly to the columns you see above.
+An on-disk format should have a <code class="docutils literal notranslate"><span class="pre">time</span></code> column (unixtime, integer)
+and data columns as described above.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../architecture/" class="btn btn-neutral float-left" title="Architecture and workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../contribution_guide/" class="btn btn-neutral float-right" title="Contribution Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

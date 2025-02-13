@@ -1,0 +1,418 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.analysis.rhythms &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.analysis.rhythms</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.analysis.rhythms</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_align_data</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">period</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a pandas DataFrame aligned by timestamp, starting either at 00:00 daily or 00:00 of a Monday weekly.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : pandas.DataFrame</span>
+<span class="sd">        Input dataframe with a Timestamp index.</span>
+<span class="sd">    period : int</span>
+<span class="sd">        Number of hours for the desired time span (e.g., 24 for daily, 168 for weekly).</span>
+<span class="sd">    type : str</span>
+<span class="sd">        Type of alignment to perform, can be &#39;daily&#39; or &#39;weekly&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    aligned_data : pandas.DataFrame</span>
+<span class="sd">        Dataframe aligned based on the provided alignment type.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError:</span>
+<span class="sd">        Raised if an invalid alignment type is provided.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">freq</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;daily&quot;</span><span class="p">,</span> <span class="s2">&quot;weekly&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Incorrect type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2">&#39;. Choose between &#39;daily&#39; and &#39;weekly&#39;.&quot;</span><span class="p">)</span>
+    
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="n">user_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">user</span><span class="p">]</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+        
+        <span class="c1"># Identify the first index starting at hour 0</span>
+        <span class="n">start_indices</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">user_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># If freq is weekly, further refine to start on a Monday</span>
+        <span class="k">if</span> <span class="n">freq</span> <span class="o">==</span> <span class="s2">&quot;weekly&quot;</span><span class="p">:</span>
+            <span class="n">start_indices</span> <span class="o">=</span> <span class="n">start_indices</span><span class="p">[</span><span class="n">start_indices</span><span class="o">.</span><span class="n">dayofweek</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">start_indices</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">continue</span>
+        
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">start_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">start_time</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">period</span><span class="p">)</span>
+
+        <span class="c1"># Check if data spans the given period</span>
+        <span class="k">if</span> <span class="n">end_time</span> <span class="o">&lt;=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">():</span>
+            <span class="n">filtered_data</span> <span class="o">=</span> <span class="n">user_data</span><span class="p">[</span><span class="n">start_time</span><span class="p">:</span><span class="n">end_time</span><span class="p">]</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filtered_data</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_aggregate</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">groupby_cols</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a pandas DataFrame aggregated based on the given frequency (&#39;daily&#39; or &#39;weekly&#39;).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : pandas.DataFrame</span>
+<span class="sd">        Input dataframe with a Timestamp index and &#39;user&#39; column.</span>
+<span class="sd">    freq : str</span>
+<span class="sd">        Desired frequency for aggregation, either &#39;daily&#39; or &#39;weekly&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    aggregated_data : pandas.DataFrame</span>
+<span class="sd">        Dataframe aggregated by the specified frequency.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError:</span>
+<span class="sd">        Raised if an invalid aggregation frequency is provided.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">freq</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;daily&quot;</span><span class="p">,</span> <span class="s2">&quot;weekly&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Incorrect frequency &#39;</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&#39;. Choose between &#39;daily&#39; and &#39;weekly&#39;.&quot;</span><span class="p">)</span>
+    
+    <span class="n">agg_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">user_data</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_cols</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">freq</span> <span class="o">==</span> <span class="s1">&#39;daily&#39;</span><span class="p">:</span>
+
+            <span class="n">agg_features</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">user_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># freq == &#39;weekly&#39;</span>
+            <span class="n">user_data</span><span class="p">[</span><span class="s1">&#39;hour_dayofweek&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%A %H&#39;</span><span class="p">)</span>
+            <span class="n">agg_features</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;hour_dayofweek&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">agg_features</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">groupby_cols</span><span class="p">):</span>
+            <span class="n">agg_features</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">name</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">agg_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">agg_features</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">agg_data</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_distribution</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>  <span class="n">cols</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">groupby_cols</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a pandas DataFrame with count distribution for each unique value in specified columns, aggregated by frequency.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -------</span>
+<span class="sd">    data : pandas.DataFrame</span>
+<span class="sd">        Input dataframe with a Timestamp index.</span>
+<span class="sd">    cols : list</span>
+<span class="sd">        List of column name(s) for which to compute distribution.</span>
+<span class="sd">    frequency : str</span>
+<span class="sd">        Aggregation frequency, either &#39;daily&#39; or &#39;weekly&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    distribution : pandas.DataFrame</span>
+<span class="sd">        Dataframe with count distribution for specified columns.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    -------</span>
+<span class="sd">    ValueError:</span>
+<span class="sd">        Raised if a specified column is not present in the input dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Validate frequency</span>
+    <span class="k">if</span> <span class="n">freq</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;daily&quot;</span><span class="p">,</span> <span class="s2">&quot;weekly&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The specified frequency &#39;</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&#39; is not valid. Choose &#39;daily&#39; or &#39;weekly&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The specified column &#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&#39; does not exist in the input dataframe.&quot;</span><span class="p">)</span>
+        
+        <span class="n">values_sum</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">groupby_cols</span><span class="p">)[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">_distr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">/</span> <span class="n">values_sum</span>
+    <span class="k">return</span> <span class="n">data</span>
+
+
+<div class="viewcode-block" id="compute_rhythms">
+<a class="viewcode-back" href="../../../../api/niimpy.analysis.rhythms/#niimpy.analysis.rhythms.compute_rhythms">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_rhythms</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+                    <span class="n">timebin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                    <span class="n">cols</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                    <span class="n">groupby_cols</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                    <span class="n">period</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                    <span class="n">freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a pandas DataFrame containing rhythm computations for the input data based on specified frequency.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        Input dataframe with a Timestamp index and &#39;user&#39; column.</span>
+<span class="sd">    timebin : str</span>
+<span class="sd">        Time bin for grouping, using pandas frequency string (e.g., &#39;1h&#39;, &#39;2h&#39;, &#39;4h&#39;, &#39;6h&#39;).</span>
+<span class="sd">    cols : list</span>
+<span class="sd">        List of columns to compute the count distribution for.</span>
+<span class="sd">    groupby_cols : list</span>
+<span class="sd">        Columns by which to group the data.</span>
+<span class="sd">    period : int</span>
+<span class="sd">        Duration in hours for which rhythm is computed. E.g., 8 weeks would be 8*7*24 hours.</span>
+<span class="sd">    freq : str</span>
+<span class="sd">        Sampling frequency, either &#39;daily&#39; or &#39;weekly&#39;.</span>
+
+<span class="sd">    Steps</span>
+<span class="sd">    -----</span>
+<span class="sd">    1. Data alignment based on the given frequency: </span>
+<span class="sd">        - &#39;daily&#39; starts at the first 00 hour.</span>
+<span class="sd">        - &#39;weekly&#39; starts at the first Monday 00 hour.</span>
+<span class="sd">    2. Resample data based on the given timebin.</span>
+<span class="sd">    3. Aggregate columns by summing values within each bin.</span>
+<span class="sd">    4. Normalize data to compute bin&#39;s percentage contribution to the total.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rhythms : pandas.DataFrame</span>
+<span class="sd">        Dataframe detailing call count distribution rhythms.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError:</span>
+<span class="sd">        If provided frequency is incorrect or a specified column isn&#39;t in the dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check if index is a DateTime index</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input DataFrame must have a DateTime index.&quot;</span><span class="p">)</span>
+
+    <span class="n">aligned_df</span> <span class="o">=</span> <span class="n">_align_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">)</span>
+
+    <span class="n">resampled_df</span> <span class="o">=</span> <span class="n">aligned_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_cols</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">timebin</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># keep time index</span>
+    
+    <span class="n">agg_data</span> <span class="o">=</span> <span class="n">_aggregate</span><span class="p">(</span><span class="n">resampled_df</span><span class="p">,</span> <span class="n">groupby_cols</span><span class="o">=</span><span class="n">groupby_cols</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">)</span>
+    
+    <span class="n">rhythms</span> <span class="o">=</span> <span class="n">_compute_distribution</span><span class="p">(</span><span class="n">agg_data</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">groupby_cols</span><span class="o">=</span><span class="n">groupby_cols</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">rhythms</span></div>
+
+
+
+<div class="viewcode-block" id="rhythm">
+<a class="viewcode-back" href="../../../../api/niimpy.analysis.rhythms/#niimpy.analysis.rhythms.rhythm">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rhythm</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">period</span> <span class="o">=</span> <span class="s2">&quot;4W&quot;</span><span class="p">,</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="s2">&quot;1W&quot;</span><span class="p">,</span>
+        <span class="nb">bin</span> <span class="o">=</span> <span class="s2">&quot;1D&quot;</span><span class="p">,</span>
+        <span class="n">cols</span><span class="o">=</span> <span class="p">[],</span>
+        <span class="n">groupby_cols</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute rhythms from the input data.</span>
+
+<span class="sd">    - Resample data to the given frequency.</span>
+<span class="sd">    - Aggregate data to the specified period.</span>
+<span class="sd">    - Compute the distribution over the frequency for the specified columns.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        Input dataframe with a Timestamp index.</span>
+
+<span class="sd">    period : str</span>
+<span class="sd">        Period for which to compute the rhythm. Default is &#39;M&#39; for monthly.</span>
+
+<span class="sd">    freq : str</span>
+<span class="sd">        Frequency for the rhythm. Default is &#39;W&#39; for weekly.</span>
+
+<span class="sd">    bin : str</span>
+<span class="sd">        Time bin for the rhythm computation. Defaults to &#39;D&#39; for daily.</span>
+<span class="sd">    </span>
+<span class="sd">    cols : list</span>
+<span class="sd">        List of columns to compute the count distribution for.</span>
+<span class="sd">    </span>
+<span class="sd">    groupby_cols : list</span>
+<span class="sd">        Columns by which to group the data. Defaults to user and device</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rhythms : pandas.DataFrame</span>
+<span class="sd">        Dataframe detailing rhythms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">groupby_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">groupby_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">]</span>
+        <span class="n">groupby_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">groupby_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">groupby_cols</span><span class="o">+</span><span class="n">cols</span><span class="p">]</span>
+
+    <span class="c1"># if column type is not numeric, use count, otherwise sum</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_cols</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="nb">bin</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">groupby_cols</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">freq_in_bins</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span> <span class="o">//</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="nb">bin</span><span class="p">)</span>
+    <span class="n">period_in_bins</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">period</span><span class="p">)</span> <span class="o">//</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="nb">bin</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_bin_index</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;bin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">%</span> <span class="n">period_in_bins</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_cols</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">_get_bin_index</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">groupby_cols</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_cols</span><span class="o">+</span><span class="p">[</span><span class="s2">&quot;bin&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">groupby_cols</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">//</span> <span class="n">freq_in_bins</span>
+    <span class="n">freq_sum</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_cols</span><span class="o">+</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">freq_sum</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">groupby_cols</span><span class="o">+</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;_sum&#39;</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="o">+</span><span class="s2">&quot;_rhythm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="o">+</span><span class="s2">&quot;_sum&quot;</span><span class="p">]</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">col</span><span class="p">,</span> <span class="n">col</span><span class="o">+</span><span class="s2">&quot;_sum&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

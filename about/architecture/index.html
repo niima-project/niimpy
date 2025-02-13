@@ -1,0 +1,224 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture and workflow &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="Data schema" href="../schema/" />
+    <link rel="prev" title="Installation" href="../installation/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture and workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#layer-reading">Layer: reading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layer-preprocessing">Layer: preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layer-exploration">Layer: exploration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layer-analysis">Layer: analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Architecture and workflow</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/about/architecture.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="architecture-and-workflow">
+<h1>Architecture and workflow<a class="headerlink" href="#architecture-and-workflow" title="Link to this heading"></a></h1>
+<p>Niimpy toolbox functionality is organized into four layers:</p>
+<ol class="arabic simple">
+<li><p>Data Reading</p></li>
+<li><p>Data Preprocessing</p></li>
+<li><p>Data Exploration</p></li>
+<li><p>Data Analysis.</p></li>
+</ol>
+<p>Each layer in implemented as a module. Following table presents the layer properties.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Layer</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reading</p></td>
+<td><p>Read data from the on-disk formats</p></td>
+</tr>
+<tr class="row-odd"><td><p>Preprocessing</p></td>
+<td><p>Prepare data for analysis</p></td>
+</tr>
+<tr class="row-even"><td><p>Exploration</p></td>
+<td><p>Initial analysis, explorative data analysis</p></td>
+</tr>
+<tr class="row-odd"><td><p>Analysis</p></td>
+<td><p>Data analysis</p></td>
+</tr>
+</tbody>
+</table>
+<section id="layer-reading">
+<h2>Layer: reading<a class="headerlink" href="#layer-reading" title="Link to this heading"></a></h2>
+<p>Data is read from the on-disk formats.</p>
+<p>Typical input consists of filenames on disk, and typical output is a
+pandas.DataFrame with a direct mapping of on-disk formats. For
+convenience, it may do various other small limiting and preprocessing,
+but should not look inside the data too much.</p>
+<p>These are in <code class="docutils literal notranslate"><span class="pre">niimpy.reading</span></code>.</p>
+</section>
+<section id="layer-preprocessing">
+<h2>Layer: preprocessing<a class="headerlink" href="#layer-preprocessing" title="Link to this heading"></a></h2>
+<p>After reading the data for analysis, preprocessing can handle
+filtering, etc. using the standard schema columns.  It does not look at or
+understand actual sensor values, and the unknown sensor-specific
+columns are passed straight through to a future layer.</p>
+<p>Typical input arguments include the DataFrame, and output is the
+DataFrame slightly adjusted, without affecting sensor-specific
+columns.</p>
+<p>These are in <code class="docutils literal notranslate"><span class="pre">niimpy.preprocessing</span></code>.</p>
+</section>
+<section id="layer-exploration">
+<h2>Layer: exploration<a class="headerlink" href="#layer-exploration" title="Link to this heading"></a></h2>
+<p>These functions can do data aggregation, basic analysis, and visualization which is
+not specific to any sensor, instead of to the data type.</p>
+<p>These are in <code class="docutils literal notranslate"><span class="pre">niimpy.exploration</span></code>.</p>
+</section>
+<section id="layer-analysis">
+<h2>Layer: analysis<a class="headerlink" href="#layer-analysis" title="Link to this heading"></a></h2>
+<p>These functions understand the sensor values and perform analysis
+based on them.</p>
+<p>These are often in modules specific to the type of analysis.</p>
+<p>These are in <code class="docutils literal notranslate"><span class="pre">niimpy.analysis</span></code>.</p>
+</section>
+<section id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Link to this heading"></a></h2>
+<p>Typical behavioral data analysis workflow consists of following steps:</p>
+<ul class="simple">
+<li><p>Data reading -&gt; Preprocessing -&gt; Explorations -&gt; Analysis</p></li>
+</ul>
+<p>Other possible workflows:</p>
+<ul class="simple">
+<li><p>Data reading -&gt; Exploration -&gt; Preprocessing -&gt; Analysis</p></li>
+<li><p>Data reading -&gt; Exploration -&gt; Preprocessing -&gt; Exploration -&gt; Analysis</p></li>
+</ul>
+<p>Niimpy workflow diagram</p>
+<a class="reference internal image-reference" href="../../_images/Flowchart.jpg"><img alt="Niimpy toolbox flowchart" src="../../_images/Flowchart.jpg" style="width: 800px;" />
+</a>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../installation/" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../schema/" class="btn btn-neutral float-right" title="Data schema" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

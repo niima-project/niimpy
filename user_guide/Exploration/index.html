@@ -1,0 +1,2355 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exploration &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="Analysis" href="../Analysis/" />
+    <link rel="prev" title="Tracker Data" href="../preprocessing/tracker/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Exploration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Introduction">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Sub-module-overview">Sub-module overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Plotly-settings">Plotly settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#1)-Categorical-plot">1) Categorical plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#1.1)-Reading-the-data">1.1) Reading the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#1.1.-Questionnaire-summary">1.1. Questionnaire summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#1.2.-Questionnaire-grouped-summary">1.2. Questionnaire grouped summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#1.3.-Questionnaire-grouped-summary-score-distribution">1.3. Questionnaire grouped summary score distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#2)-Countplot">2) Countplot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Data">Data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#2.1.-User-level-observation-count">2.1. User level observation count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#2.2.-Group-level-observation-count">2.2. Group level observation count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#2.3.-Group-level-value-distributions">2.3. Group level value distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.-Lineplot">3. Lineplot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.1.-Lineplot">3.1. Lineplot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.1.1.-Single-user-single-feature">3.1.1. Single user single feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.1.2.-Single-user-single-feature-index-resetted">3.1.2. Single user single feature index resetted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.1.3.-Single-user-single-feature,-aggregated-by-day">3.1.3. Single user single feature, aggregated by day</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.2.-Multiple-subjects-single-feature">3.2. Multiple subjects single feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.3.-Group-level-hourly-averages">3.3. Group level hourly averages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3.4.-Group-level-weekday-averages">3.4. Group level weekday averages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#4.-Punchcard">4. Punchcard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#4.1.-Single-user-punchcard">4.1. Single user punchcard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#4.2.-Multiple-user-punchcard">4.2. Multiple user punchcard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#4.3.-Single-user-punchcard-showing-two-features">4.3. Single user punchcard showing two features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#5)-Missingness">5) Missingness</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#5.1.-Data-frequency-by-feature">5.1. Data frequency by feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#5.2.-Average-frequency-by-user">5.2. Average frequency by user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#5.3.-Missingness-matrix">5.3. Missingness matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#5.4.-Missing-data-correlations">5.4. Missing data correlations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Exploration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user_guide/Exploration.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Exploration">
+<h1>Exploration<a class="headerlink" href="#Exploration" title="Link to this heading"></a></h1>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading"></a></h2>
+<p>To study and quantify human behavior using longitudinal multimodal digital data, it is essential to get to know the data well first. These data from various sources or sensors, such as smartphones and watches and activity trackers, yields data with different types and properties. The data may be a mixture of categorical, ordinal and numerical data, typically consisting of time series measured for multiple subjetcs from different groups. While the data is typically dense, it is also heterogenous
+and contains lots of missing values. Therefore, the analysis has to be conducted on many different levels.</p>
+<p>This notebook introduces the Niimpy toolbox exploration module, which seeks to address the aforementioned issues. The module has functionalities for exploratory data analysis (EDA) of digital behavioral data. The module aims to produce a summary of the data characteristics, inspecting the structures underlying the data, to detecting patterns and changes in the patterns, and to assess the data quality (e.g., missing data, outliers). This information is highly essential for assessing data
+validity, data filtering and selection, and for data preprocessing. The module includes functions for plotting catogorical data, data counts, timeseries lineplots, punchcards and visualizing missing data.</p>
+<p>Exploration module functions are supposed to run after <a class="reference external" href="https://digitraceslab.github.io/niimpy/user_guide/preprocessing/">data preprocessing</a>, but they can be run also on the raw observations. All the functions are implemented by using <a class="reference external" href="https://plotly.com/python/">Plotly Python Open sourde Library</a>. Plotly enables interactive visualizations which in turn makers it easier to explore different aspects of the data (e.g.,specific timerange and summary statistics).</p>
+<p>This notebook uses several sample dataframes for module demonstration. The sample data is already preprocessed, or will be preprocessed in notebook sections before visualizations. When the sample data is loaded, some of the key characteristics of the data are displayed.</p>
+<p>All eploration module functions require the data to follow <a class="reference external" href="https://digitraceslab.github.io/niimpy/schema/">data schema.</a> defined in the Niimpy toolbox <a class="reference external" href="https://digitraceslab.github.io/niimpy/">documentation</a>. The user must ensure that the input data follows the specified schema.</p>
+<hr class="docutils" />
+<section id="Sub-module-overview">
+<h3>Sub-module overview<a class="headerlink" href="#Sub-module-overview" title="Link to this heading"></a></h3>
+<p>The following table shows accepted data types, visualization functions and the purpose of each exploration sub-module. All submodules are located inside <code class="docutils literal notranslate"><span class="pre">niimpy/exploration/eda</span></code> -folder.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Sub-module</p></th>
+<th class="head"><p>Data type</p></th>
+<th class="head"><p>Functions</p></th>
+<th class="head"><p>For what</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>catogorical.py</p></td>
+<td><p>Categorical</p></td>
+<td><p>Barplot</p></td>
+<td><p>Observations counts and distributions</p></td>
+</tr>
+<tr class="row-odd"><td><p>countplot.py</p></td>
+<td><p>Categorical* / Numerical</p></td>
+<td><p>Barplot/Boxplot</p></td>
+<td><p>Observation counts and distibutions</p></td>
+</tr>
+<tr class="row-even"><td><p>lineplot.py</p></td>
+<td><p>Numerical</p></td>
+<td><p>Lineplot</p></td>
+<td><p>Trend, cyclicity, patterns</p></td>
+</tr>
+<tr class="row-odd"><td><p>punchcard.py</p></td>
+<td><p>Categorical* / Numerical</p></td>
+<td><p>Heatmap</p></td>
+<td><p>Temporal patterns of counts or values</p></td>
+</tr>
+<tr class="row-even"><td><p>missingness.py</p></td>
+<td><p>Categorical / Numerical</p></td>
+<td><p>Barplot / Heatmap</p></td>
+<td><p>Missing data patterns</p></td>
+</tr>
+</tbody>
+</table>
+<p>Data types denoted with * are not compatible with every function within the module. **<em>###</em> NOTES*</p>
+<p>This notebook uses following definitions referring to data:</p>
+<ul class="simple">
+<li><p><em>Feature</em> refers to dataframe column that stores observations (e.g., numerical sensor values, questionnaire answers)</p></li>
+<li><p><em>User</em> refers to unique identifier for each subject in the data. Dataframe should also have a column named as <code class="docutils literal notranslate"><span class="pre">user</span></code>.</p></li>
+<li><p><em>Group</em> refers to unique group idenfier. If subjects are grouped, dataframe shoudl have a column named as <code class="docutils literal notranslate"><span class="pre">group</span></code>.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="Imports">
+<h3>Imports<a class="headerlink" href="#Imports" title="Link to this heading"></a></h3>
+<p>Here we import modules needed for running this notebook.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">survey</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.exploration</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_dataframe</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.exploration.eda</span><span class="w"> </span><span class="kn">import</span> <span class="n">categorical</span><span class="p">,</span> <span class="n">countplot</span><span class="p">,</span> <span class="n">lineplot</span><span class="p">,</span> <span class="n">missingness</span><span class="p">,</span> <span class="n">punchcard</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Plotly-settings">
+<h3>Plotly settings<a class="headerlink" href="#Plotly-settings" title="Link to this heading"></a></h3>
+<p>Next code block defines default settings for <a class="reference external" href="https://plotly.com/python/">plotly</a> visualizations. Feel free to adjust the settings according to your needs.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;png&quot;</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;seaborn&quot;</span>
+<span class="n">px</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;ggplot2&quot;</span>
+<span class="n">px</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">color_continuous_scale</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">sequential</span><span class="o">.</span><span class="n">RdBu</span>
+<span class="n">px</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">1200</span>
+<span class="n">px</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">482</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="1)-Categorical-plot">
+<h2>1) Categorical plot<a class="headerlink" href="#1)-Categorical-plot" title="Link to this heading"></a></h2>
+<p>This section introduces categorical plot module visualizes <strong>categorical data</strong>, such as questionnaire data responses. We will demonstrate functions by using a mock survey dataframe, containing answers for:</p>
+<ul class="simple">
+<li><p><em>Patient Health Questionnaire-2 (PHQ-2)</em></p></li>
+<li><p><em>Perceived Stress Scale (PSS10)</em></p></li>
+<li><p><em>Generalized Anxiety Disorder-2 (GAD-2)</em></p></li>
+</ul>
+<p>The data will be preprocessed, and then it’s basic characteristics will be summarized before visualizations.</p>
+</section>
+<section id="1.1)-Reading-the-data">
+<h2>1.1) Reading the data<a class="headerlink" href="#1.1)-Reading-the-data" title="Link to this heading"></a></h2>
+<p>We’ll start by importing the data:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">SURVEY_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>age</th>
+      <th>gender</th>
+      <th>Little interest or pleasure in doing things.</th>
+      <th>Feeling down; depressed or hopeless.</th>
+      <th>Feeling nervous; anxious or on edge.</th>
+      <th>Not being able to stop or control worrying.</th>
+      <th>In the last month; how often have you felt that you were unable to control the important things in your life?</th>
+      <th>In the last month; how often have you felt confident about your ability to handle your personal problems?</th>
+      <th>In the last month; how often have you felt that things were going your way?</th>
+      <th>In the last month; how often have you been able to control irritations in your life?</th>
+      <th>In the last month; how often have you felt that you were on top of things?</th>
+      <th>In the last month; how often have you been angered because of things that were outside of your control?</th>
+      <th>In the last month; how often have you felt difficulties were piling up so high that you could not overcome them?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>20</td>
+      <td>Male</td>
+      <td>several-days</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>nearly-every-day</td>
+      <td>almost-never</td>
+      <td>sometimes</td>
+      <td>fairly-often</td>
+      <td>never</td>
+      <td>sometimes</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>32</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>never</td>
+      <td>never</td>
+      <td>very-often</td>
+      <td>sometimes</td>
+      <td>never</td>
+      <td>fairly-often</td>
+      <td>never</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>15</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>not-at-all</td>
+      <td>never</td>
+      <td>very-often</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+      <td>never</td>
+      <td>never</td>
+      <td>almost-never</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>35</td>
+      <td>Female</td>
+      <td>not-at-all</td>
+      <td>nearly-every-day</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+      <td>very-often</td>
+      <td>never</td>
+      <td>sometimes</td>
+      <td>never</td>
+      <td>fairly-often</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>23</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>more-than-half-the-days</td>
+      <td>several-days</td>
+      <td>almost-never</td>
+      <td>very-often</td>
+      <td>almost-never</td>
+      <td>sometimes</td>
+      <td>sometimes</td>
+      <td>very-often</td>
+      <td>never</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Then check some basic descriptive statistics:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>1000.000000</td>
+      <td>1000.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>500.500000</td>
+      <td>26.911000</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>288.819436</td>
+      <td>4.992595</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.000000</td>
+      <td>12.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>250.750000</td>
+      <td>23.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>500.500000</td>
+      <td>27.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>750.250000</td>
+      <td>30.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1000.000000</td>
+      <td>43.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The dataframe’s columns are raw questions from a survey. Some questions belong to a specific category, so we will annotate them with ids. The id is constructed from a prefix (the questionnaire category: GAD, PHQ, PSQI etc.), followed by the question number (1,2,3). Similarly, we will also convert the answers to meaningful numerical values.</p>
+<p><strong>Note:</strong> It’s important that the dataframe follows the below schema before passing into niimpy.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert column name to id, based on provided mappers from niimpy</span>
+<span class="n">column_map</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">survey</span><span class="o">.</span><span class="n">PHQ2_MAP</span><span class="p">,</span> <span class="o">**</span><span class="n">survey</span><span class="o">.</span><span class="n">PSQI_MAP</span><span class="p">,</span> <span class="o">**</span><span class="n">survey</span><span class="o">.</span><span class="n">PSS10_MAP</span><span class="p">,</span> <span class="o">**</span><span class="n">survey</span><span class="o">.</span><span class="n">PANAS_MAP</span><span class="p">,</span> <span class="o">**</span><span class="n">survey</span><span class="o">.</span><span class="n">GAD2_MAP</span><span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">survey</span><span class="o">.</span><span class="n">clean_survey_column_names</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">column_map</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>age</th>
+      <th>gender</th>
+      <th>PHQ2_1</th>
+      <th>PHQ2_2</th>
+      <th>GAD2_1</th>
+      <th>GAD2_2</th>
+      <th>PSS10_2</th>
+      <th>PSS10_4</th>
+      <th>PSS10_5</th>
+      <th>PSS10_6</th>
+      <th>PSS10_7</th>
+      <th>PSS10_8</th>
+      <th>PSS10_9</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>20</td>
+      <td>Male</td>
+      <td>several-days</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>nearly-every-day</td>
+      <td>almost-never</td>
+      <td>sometimes</td>
+      <td>fairly-often</td>
+      <td>never</td>
+      <td>sometimes</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>32</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>never</td>
+      <td>never</td>
+      <td>very-often</td>
+      <td>sometimes</td>
+      <td>never</td>
+      <td>fairly-often</td>
+      <td>never</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>15</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>not-at-all</td>
+      <td>never</td>
+      <td>very-often</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+      <td>never</td>
+      <td>never</td>
+      <td>almost-never</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>35</td>
+      <td>Female</td>
+      <td>not-at-all</td>
+      <td>nearly-every-day</td>
+      <td>not-at-all</td>
+      <td>several-days</td>
+      <td>very-often</td>
+      <td>fairly-often</td>
+      <td>very-often</td>
+      <td>never</td>
+      <td>sometimes</td>
+      <td>never</td>
+      <td>fairly-often</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>23</td>
+      <td>Male</td>
+      <td>more-than-half-the-days</td>
+      <td>not-at-all</td>
+      <td>more-than-half-the-days</td>
+      <td>several-days</td>
+      <td>almost-never</td>
+      <td>very-often</td>
+      <td>almost-never</td>
+      <td>sometimes</td>
+      <td>sometimes</td>
+      <td>very-often</td>
+      <td>never</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>We can use the <code class="docutils literal notranslate"><span class="pre">convert_survey_to_numerical_answer</span></code> helper method to convert the answers into a numerical value. We use the <code class="docutils literal notranslate"><span class="pre">ID_MAP_PREFIX</span></code> mapping dictionary provided by <code class="docutils literal notranslate"><span class="pre">Niimpy</span></code>, which describes how each text answer should be mapped to a number.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Transform raw answers to numerical values</span>
+<span class="n">num_df</span> <span class="o">=</span> <span class="n">survey</span><span class="o">.</span><span class="n">convert_survey_to_numerical_answer</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">id_map</span><span class="o">=</span><span class="n">survey</span><span class="o">.</span><span class="n">ID_MAP_PREFIX</span><span class="p">,</span> <span class="n">use_prefix</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">num_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>age</th>
+      <th>gender</th>
+      <th>PHQ2_1</th>
+      <th>PHQ2_2</th>
+      <th>GAD2_1</th>
+      <th>GAD2_2</th>
+      <th>PSS10_2</th>
+      <th>PSS10_4</th>
+      <th>PSS10_5</th>
+      <th>PSS10_6</th>
+      <th>PSS10_7</th>
+      <th>PSS10_8</th>
+      <th>PSS10_9</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>20</td>
+      <td>Male</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>0</td>
+      <td>2</td>
+      <td>4</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>32</td>
+      <td>Male</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>15</td>
+      <td>Male</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>35</td>
+      <td>Female</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1</td>
+      <td>4</td>
+      <td>3</td>
+      <td>4</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>23</td>
+      <td>Male</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4</td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>For each of these surveys, the overall score is calculated as the sum of the numerical value. We can calculate this for each survey using the <code class="docutils literal notranslate"><span class="pre">sum_survey_scores</span></code> function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sum_df</span> <span class="o">=</span> <span class="n">survey</span><span class="o">.</span><span class="n">sum_survey_scores</span><span class="p">(</span><span class="n">num_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;PHQ2&quot;</span><span class="p">,</span> <span class="s2">&quot;PSS10&quot;</span><span class="p">,</span> <span class="s2">&quot;GAD2&quot;</span><span class="p">])</span>
+<span class="n">sum_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>PHQ2</th>
+      <th>PSS10</th>
+      <th>GAD2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>3</td>
+      <td>15</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>4</td>
+      <td>9</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>2</td>
+      <td>12</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>3</td>
+      <td>16</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>2</td>
+      <td>14</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="1.1.-Questionnaire-summary">
+<h2>1.1. Questionnaire summary<a class="headerlink" href="#1.1.-Questionnaire-summary" title="Link to this heading"></a></h2>
+<p>We can now make some plots for the preprocessed data frame. First, we can display the summary for the specific question (<em>PHQ-2</em> first question).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">categorical</span><span class="o">.</span><span class="n">questionnaire_summary</span><span class="p">(</span><span class="n">num_df</span><span class="p">,</span>
+                                        <span class="n">question</span> <span class="o">=</span> <span class="s1">&#39;PHQ2_1&#39;</span><span class="p">,</span>
+                                        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;PHQ2 question: Little interest or pleasure in doing things / &lt;br&gt; answer value frequencies&#39;</span><span class="p">,</span>
+                                        <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span>
+                                        <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">,</span>
+                                        <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+                                        <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_22_0.png" src="../../_images/user_guide_Exploration_22_0.png" />
+</div>
+</div>
+<p>The figure shows that the answer values (from 0 to 3) almost uniform in distribution.</p>
+</section>
+<section id="1.2.-Questionnaire-grouped-summary">
+<h2>1.2. Questionnaire grouped summary<a class="headerlink" href="#1.2.-Questionnaire-grouped-summary" title="Link to this heading"></a></h2>
+<p>We can also display the summary for each subgroup (<em>gender</em>).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">categorical</span><span class="o">.</span><span class="n">questionnaire_grouped_summary</span><span class="p">(</span><span class="n">num_df</span><span class="p">,</span>
+                                                <span class="n">question</span><span class="o">=</span><span class="s1">&#39;PSS10_9&#39;</span><span class="p">,</span>
+                                                <span class="n">group</span><span class="o">=</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span>
+                                                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;PSS10_9 Question / &lt;br&gt; Score frequency distributions by group&#39;</span><span class="p">,</span>
+                                                <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;score&#39;</span><span class="p">,</span>
+                                                <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">,</span>
+                                                <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+                                                <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_26_0.png" src="../../_images/user_guide_Exploration_26_0.png" />
+</div>
+</div>
+<p>The figure shows that the differences between subgroups are not very large.</p>
+</section>
+<section id="1.3.-Questionnaire-grouped-summary-score-distribution">
+<h2>1.3. Questionnaire grouped summary score distribution<a class="headerlink" href="#1.3.-Questionnaire-grouped-summary-score-distribution" title="Link to this heading"></a></h2>
+<p>With some quick preprocessing, we can display the score distribution of each questionaire.</p>
+<p>We’ll extract <em>PSS-10</em> questionnaire answers from the dataframe, using the <code class="docutils literal notranslate"><span class="pre">sum_survey_scores</span></code> function from the <code class="docutils literal notranslate"><span class="pre">niimpy.preprocessing.survey</span></code> module, and set the gender variable from the original dataframe.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sum_df</span> <span class="o">=</span> <span class="n">survey</span><span class="o">.</span><span class="n">sum_survey_scores</span><span class="p">(</span><span class="n">num_df</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;PSS10&quot;</span><span class="p">])</span>
+<span class="n">sum_df</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_df</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span>
+<span class="n">sum_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>PSS10</th>
+      <th>gender</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>15</td>
+      <td>Male</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>9</td>
+      <td>Male</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>12</td>
+      <td>Male</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>16</td>
+      <td>Female</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>14</td>
+      <td>Male</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>And then visualize aggregated summary score distributions, grouped by gender:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">categorical</span><span class="o">.</span><span class="n">questionnaire_grouped_summary</span><span class="p">(</span><span class="n">sum_df</span><span class="p">,</span>
+                                                <span class="n">question</span><span class="o">=</span><span class="s1">&#39;PSS10&#39;</span><span class="p">,</span>
+                                                <span class="n">group</span><span class="o">=</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span>
+                                                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;PSS10&#39;</span><span class="p">,</span>
+                                                <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;score&#39;</span><span class="p">,</span>
+                                                <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">,</span>
+                                                <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+                                                <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_32_0.png" src="../../_images/user_guide_Exploration_32_0.png" />
+</div>
+</div>
+<p>The figure shows that the grouped summary score distrubutions are close to each other.</p>
+</section>
+<section id="2)-Countplot">
+<h2>2) Countplot<a class="headerlink" href="#2)-Countplot" title="Link to this heading"></a></h2>
+<p>This section introduces Countplot module. The module contain functions for user and group level observation count (number of datapoints per user or group) visualization and observation value distributions. Observation counts use barplots for user level and a boxplots for group level visualizations. Boxplots are used for group level value distributions. The module assumes that the visualized <strong>data is numerical</strong>.</p>
+<section id="Data">
+<h3>Data<a class="headerlink" href="#Data" title="Link to this heading"></a></h3>
+<p>We will use sample from StudentLife dataset to demonstrate the module functions. The sample contains hourly aggregated activity data (values from 0 to 5, where 0 corresponds to no activity, and 5 to high activity) and group information based on pre- and post-study PHQ-9 test scores. Study subjects have been grouped by the depression symptom severity into groups: <em>none</em>, <em>mild</em>, <em>moderate</em>, <em>moderately severe</em>, and <em>severe</em>. Preprocessed data sample is included in the Niimpy toolbox <em>sampledata</em>
+folder.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
+<span class="n">sl</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">SL_ACTIVITY_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">sl</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">sl</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">sl_loc</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sl_loc</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>activity</th>
+      <th>group</th>
+    </tr>
+    <tr>
+      <th>timestamp</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-03-27 06:00:00</th>
+      <td>u00</td>
+      <td>2</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 07:00:00</th>
+      <td>u00</td>
+      <td>1</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 08:00:00</th>
+      <td>u00</td>
+      <td>2</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 09:00:00</th>
+      <td>u00</td>
+      <td>3</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <th>2013-03-27 10:00:00</th>
+      <td>u00</td>
+      <td>4</td>
+      <td>none</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Before visualizations, we’ll inspect the data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sl_loc</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>activity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>55907.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.750264</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>1.298238</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>5.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sl_loc</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([&#39;none&#39;, &#39;severe&#39;, &#39;mild&#39;, &#39;moderately severe&#39;, &#39;moderate&#39;],
+      dtype=object)
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="2.1.-User-level-observation-count">
+<h2>2.1. User level observation count<a class="headerlink" href="#2.1.-User-level-observation-count" title="Link to this heading"></a></h2>
+<p>At first we visualize the number of observations for each subject.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">countplot</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span>
+                          <span class="n">fig_title</span><span class="o">=</span><span class="s1">&#39;Activity event counts by user&#39;</span><span class="p">,</span>
+                          <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">,</span>
+                          <span class="n">points</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
+                          <span class="n">aggregation</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">,</span>
+                          <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">binning</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_42_0.png" src="../../_images/user_guide_Exploration_42_0.png" />
+</div>
+</div>
+<p>The barplot shows that there are differences in user total activity counts. The user <em>u24</em> has the lowest event count of 710 and users <em>u02</em> and <em>u59</em> have the highest count of 1584.</p>
+</section>
+<section id="2.2.-Group-level-observation-count">
+<h2>2.2. Group level observation count<a class="headerlink" href="#2.2.-Group-level-observation-count" title="Link to this heading"></a></h2>
+<p>Next we’ll inspect group level daily activity event count distributions by using boxplots. For the improved clarity, we select a timerange of one week from the data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sl_one_week</span> <span class="o">=</span> <span class="n">sl_loc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2013-03-28&#39;</span><span class="p">:</span><span class="s1">&#39;2013-4-3&#39;</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">countplot</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">sl_one_week</span><span class="p">,</span>
+                          <span class="n">fig_title</span><span class="o">=</span><span class="s1">&#39;Group level daily activity event count distributions&#39;</span><span class="p">,</span>
+                          <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span>
+                          <span class="n">points</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
+                          <span class="n">aggregation</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">,</span>
+                          <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">column</span><span class="o">=</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span>
+                          <span class="n">binning</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_45_0.png" src="../../_images/user_guide_Exploration_45_0.png" />
+</div>
+</div>
+<p>The boxplot shows some variability in group level event count distributions across the days spanning from Mar 28 to Apr 3 2013.</p>
+</section>
+<section id="2.3.-Group-level-value-distributions">
+<h2>2.3. Group level value distributions<a class="headerlink" href="#2.3.-Group-level-value-distributions" title="Link to this heading"></a></h2>
+<p>Finally we visualize group level activity value distributions for whole time range.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">countplot</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span>
+                          <span class="n">fig_title</span><span class="o">=</span><span class="s1">&#39;Group level activity score distributions&#39;</span><span class="p">,</span>
+                          <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span>
+                          <span class="n">points</span><span class="o">=</span><span class="s1">&#39;outliers&#39;</span><span class="p">,</span>
+                          <span class="n">aggregation</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">,</span>
+                          <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">column</span><span class="o">=</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span>
+                          <span class="n">binning</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_48_0.png" src="../../_images/user_guide_Exploration_48_0.png" />
+</div>
+</div>
+<p>The boxplot shows that activity score distribution for groups <em>mild</em> and <em>moderately severe</em> differ from the rest.</p>
+</section>
+<section id="3.-Lineplot">
+<h2>3. Lineplot<a class="headerlink" href="#3.-Lineplot" title="Link to this heading"></a></h2>
+<p>This section introduces Lineplot module functions. We use the same StudentLife dataset derived activity data as in previous section.</p>
+</section>
+<section id="3.1.-Lineplot">
+<h2>3.1. Lineplot<a class="headerlink" href="#3.1.-Lineplot" title="Link to this heading"></a></h2>
+<p>Lineplot functions display <strong>numerical feature values</strong> on time axis. The user can optionally resample (downsample) and smoothen the data for better visual clarity.</p>
+</section>
+<section id="3.1.1.-Single-user-single-feature">
+<h2>3.1.1. Single user single feature<a class="headerlink" href="#3.1.1.-Single-user-single-feature" title="Link to this heading"></a></h2>
+<p>At first, we’ll visualize single user single feature data, without resampling or smoothing.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">lineplot</span><span class="o">.</span><span class="n">timeplot</span><span class="p">(</span><span class="n">sl_loc</span><span class="p">,</span>
+                        <span class="n">users</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;u01&#39;</span><span class="p">],</span>
+                        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">],</span>
+                        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;User: </span><span class="si">{}</span><span class="s1"> activity lineplot&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;u01&#39;</span><span class="p">),</span>
+                        <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span>
+                        <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span>
+                        <span class="n">resample</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">window</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">reset_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_55_0.png" src="../../_images/user_guide_Exploration_55_0.png" />
+</div>
+</div>
+<p>The figure showing all the activity datapoints is difficult to interpet. By zooming in the time range, the daily patters come apparent. There is no or low activity during the night.</p>
+</section>
+<section id="3.1.2.-Single-user-single-feature-index-resetted">
+<h2>3.1.2. Single user single feature index resetted<a class="headerlink" href="#3.1.2.-Single-user-single-feature-index-resetted" title="Link to this heading"></a></h2>
+<p>Next, we’ll plot visualize the same data using resampling by hour, and 24 hour rolling window smoothing for improved visualization clarity. We also reset the index, showing now hours from the first activity feature observation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">lineplot</span><span class="o">.</span><span class="n">timeplot</span><span class="p">(</span><span class="n">sl_loc</span><span class="p">,</span>
+                        <span class="n">users</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;u00&#39;</span><span class="p">],</span>
+                        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">],</span>
+                        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;User: </span><span class="si">{}</span><span class="s1"> activity lineplot / &lt;br&gt; resetted index&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;u01&#39;</span><span class="p">),</span>
+                        <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span>
+                        <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span>
+                        <span class="n">resample</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span>
+                        <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">window</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+                        <span class="n">reset_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_58_0.png" src="../../_images/user_guide_Exploration_58_0.png" />
+</div>
+</div>
+<p>By zooming in the smoothed lineplot, daily activity patterns are easier to detect.</p>
+</section>
+<section id="3.1.3.-Single-user-single-feature,-aggregated-by-day">
+<h2>3.1.3. Single user single feature, aggregated by day<a class="headerlink" href="#3.1.3.-Single-user-single-feature,-aggregated-by-day" title="Link to this heading"></a></h2>
+<p>Next visualization shows resamplig by day and 7 day rolling window smoothing, making the activity time series trend visible.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">lineplot</span><span class="o">.</span><span class="n">timeplot</span><span class="p">(</span><span class="n">sl_loc</span><span class="p">,</span>
+                        <span class="n">users</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;u00&#39;</span><span class="p">],</span>
+                        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">],</span>
+                        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;User: </span><span class="si">{}</span><span class="s1"> activity lineplot / &lt;br&gt; rolling window (7 days) smoothing&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;u01&#39;</span><span class="p">),</span>
+                        <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span>
+                        <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span>
+                        <span class="n">resample</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+                        <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_61_0.png" src="../../_images/user_guide_Exploration_61_0.png" />
+</div>
+</div>
+<p>Daily aggregated and smoothed data makes the user activity trend visible. There is a peak at May 9 and the crest at May 23.</p>
+</section>
+<section id="3.2.-Multiple-subjects-single-feature">
+<h2>3.2. Multiple subjects single feature<a class="headerlink" href="#3.2.-Multiple-subjects-single-feature" title="Link to this heading"></a></h2>
+<p>The following visualization superimposes three subject’s activity on same figure.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">lineplot</span><span class="o">.</span><span class="n">timeplot</span><span class="p">(</span><span class="n">sl_loc</span><span class="p">,</span>
+                        <span class="n">users</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;u00&#39;</span><span class="p">,</span><span class="s1">&#39;u01&#39;</span><span class="p">],</span>
+                        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">],</span>
+                        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;User: </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1"> activity lineplot / &lt;br&gt; rolling window (7 days) smoothing&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;u00&#39;</span><span class="p">,</span><span class="s1">&#39;u01&#39;</span><span class="p">),</span>
+                        <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span>
+                        <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span>
+                        <span class="n">resample</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+                        <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_64_0.png" src="../../_images/user_guide_Exploration_64_0.png" />
+</div>
+</div>
+<p>The figure shows that the user daily averaged activity is quite similar in the beginning of inspected time range. In first two weeks of May, the activity shows opposing trends (user <em>u00</em> activity increases and user <em>u01</em> decreases).</p>
+</section>
+<section id="3.3.-Group-level-hourly-averages">
+<h2>3.3. Group level hourly averages<a class="headerlink" href="#3.3.-Group-level-hourly-averages" title="Link to this heading"></a></h2>
+<p>Next we’ll compare group level hourly average activity.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">lineplot</span><span class="o">.</span><span class="n">timeplot</span><span class="p">(</span><span class="n">sl_loc</span><span class="p">,</span>
+                        <span class="n">users</span><span class="o">=</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span>
+                        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">],</span>
+                        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;User group activity / &lt;br&gt; hourly averages&#39;</span><span class="p">,</span>
+                        <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span>
+                        <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span>
+                        <span class="n">resample</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+                        <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                        <span class="n">reset_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">by</span><span class="o">=</span><span class="s1">&#39;hour&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_67_0.png" src="../../_images/user_guide_Exploration_67_0.png" />
+</div>
+</div>
+<p>The time plot reveals that the hourly averaged group level activity follows circadian rhytmn (less activity during the night). Moderately severe group seems to be least active group during the latter half of the day.</p>
+</section>
+<section id="3.4.-Group-level-weekday-averages">
+<h2>3.4. Group level weekday averages<a class="headerlink" href="#3.4.-Group-level-weekday-averages" title="Link to this heading"></a></h2>
+<p>And finally,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">lineplot</span><span class="o">.</span><span class="n">timeplot</span><span class="p">(</span><span class="n">sl_loc</span><span class="p">,</span>
+                        <span class="n">users</span><span class="o">=</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span>
+                        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">],</span>
+                        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;User Activity&#39;</span><span class="p">,</span>
+                        <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span>
+                        <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span>
+                        <span class="n">resample</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+                        <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                        <span class="n">reset_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">by</span><span class="o">=</span><span class="s1">&#39;weekday&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_70_0.png" src="../../_images/user_guide_Exploration_70_0.png" />
+</div>
+</div>
+<p>The timeplot shows that there is some differences between the average group level activity, e.g., group <em>mild</em> being more active than <em>moderately severe</em>. Additionally, activity during Sundays is at lower level in comparison with weekdays.</p>
+</section>
+<section id="4.-Punchcard">
+<h2>4. Punchcard<a class="headerlink" href="#4.-Punchcard" title="Link to this heading"></a></h2>
+<p>This section introduces Punchcard module functions. The functions aggregate the data and show the averaged value for each timepoint. We use the same StudentLife dataset derived activity data as in two previous sections.</p>
+</section>
+<section id="4.1.-Single-user-punchcard">
+<h2>4.1. Single user punchcard<a class="headerlink" href="#4.1.-Single-user-punchcard" title="Link to this heading"></a></h2>
+<p>At first we visualize one daily aggregated mean activity for single subject. We’ll change the plot color to grayscale for improved clarity.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">px</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">color_continuous_scale</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">sequential</span><span class="o">.</span><span class="n">gray</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">punchcard</span><span class="o">.</span><span class="n">punchcard_plot</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span>
+                               <span class="n">user_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;u00&#39;</span><span class="p">],</span>
+                               <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">],</span>
+                               <span class="n">title</span><span class="o">=</span><span class="s2">&quot;User </span><span class="si">{}</span><span class="s2"> activity punchcard&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;u00&#39;</span><span class="p">),</span>
+                               <span class="n">resample</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+                               <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                               <span class="n">agg_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+                               <span class="n">timerange</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_75_0.png" src="../../_images/user_guide_Exploration_75_0.png" />
+</div>
+</div>
+<p>The punchcard reveals that May 5th has the highest average activity and May 18th, 20th, and 21th have the lowest activity.</p>
+</section>
+<section id="4.2.-Multiple-user-punchcard">
+<h2>4.2. Multiple user punchcard<a class="headerlink" href="#4.2.-Multiple-user-punchcard" title="Link to this heading"></a></h2>
+<p>Next, we’ll visualize mean activity for multiple subjects.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">punchcard</span><span class="o">.</span><span class="n">punchcard_plot</span><span class="p">(</span><span class="n">sl</span><span class="p">,</span>
+                               <span class="n">user_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;u00&#39;</span><span class="p">,</span><span class="s1">&#39;u01&#39;</span><span class="p">,</span><span class="s1">&#39;u02&#39;</span><span class="p">],</span>
+                               <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">],</span>
+                               <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Users </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, and </span><span class="si">{}</span><span class="s2"> activity punchcard&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;u00&#39;</span><span class="p">,</span><span class="s1">&#39;u01&#39;</span><span class="p">,</span><span class="s1">&#39;u02&#39;</span><span class="p">),</span>
+                               <span class="n">resample</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+                               <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                               <span class="n">agg_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+                               <span class="n">timerange</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_78_0.png" src="../../_images/user_guide_Exploration_78_0.png" />
+</div>
+</div>
+<p>The punchard allows comparison of daily average activity for multiple subjects. It seems that there is not evident common pattern in the activity.</p>
+</section>
+<section id="4.3.-Single-user-punchcard-showing-two-features">
+<h2>4.3. Single user punchcard showing two features<a class="headerlink" href="#4.3.-Single-user-punchcard-showing-two-features" title="Link to this heading"></a></h2>
+<p>Lastly, we’ll visualize daily aggregated single user activity side by side with activity of previous week. We start by shifting the activity by one week and by adding it to the original dataframe.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sl_loc</span><span class="p">[</span><span class="s1">&#39;previous_week_activity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sl_loc</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">punchcard</span><span class="o">.</span><span class="n">punchcard_plot</span><span class="p">(</span><span class="n">sl_loc</span><span class="p">,</span>
+                               <span class="n">user_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;u00&#39;</span><span class="p">],</span>
+                               <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span><span class="s1">&#39;previous_week_activity&#39;</span><span class="p">],</span>
+                               <span class="n">title</span><span class="o">=</span><span class="s2">&quot;User </span><span class="si">{}</span><span class="s2"> activity and previous week activity punchcard&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;u00&#39;</span><span class="p">),</span>
+                               <span class="n">resample</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+                               <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                               <span class="n">agg_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+                               <span class="n">timerange</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_82_0.png" src="../../_images/user_guide_Exploration_82_0.png" />
+</div>
+</div>
+<p>The punchcard show weekly repeating patterns in subjects activity.</p>
+</section>
+<section id="5)-Missingness">
+<h2>5) Missingness<a class="headerlink" href="#5)-Missingness" title="Link to this heading"></a></h2>
+<p>This sections introduces Missingness module for missing data inspection. The module features data missingness visualizations by frequency and by timepoint. Additionally, it offers an option for missing data correlation visualization.</p>
+<section id="id2">
+<h3>Data<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>For data missingness visualizations, we’ll create a mock dataframe with missing values using <code class="docutils literal notranslate"><span class="pre">niimpy.util.create_missing_dataframe</span></code> function.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_m</span> <span class="o">=</span> <span class="n">setup_dataframe</span><span class="o">.</span><span class="n">create_missing_dataframe</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">14</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">index_type</span><span class="o">=</span><span class="s1">&#39;dt&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;10min&#39;</span><span class="p">)</span>
+<span class="n">df_m</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;User_1&#39;</span><span class="p">,</span><span class="s1">&#39;User_2&#39;</span><span class="p">,</span><span class="s1">&#39;User_3&#39;</span><span class="p">,</span><span class="s1">&#39;User_4&#39;</span><span class="p">,</span><span class="s1">&#39;User_5&#39;</span><span class="p">,]</span>
+</pre></div>
+</div>
+</div>
+<p>We will quickly inspect the dataframe before the visualizations.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_m</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>User_1</th>
+      <th>User_2</th>
+      <th>User_3</th>
+      <th>User_4</th>
+      <th>User_5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2022-01-01 00:00:00</th>
+      <td>95.449550</td>
+      <td>NaN</td>
+      <td>63.620984</td>
+      <td>84.779703</td>
+      <td>10.134786</td>
+    </tr>
+    <tr>
+      <th>2022-01-01 00:10:00</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>16.542671</td>
+      <td>30.059590</td>
+      <td>48.531147</td>
+    </tr>
+    <tr>
+      <th>2022-01-01 00:20:00</th>
+      <td>NaN</td>
+      <td>39.576178</td>
+      <td>62.931902</td>
+      <td>14.169682</td>
+      <td>30.127549</td>
+    </tr>
+    <tr>
+      <th>2022-01-01 00:30:00</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>3.209067</td>
+      <td>76.309938</td>
+      <td>64.975323</td>
+    </tr>
+    <tr>
+      <th>2022-01-01 00:40:00</th>
+      <td>8.108314</td>
+      <td>68.563101</td>
+      <td>11.451206</td>
+      <td>67.939258</td>
+      <td>51.267042</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2022-01-05 15:10:00</th>
+      <td>29.951958</td>
+      <td>87.768113</td>
+      <td>3.413069</td>
+      <td>NaN</td>
+      <td>71.765351</td>
+    </tr>
+    <tr>
+      <th>2022-01-05 15:20:00</th>
+      <td>66.755720</td>
+      <td>54.265762</td>
+      <td>NaN</td>
+      <td>41.359552</td>
+      <td>85.334592</td>
+    </tr>
+    <tr>
+      <th>2022-01-05 15:30:00</th>
+      <td>65.078709</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>25.390743</td>
+      <td>27.214379</td>
+    </tr>
+    <tr>
+      <th>2022-01-05 15:40:00</th>
+      <td>43.437510</td>
+      <td>93.718360</td>
+      <td>3.737043</td>
+      <td>93.463233</td>
+      <td>61.265460</td>
+    </tr>
+    <tr>
+      <th>2022-01-05 15:50:00</th>
+      <td>52.235363</td>
+      <td>3.903921</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>13.510993</td>
+    </tr>
+  </tbody>
+</table>
+<p>672 rows × 5 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_m</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>User_1</th>
+      <th>User_2</th>
+      <th>User_3</th>
+      <th>User_4</th>
+      <th>User_5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>467.000000</td>
+      <td>459.000000</td>
+      <td>505.000000</td>
+      <td>460.000000</td>
+      <td>461.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>52.139713</td>
+      <td>49.797069</td>
+      <td>49.664041</td>
+      <td>47.506335</td>
+      <td>51.783715</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>28.177069</td>
+      <td>29.022774</td>
+      <td>29.374702</td>
+      <td>28.842758</td>
+      <td>27.133421</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.115046</td>
+      <td>1.356182</td>
+      <td>1.018417</td>
+      <td>1.055085</td>
+      <td>1.089756</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>28.128912</td>
+      <td>24.049961</td>
+      <td>23.363264</td>
+      <td>22.883851</td>
+      <td>28.179801</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>54.304329</td>
+      <td>52.259609</td>
+      <td>48.483288</td>
+      <td>43.471076</td>
+      <td>52.341558</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>75.519421</td>
+      <td>74.290567</td>
+      <td>77.026377</td>
+      <td>74.314602</td>
+      <td>74.746701</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>99.517549</td>
+      <td>99.943515</td>
+      <td>99.674461</td>
+      <td>99.967264</td>
+      <td>99.863755</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="5.1.-Data-frequency-by-feature">
+<h2>5.1. Data frequency by feature<a class="headerlink" href="#5.1.-Data-frequency-by-feature" title="Link to this heading"></a></h2>
+<p>First, we create a histogram to visualize data frequency per column. Here, frequency of 1 indicates no missing data points and 0 that all data points are missing.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">missingness</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">df_m</span><span class="p">,</span>
+                      <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">&#39;User&#39;</span><span class="p">,</span>
+                      <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_92_0.png" src="../../_images/user_guide_Exploration_92_0.png" />
+</div>
+</div>
+<p>The data frequency is nearly similar for each user, <em>User_5</em> having the highest frequency.</p>
+</section>
+<section id="5.2.-Average-frequency-by-user">
+<h2>5.2. Average frequency by user<a class="headerlink" href="#5.2.-Average-frequency-by-user" title="Link to this heading"></a></h2>
+<p>Next, we will show average data frequency for all users.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">missingness</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">df_m</span><span class="p">,</span>
+                      <span class="n">sampling_freq</span><span class="o">=</span><span class="s1">&#39;30min&#39;</span><span class="p">,</span>
+                      <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">&#39;Time&#39;</span><span class="p">,</span>
+                      <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_95_0.png" src="../../_images/user_guide_Exploration_95_0.png" />
+</div>
+</div>
+<p>The overall data frequency suggests no clear pattern for data missingness.</p>
+</section>
+<section id="5.3.-Missingness-matrix">
+<h2>5.3. Missingness matrix<a class="headerlink" href="#5.3.-Missingness-matrix" title="Link to this heading"></a></h2>
+<p>We can also create a missingness matrix visualization for the dataframe. The nullity matrix show data missingess by a timepoint.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">missingness</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">df_m</span><span class="p">,</span>
+                         <span class="n">sampling_freq</span><span class="o">=</span><span class="s1">&#39;30min&#39;</span><span class="p">,</span>
+                         <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;User ID&quot;</span><span class="p">,</span>
+                         <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_98_0.png" src="../../_images/user_guide_Exploration_98_0.png" />
+</div>
+</div>
+</section>
+<section id="5.4.-Missing-data-correlations">
+<h2>5.4. Missing data correlations<a class="headerlink" href="#5.4.-Missing-data-correlations" title="Link to this heading"></a></h2>
+<p>Finally, we plot a heatmap to display the correlations between missing data.</p>
+<p>Correlation ranges from -1 to 1:</p>
+<ul class="simple">
+<li><p>-1 means that if one variable appears then the other will be missing.</p></li>
+<li><p>0 means that there is no correlation between the missingness of two variables.</p></li>
+<li><p>1 means that the two variables will always appear together.</p></li>
+</ul>
+<section id="id3">
+<h3>Data<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>For the correlations, we use <em>NYC collision factors</em> <a class="reference external" href="https://github.com/ResidentMario/missingno">sample data</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">collisions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://raw.githubusercontent.com/ResidentMario/missingno-data/master/nyc_collision_factors.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>First, we’ll inspect the data frame.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">collisions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DATE</th>
+      <th>TIME</th>
+      <th>BOROUGH</th>
+      <th>ZIP CODE</th>
+      <th>LATITUDE</th>
+      <th>LONGITUDE</th>
+      <th>LOCATION</th>
+      <th>ON STREET NAME</th>
+      <th>CROSS STREET NAME</th>
+      <th>OFF STREET NAME</th>
+      <th>...</th>
+      <th>CONTRIBUTING FACTOR VEHICLE 1</th>
+      <th>CONTRIBUTING FACTOR VEHICLE 2</th>
+      <th>CONTRIBUTING FACTOR VEHICLE 3</th>
+      <th>CONTRIBUTING FACTOR VEHICLE 4</th>
+      <th>CONTRIBUTING FACTOR VEHICLE 5</th>
+      <th>VEHICLE TYPE CODE 1</th>
+      <th>VEHICLE TYPE CODE 2</th>
+      <th>VEHICLE TYPE CODE 3</th>
+      <th>VEHICLE TYPE CODE 4</th>
+      <th>VEHICLE TYPE CODE 5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11/10/2016</td>
+      <td>16:11:00</td>
+      <td>BROOKLYN</td>
+      <td>11208.0</td>
+      <td>40.662514</td>
+      <td>-73.872007</td>
+      <td>(40.6625139, -73.8720068)</td>
+      <td>WORTMAN AVENUE</td>
+      <td>MONTAUK AVENUE</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>Failure to Yield Right-of-Way</td>
+      <td>Unspecified</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>TAXI</td>
+      <td>PASSENGER VEHICLE</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>11/10/2016</td>
+      <td>05:11:00</td>
+      <td>MANHATTAN</td>
+      <td>10013.0</td>
+      <td>40.721323</td>
+      <td>-74.008344</td>
+      <td>(40.7213228, -74.0083444)</td>
+      <td>HUBERT STREET</td>
+      <td>HUDSON STREET</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>Failure to Yield Right-of-Way</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>PASSENGER VEHICLE</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>04/16/2016</td>
+      <td>09:15:00</td>
+      <td>BROOKLYN</td>
+      <td>11201.0</td>
+      <td>40.687999</td>
+      <td>-73.997563</td>
+      <td>(40.6879989, -73.9975625)</td>
+      <td>HENRY STREET</td>
+      <td>WARREN STREET</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>Lost Consciousness</td>
+      <td>Lost Consciousness</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>PASSENGER VEHICLE</td>
+      <td>VAN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>04/15/2016</td>
+      <td>10:20:00</td>
+      <td>QUEENS</td>
+      <td>11375.0</td>
+      <td>40.719228</td>
+      <td>-73.854542</td>
+      <td>(40.7192276, -73.8545422)</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>67-64 FLEET STREET</td>
+      <td>...</td>
+      <td>Failure to Yield Right-of-Way</td>
+      <td>Failure to Yield Right-of-Way</td>
+      <td>Failure to Yield Right-of-Way</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>PASSENGER VEHICLE</td>
+      <td>PASSENGER VEHICLE</td>
+      <td>PASSENGER VEHICLE</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>04/15/2016</td>
+      <td>10:35:00</td>
+      <td>BROOKLYN</td>
+      <td>11210.0</td>
+      <td>40.632147</td>
+      <td>-73.952731</td>
+      <td>(40.6321467, -73.9527315)</td>
+      <td>BEDFORD AVENUE</td>
+      <td>CAMPUS ROAD</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>Failure to Yield Right-of-Way</td>
+      <td>Failure to Yield Right-of-Way</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>PASSENGER VEHICLE</td>
+      <td>PASSENGER VEHICLE</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 26 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">collisions</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+DATE                              object
+TIME                              object
+BOROUGH                           object
+ZIP CODE                         float64
+LATITUDE                         float64
+LONGITUDE                        float64
+LOCATION                          object
+ON STREET NAME                    object
+CROSS STREET NAME                 object
+OFF STREET NAME                   object
+NUMBER OF PERSONS INJURED          int64
+NUMBER OF PERSONS KILLED           int64
+NUMBER OF PEDESTRIANS INJURED      int64
+NUMBER OF PEDESTRIANS KILLED       int64
+NUMBER OF CYCLISTS INJURED       float64
+NUMBER OF CYCLISTS KILLED        float64
+CONTRIBUTING FACTOR VEHICLE 1     object
+CONTRIBUTING FACTOR VEHICLE 2     object
+CONTRIBUTING FACTOR VEHICLE 3     object
+CONTRIBUTING FACTOR VEHICLE 4     object
+CONTRIBUTING FACTOR VEHICLE 5     object
+VEHICLE TYPE CODE 1               object
+VEHICLE TYPE CODE 2               object
+VEHICLE TYPE CODE 3               object
+VEHICLE TYPE CODE 4               object
+VEHICLE TYPE CODE 5               object
+dtype: object
+</pre></div></div>
+</div>
+<p>We will then inspect the basic statistics.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">collisions</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ZIP CODE</th>
+      <th>LATITUDE</th>
+      <th>LONGITUDE</th>
+      <th>NUMBER OF PERSONS INJURED</th>
+      <th>NUMBER OF PERSONS KILLED</th>
+      <th>NUMBER OF PEDESTRIANS INJURED</th>
+      <th>NUMBER OF PEDESTRIANS KILLED</th>
+      <th>NUMBER OF CYCLISTS INJURED</th>
+      <th>NUMBER OF CYCLISTS KILLED</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>6919.000000</td>
+      <td>7303.000000</td>
+      <td>7303.000000</td>
+      <td>7303.000000</td>
+      <td>7303.000000</td>
+      <td>7303.000000</td>
+      <td>7303.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>10900.746640</td>
+      <td>40.717653</td>
+      <td>-73.921406</td>
+      <td>0.350678</td>
+      <td>0.000959</td>
+      <td>0.133644</td>
+      <td>0.000822</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>551.568724</td>
+      <td>0.069437</td>
+      <td>0.083317</td>
+      <td>0.707873</td>
+      <td>0.030947</td>
+      <td>0.362129</td>
+      <td>0.028653</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>10001.000000</td>
+      <td>40.502341</td>
+      <td>-74.248277</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>10310.000000</td>
+      <td>40.670865</td>
+      <td>-73.980744</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>11211.000000</td>
+      <td>40.723260</td>
+      <td>-73.933888</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>11355.000000</td>
+      <td>40.759527</td>
+      <td>-73.864463</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>11694.000000</td>
+      <td>40.909628</td>
+      <td>-73.702590</td>
+      <td>16.000000</td>
+      <td>1.000000</td>
+      <td>3.000000</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Finally, we will visualize the nullity (how strongly the presence or absence of one variable affects the presence of another) correlations by a heatmap and a dendrogram.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">missingness</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">collisions</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/user_guide_Exploration_108_0.png" src="../../_images/user_guide_Exploration_108_0.png" />
+</div>
+</div>
+<p>The nullity heatmap and dendrogram reveals a data correlation structure, e.g., <em>vehicle type codes</em> and <em>contributing factor vehicle</em> are highly correlated. Features having complete data are not shown on the figure.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../preprocessing/tracker/" class="btn btn-neutral float-left" title="Tracker Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../Analysis/" class="btn btn-neutral float-right" title="Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+{
+ "cells": [
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Contribution Guide\n",
+    "\n",
+    "## General principles\n",
+    "\n",
+    "Niimpy is an open source project and general open source contribution guidelines apply.\n",
+    "\n",
+    "Contributions are welcome and encouraged.\n",
+    "\n",
+    " * You don't need to be perfect.  Suggest what you can and we will help it improve."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Communication\n",
+    "\n",
+    "We use GitHub issues and pull requests for communication.\n",
+    " - Before you start, create an issue and describe your contribution.\n",
+    "    - This is the primary discussion channel about your contribution and allows us to plan effectively.\n",
+    " - When accepted, you agree to publish your contribution under the MIT license. The full license text can be found in the \"LICENSE\" file in the project root "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Bugs\n",
+    "- If you find a bug, problem or potential enhancement, let us know in an Issue on the [Niimpy GitHub page](https://github.com/digitraceslab/niimpy).\n",
+    "- Before sinking time into fixing the issue or improving Niimpy, discuss with us on the Issue. This ensures that no-one else is working on it and that we can help you with the process.\n",
+    "- To suggest a change, preferably fork the repository and create a pull request."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## New Functionality\n",
+    "\n",
+    "### Function inputs\n",
+    "* Each function should accept two parameters: a dataframe and an optional dictionary containing other arguments.\n",
+    "* Column names should be passed as optional arguments. They can have default values, but these should be adjustable.\n",
+    "* Group by 'user' and 'device' columns if they are present in the input\n",
+    "* You should always use the DataFrame index to retrieve data/time values, not the `datetime` column (which is a convenience thing but not guaranteed to be there).\n",
+    "* Don't fail if there are extra columns passed (or missing some non-essential columns).  Look at what columns/data is passed and and use that, but don't do anything unexpected if someone makes a mistake with input data\n",
+    "\n",
+    "### Function outputs\n",
+    "* Have any times returned in the index (unless each row needs multiple times, then do what you need)\n",
+    "* Resample by the time index, using given resample arguments (or a default value).\n",
+    "\n",
+    "\n",
+    "### other\n",
+    "* Please add documentation to each new function using docstrings.  This should include enough description so that someone else can understand and reproduce all relevant features - enough to describe the method for a scientific article.\n",
+    "* Please add unit tests which test each relevant feature (and each claimed method feature) with a minimal example.  Each function can have multiple tests.  For examples of unit tests, see below or ``niimpy/test_screen.py``.  You can create some sample data within each test module which can be used both during development and for tests.\n",
+    "* [The Zen of Python](https://www.python.org/dev/peps/pep-0020/) is always good advice"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Improving old functions\n",
+    "\n",
+    "- Add tests for existing functionality\n",
+    "  - For every functionality Niimpy claims, there should be a minimal test for it.\n",
+    "- Don't fail if unnecessary columns are not there (don't drop unneeded columns, select only the needed ones).\n",
+    "- Use the index, not the `datetime` column.\n",
+    "- Improve the docstring of the function: we use the [numpydoc format](https://numpydoc.readthedocs.io/en/latest/format.html)\n",
+    "- Add a documentation page for each sensor, document each function and include an example.\n",
+    "- Document what parameters the function groups by when analyzing\n",
+    "  - For example an ideal case is that any 'user' and 'device' columns are grouped by in the final output."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Example unit test\n",
+    "\n",
+    "You can read about testing in general in the [CodeRefinery testing lesson](https://coderefinery.github.io/testing/).\n",
+    "\n",
+    "First you would define some sample data.  You could reuse existing data (or data from `niimpy.sampledata`), but if data is reused too much\n",
+    "it can become harder to edit existing tests.  Do share data when possible but split it when it's relevant.\n",
+    "\n",
+    "```python\n",
+    "@pytest.fixture\n",
+    "def screen1():\n",
+    "    return niimpy.read_csv(io.StringIO(\"\"\"\\\n",
+    "time,screen_status\n",
+    "0,1\n",
+    "60,0\n",
+    "\"\"\"))\n",
+    "```\n",
+    "\n",
+    "Then you can make a test function:\n",
+    "\n",
+    "```python\n",
+    "def test_screen_off(screen1):\n",
+    "    off = niimpy.preprocess.screen_off(screen1)\n",
+    "    assert pd.Timestamp(60,  unit='s', tz=TZ) in off.index\n",
+    "```\n",
+    "\n",
+    "The `assert` is the actual test: if the statement after assert is false, the test fails.  You can have multiple asserts in a function to test multiple things.\n",
+    "When something fails, `pytest` will provide much more useful error messages than you might expect.\n",
+    "\n",
+    "\n",
+    "You run tests with `pytest` or `pytest tests/preprocessing/test_screen.py`.  You can limit to certain tests with `-k` and engage a debugger on errors with `--pdb`."
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Documentation notes\n",
+    "- You can use Jupyter or ReST.  ReST is better for narrative documentation."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

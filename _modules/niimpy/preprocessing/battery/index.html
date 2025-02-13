@@ -1,0 +1,587 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.battery &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.battery</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.preprocessing.battery</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
+
+
+<div class="viewcode-block" id="shutdown_info">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.shutdown_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">shutdown_info</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">battery_column_name</span> <span class="o">=</span> <span class="s2">&quot;battery_status&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns a pandas DataFrame with battery information for the timestamps when the phone</span>
+<span class="sd">    has shutdown.</span>
+<span class="sd">    This includes both events, when the phone has shut down and when the phone</span>
+<span class="sd">    has been rebooted.</span>
+<span class="sd">    NOTE: This is a helper function created originally to preprocess the application</span>
+<span class="sd">    info data</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bat: pandas.DataFrame</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    shutdown: pandas series</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">])</span> <span class="c1">#convert to numeric in case it is not</span>
+
+    <span class="n">shutdown</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="s2">&quot;neither&quot;</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">shutdown</span></div>
+
+
+
+<div class="viewcode-block" id="battery_mean_level">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_mean_level">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">battery_mean_level</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">battery_column_name</span> <span class="o">=</span> <span class="s2">&quot;battery_level&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the mean battery level within the specified timeframe. </span>
+<span class="sd">    If there is no specified timeframe, the function sets a 30 min default time window. </span>
+<span class="sd">    The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">])</span> <span class="c1">#convert to numeric in case it is not</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="n">battery_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;battery_mean_level&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;battery_mean_level&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="battery_median_level">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_median_level">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">battery_median_level</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">battery_column_name</span> <span class="o">=</span> <span class="s2">&quot;battery_level&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the median battery level within the specified timeframe. </span>
+<span class="sd">    If there is no specified timeframe, the function sets a 30 min default time window. </span>
+<span class="sd">    The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">])</span> <span class="c1">#convert to numeric in case it is not</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="n">battery_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;battery_median_level&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;battery_median_level&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="battery_std_level">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_std_level">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">battery_std_level</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">battery_column_name</span> <span class="o">=</span> <span class="s2">&quot;battery_level&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the standard deviation battery level within the specified timeframe. </span>
+<span class="sd">    If there is no specified timeframe, the function sets a 30 min default time window. </span>
+<span class="sd">    The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">])</span> <span class="c1">#convert to numeric in case it is not</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="n">battery_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;battery_std_level&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;battery_std_level&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="battery_shutdown_time">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_shutdown_time">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">battery_shutdown_time</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">battery_column_name</span> <span class="o">=</span> <span class="s2">&quot;battery_status&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the total time the phone has been turned off within a specified time window. </span>
+<span class="sd">    If there is no specified timeframe, the function sets a 30 min default time window. </span>
+<span class="sd">    The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_shutdown</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;next&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">+</span><span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> 
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;-32&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;-33&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;-12&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;-13&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;-22&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">next</span><span class="o">==</span><span class="s1">&#39;-23&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">ids</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="p">[</span><span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">))]</span>
+        <span class="n">ids</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    
+        <span class="n">df_u</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ids</span><span class="p">]</span>
+        <span class="n">df_u</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">df_u</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+           
+        <span class="n">result</span> <span class="o">=</span> <span class="n">duration</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;shutdown_time&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calculate_shutdown</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;shutdown_time&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+    
+
+<div class="viewcode-block" id="battery_discharge">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_discharge">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">battery_discharge</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">battery_column_name</span> <span class="o">=</span> <span class="s2">&quot;battery_level&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This function returns the mean discharge rate of the battery within a specified time window. </span>
+<span class="sd">    If there is no specified timeframe, the function sets a 30 min default time window. </span>
+<span class="sd">    The function aggregates this number by user, by timewindow.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of scrren</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_discharge</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;discharge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="n">battery_column_name</span><span class="p">])</span><span class="o">/</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;discharge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;discharge&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+       
+        <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;discharge&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;battery_discharge&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+    
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calculate_discharge</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;battery_discharge&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="format_battery_data">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.format_battery_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">format_battery_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">batterylevel_column</span> <span class="o">=</span> <span class="s2">&quot;battery_level&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns a DataFrame with battery data for a user.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    battery: DataFrame with battery data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">batterylevel_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">batterylevel_column</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="battery_occurrences">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_occurrences">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">battery_occurrences</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">battery_status</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">battery_status_column_name</span><span class="o">=</span><span class="s2">&quot;battery_status&quot;</span><span class="p">,</span> <span class="n">resample_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns a dataframe showing the amount of battery data points found within a specified time window.</span>
+<span class="sd">    If there is no specified timeframe, the function sets a 30 min default time window.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of batter</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;data is not a pandas DataFrame&quot;</span>
+
+    <span class="n">occurrence_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="s1">&#39;device&#39;</span><span class="p">,</span> <span class="n">battery_status_column_name</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">battery_status</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">battery_status_column_name</span> <span class="ow">in</span> <span class="n">occurrence_data</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">count_alive</span><span class="p">(</span><span class="n">series</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">((</span><span class="n">series</span> <span class="o">==</span> <span class="s1">&#39;-1&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">series</span> <span class="o">==</span> <span class="s1">&#39;-2&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">series</span> <span class="o">==</span> <span class="s1">&#39;-3&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        
+        <span class="n">occurrence_data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">occurrence_data</span><span class="o">.</span><span class="n">index</span>
+        <span class="n">occurrences</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">occurrence_data</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">resample_args</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+            <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span><span class="p">,</span>
+            <span class="n">battery_status_column_name</span><span class="p">:</span> <span class="n">count_alive</span>
+        <span class="p">})</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;occurrences&#39;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">occurrence_data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">occurrence_data</span><span class="o">.</span><span class="n">index</span>
+        <span class="n">occurrences</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">occurrence_data</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">resample_args</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">occurrences</span> <span class="o">=</span> <span class="n">occurrences</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;occurrences&#39;</span><span class="p">)</span>
+
+    <span class="n">occurrences</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">occurrences</span><span class="p">)</span>
+    <span class="n">occurrences</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">occurrences</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;occurrences&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">occurrences</span></div>
+
+
+
+<div class="viewcode-block" id="battery_gaps">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_gaps">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">battery_gaps</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_duration_between</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Returns a DataFrame with the mean time difference between consecutive battery</span>
+<span class="sd">    timestamps. The mean is calculated within intervals specified in config.</span>
+<span class="sd">    The minimum size of the considered deltas can be decided with the min_duration_between</span>
+<span class="sd">    parameter.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Dataframe with the battery information</span>
+<span class="sd">    config: dict, optional</span>
+<span class="sd">        Dictionary keys containing optional arguments for the computation of batter</span>
+<span class="sd">        information. Keys can be column names, other dictionaries, etc. </span>
+
+<span class="sd">    Optional arguments in config:</span>
+<span class="sd">        min_duration_between: Timedelta, for example, pd.Timedelta(minutes=5)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas DataFrame&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">),</span> <span class="s2">&quot;df index is not DatetimeIndex&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_gaps</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="n">tvalue</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">tvalue</span> <span class="o">-</span> <span class="n">tvalue</span><span class="o">.</span><span class="n">shift</span><span class="p">())</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">min_duration_between</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">delta</span><span class="p">[</span><span class="n">delta</span> <span class="o">&lt;</span> <span class="n">min_duration_between</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;battery_gap&quot;</span><span class="p">:</span> <span class="n">delta</span><span class="p">})</span>
+    
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calculate_gaps</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;battery_gap&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="battery_charge_discharge">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.battery_charge_discharge">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">battery_charge_discharge</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">battery_level_column</span> <span class="o">=</span> <span class="s2">&quot;battery_level&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30min&quot;</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Returns a DataFrame showing the mean difference in battery values and mean battery</span>
+<span class="sd">    charge/discharge rate within specified time windows.</span>
+<span class="sd">    If there is no specified timeframe, the function sets a 30 min default time window.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: dataframe with date index</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas DataFrame&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">),</span> <span class="s2">&quot;df index is not DatetimeIndex&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_discharge</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="n">battery_level</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">battery_level_column</span><span class="p">])</span>
+        <span class="n">tvalue</span> <span class="o">=</span> <span class="n">battery_level</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
+        <span class="n">tdelta</span> <span class="o">=</span> <span class="p">(</span><span class="n">tvalue</span> <span class="o">-</span> <span class="n">tvalue</span><span class="o">.</span><span class="n">shift</span><span class="p">())</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">bdelta</span> <span class="o">=</span> <span class="p">(</span><span class="n">battery_level</span> <span class="o">-</span> <span class="n">battery_level</span><span class="o">.</span><span class="n">shift</span><span class="p">())</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">bdelta</span> <span class="o">/</span> <span class="p">(</span><span class="n">tdelta</span> <span class="o">/</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">bdelta</span> <span class="o">=</span> <span class="n">bdelta</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s1">&#39;bdelta&#39;</span><span class="p">:</span> <span class="n">bdelta</span><span class="p">,</span>
+            <span class="s1">&#39;charge/discharge&#39;</span><span class="p">:</span> <span class="n">delta</span>
+        <span class="p">})</span>
+
+    <span class="n">discharge</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calculate_discharge</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">discharge</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">discharge</span><span class="p">)</span>
+    <span class="n">discharge</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">select_columns</span><span class="p">(</span><span class="n">discharge</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;bdelta&quot;</span><span class="p">,</span> <span class="s2">&quot;charge/discharge&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">discharge</span></div>
+
+
+
+<div class="viewcode-block" id="find_real_gaps">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.find_real_gaps">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_real_gaps</span><span class="p">(</span><span class="n">battery_df</span><span class="p">,</span> <span class="n">other_df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns a dataframe showing the gaps found both in the battery data and the other data.</span>
+<span class="sd">    The default interval is 6 hours.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    battery_df: Dataframe</span>
+<span class="sd">    other_df: Dataframe</span>
+<span class="sd">                The data you want to compare with</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">battery_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;battery_df is not a pandas DataFrame&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;other_df is not a pandas DataFrame&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">battery_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                      <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">),</span> <span class="s2">&quot;battery_df index is not DatetimeIndex&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                      <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">),</span> <span class="s2">&quot;other_df index is not DatetimeIndex&quot;</span>
+    
+    <span class="n">battery</span> <span class="o">=</span> <span class="n">battery_occurrences</span><span class="p">(</span><span class="n">battery_df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">battery</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;occurrences&#39;</span><span class="p">:</span> <span class="s1">&#39;battery_occurrences&#39;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">other</span> <span class="o">=</span> <span class="n">battery_occurrences</span><span class="p">(</span><span class="n">other_df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">battery</span><span class="p">[</span><span class="s1">&#39;battery_occurrences&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="s1">&#39;occurrences&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">gaps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">battery</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">other</span><span class="p">[</span><span class="n">mask</span><span class="p">][</span><span class="s1">&#39;occurrences&#39;</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">gaps</span></div>
+
+
+
+<div class="viewcode-block" id="find_non_battery_gaps">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.find_non_battery_gaps">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_non_battery_gaps</span><span class="p">(</span><span class="n">battery_df</span><span class="p">,</span> <span class="n">other_df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns a dataframe showing the gaps found only in the other data.</span>
+<span class="sd">    The default interval is 6 hours.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    battery_df: Dataframe</span>
+<span class="sd">    other_df: Dataframe</span>
+<span class="sd">                The data you want to compare with</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">battery_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;battery_df is not a pandas DataFrame&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;other_df is not a pandas DataFrame&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">battery_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                      <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">),</span> <span class="s2">&quot;battery_df index is not DatetimeIndex&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                      <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">),</span> <span class="s2">&quot;other_df index is not DatetimeIndex&quot;</span>
+
+    <span class="n">battery</span> <span class="o">=</span> <span class="n">battery_occurrences</span><span class="p">(</span><span class="n">battery_df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">battery</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;occurrences&#39;</span><span class="p">:</span> <span class="s1">&#39;battery_occurrences&#39;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">other</span> <span class="o">=</span> <span class="n">battery_occurrences</span><span class="p">(</span><span class="n">other_df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">battery</span><span class="p">[</span><span class="s1">&#39;battery_occurrences&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="s1">&#39;occurrences&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">gaps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">battery</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">other</span><span class="p">[</span><span class="n">mask</span><span class="p">][</span><span class="s1">&#39;occurrences&#39;</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">gaps</span></div>
+
+
+
+<div class="viewcode-block" id="find_battery_gaps">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.find_battery_gaps">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_battery_gaps</span><span class="p">(</span><span class="n">battery_df</span><span class="p">,</span> <span class="n">other_df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns a dataframe showing the gaps found only in the battery data.</span>
+<span class="sd">    The default interval is 6 hours.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    battery_df: Dataframe</span>
+<span class="sd">    other_df: Dataframe</span>
+<span class="sd">                The data you want to compare with</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">battery_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;battery_df is not a pandas DataFrame&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other_df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;other_df is not a pandas DataFrame&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">battery_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                      <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">),</span> <span class="s2">&quot;battery_df index is not DatetimeIndex&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                      <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">indexes</span><span class="o">.</span><span class="n">datetimes</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">),</span> <span class="s2">&quot;other_df index is not DatetimeIndex&quot;</span>
+
+    <span class="n">battery</span> <span class="o">=</span> <span class="n">battery_occurrences</span><span class="p">(</span><span class="n">battery_df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">battery</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;occurrences&#39;</span><span class="p">:</span> <span class="s1">&#39;battery_occurrences&#39;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">other</span> <span class="o">=</span> <span class="n">battery_occurrences</span><span class="p">(</span><span class="n">other_df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">battery</span><span class="p">[</span><span class="s1">&#39;battery_occurrences&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">other</span><span class="p">[</span><span class="s1">&#39;occurrences&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">gaps</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">battery</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">other</span><span class="p">[</span><span class="n">mask</span><span class="p">][</span><span class="s1">&#39;occurrences&#39;</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">gaps</span></div>
+
+
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">[</span><span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span>
+                         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;battery_&#39;</span><span class="p">)]</span>
+<span class="n">ALL_FEATURES</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ALL_FEATURES</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="extract_features_battery">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.battery/#niimpy.preprocessing.battery.extract_features_battery">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_features_battery</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates battery features</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pd.DataFrame</span>
+<span class="sd">        dataframe of battery data. It must contain these columns:</span>
+<span class="sd">        `battery_level` and `battery_status`.</span>
+<span class="sd">    features : map (dictionary) of functions that compute features.</span>
+<span class="sd">        it is a map of map, where the keys to the first map is the name of</span>
+<span class="sd">        functions that compute features and the nested map contains the keyword</span>
+<span class="sd">        arguments to that function. If there is no arguments use an empty map.</span>
+<span class="sd">        Default is None. If None, all the available functions are used.</span>
+<span class="sd">        Those functions are in the dict `battery.ALL_FEATURES`.</span>
+<span class="sd">        You can implement your own function and use it instead or add it</span>
+<span class="sd">        to the mentioned map.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    features : pd.DataFrame</span>
+<span class="sd">        Dataframe of computed features where the index is users and columns</span>
+<span class="sd">        are the the features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;df is not a pandas DataFrame&quot;</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">ALL_FEATURES</span>
+    <span class="k">for</span> <span class="n">features</span><span class="p">,</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">features</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">computed_feature</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">set_conserved_index</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+        <span class="n">computed_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">computed_feature</span><span class="p">)</span>
+
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">computed_features</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">computed_features</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">reset_groups</span><span class="p">(</span><span class="n">computed_features</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">computed_features</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

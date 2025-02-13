@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.survey module &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.preprocessing.tracker module" href="../niimpy.preprocessing.tracker/" />
+    <link rel="prev" title="niimpy.preprocessing.screen module" href="../niimpy.preprocessing.screen/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration/">niimpy.exploration package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.survey module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.preprocessing.survey.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-niimpy.preprocessing.survey">
+<span id="niimpy-preprocessing-survey-module"></span><h1>niimpy.preprocessing.survey module<a class="headerlink" href="#module-niimpy.preprocessing.survey" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.survey.clean_survey_column_names">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.survey.</span></span><span class="sig-name descname"><span class="pre">clean_survey_column_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/survey/#clean_survey_column_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.survey.clean_survey_column_names" title="Link to this definition"></a></dt>
+<dd><p>This function takes a pandas DataFrame as input and cleans the column names
+by removing or replacing specified characters. It helps to ensure standardized
+and clean column names for further analysis or processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">pandas dataframe</span></dt><dd><p>The input DataFrame with column names to be cleaned.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">pandas.DataFrame</span></dt><dd><p>The DataFrame with cleaned column names.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.survey.convert_survey_to_numerical_answer">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.survey.</span></span><span class="sig-name descname"><span class="pre">convert_survey_to_numerical_answer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/survey/#convert_survey_to_numerical_answer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.survey.convert_survey_to_numerical_answer" title="Link to this definition"></a></dt>
+<dd><p>Convert text answers into numerical value (assuming a long dataframe).
+Use answer mapping dictionaries provided by the users to convert the answers.
+Can convert multiple questions having the same prefix (e.g., PSS10_1, PSS10_2, …,PSS10_9)
+if prefix mapping is provided. Function returns original values for the 
+answers that have not been specified for conversion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">pandas dataframe</span></dt><dd><p>Dataframe containing the questions</p>
+</dd>
+<dt><strong>answer_col</strong><span class="classifier">str</span></dt><dd><p>Name of the column containing the answers</p>
+</dd>
+<dt><strong>question_id</strong><span class="classifier">str</span></dt><dd><p>Name of the column containing the question id.</p>
+</dd>
+<dt><strong>id_map</strong><span class="classifier">dictionary</span></dt><dd><p>Dictionary containing answer mappings (value) for each question_id (key),
+or a dictionary containing a map for each question id prefix if use_prefix 
+option is used.</p>
+</dd>
+<dt><strong>use_prefix</strong><span class="classifier">boolean</span></dt><dd><p>If False, uses given map (id_map) to convert questions. The default is False.  
+If True, use question id prefix map, so that multiple question_id’s having 
+the same prefix may be converted on the same time.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>result</strong><span class="classifier">pandas series</span></dt><dd><p>Series containing converted values and original values for aswers hat are not 
+supposed to be converted.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.survey.extract_features_survey">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.survey.</span></span><span class="sig-name descname"><span class="pre">extract_features_survey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/survey/#extract_features_survey"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.survey.extract_features_survey" title="Link to this definition"></a></dt>
+<dd><p>Calculates survey features</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>dataframe of survey data. Must follow Niimpy format. In additions,
+each survey question must be in a single column and the column name
+must be formatted as survey-id_question-number (for example PHQ9_3).</p>
+</dd>
+<dt><strong>features</strong><span class="classifier">map (dictionary) of functions that compute features.</span></dt><dd><p>it is a map of map, where the keys to the first map is the name of
+functions that compute features and the nested map contains the keyword
+arguments to that function. If there is no arguments use an empty map.
+Default is None. If None, all the available functions are used.
+Those functions are in the dict <cite>survey.ALL_FEATURES</cite>.
+You can implement your own function and use it instead or add it
+to the mentioned map.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>features</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>Dataframe of computed features where the index is users and columns
+are the the features.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.survey.sum_survey_scores">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.survey.</span></span><span class="sig-name descname"><span class="pre">sum_survey_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">survey_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/survey/#sum_survey_scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.survey.sum_survey_scores" title="Link to this definition"></a></dt>
+<dd><p>Sum all columns (like <code class="docutils literal notranslate"><span class="pre">PHQ9_*</span></code>) to get a survey score.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>df: pandas DataFrame </dt><dd><p>DataFrame should be a DateTime index, an answer_column with numeric
+scores, and an id_column with question IDs like “PHQ9_1”, “PHQ9_2”,
+etc.  The given survey_prefix is the “PHQ9” (no underscore) part
+which selects the right questions (rows not matching this prefix
+won’t be included).</p>
+</dd>
+<dt>survey_prefix: string</dt><dd><p>The survey prefix in the ‘id’ column, e.g. ‘PHQ9’.  An ‘_’ is appended.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="niimpy.preprocessing.survey.survey_statistic">
+<span class="sig-prename descclassname"><span class="pre">niimpy.preprocessing.survey.</span></span><span class="sig-name descname"><span class="pre">survey_statistic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'rule':</span> <span class="pre">'1D'}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/niimpy/preprocessing/survey/#survey_statistic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#niimpy.preprocessing.survey.survey_statistic" title="Link to this definition"></a></dt>
+<dd><p>Return statistics for a single survey question or a list of questions.
+Assuming that each of the columns contains numerical values representing
+answers, this function returns the mean, maximum, minimum and standard
+deviation for each question in separate columns.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>df: pandas.DataFrame</strong></dt><dd><p>Input data frame</p>
+</dd>
+<dt><strong>config: dict, optional</strong></dt><dd><p>Dictionary keys containing optional arguments for the computation of screen
+information</p>
+<dl class="simple">
+<dt>configuration options include:</dt><dd><dl class="simple">
+<dt>columns: string or list(string), optional</dt><dd><p>A list of columns to process. If empty, the prefix will be
+used to identify columns</p>
+</dd>
+<dt>prefix: string or list(string)</dt><dd><p>required unless columns is given. The function will process
+columns whose name starts with the prefix (QID_0, QID_1, …)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>dict: pandas.DataFrame</dt><dd><p>A dataframe containing summaries of each questionaire.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.preprocessing.screen/" class="btn btn-neutral float-left" title="niimpy.preprocessing.screen module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.preprocessing.tracker/" class="btn btn-neutral float-right" title="niimpy.preprocessing.tracker module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

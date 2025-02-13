@@ -1,0 +1,486 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick start &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Reading" href="../user_guide/reading/" />
+    <link rel="prev" title="See also" href="../about/see-also/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Reading">Reading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Preprocessing">Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Visualization">Visualization</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quick start</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/quick-start.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Quick-start">
+<h1>Quick start<a class="headerlink" href="#Quick-start" title="Link to this heading"></a></h1>
+<p>We will guide you through the main features of <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>. This guide assumes that you have basic knowledge of Python. Also, please refers to the <a class="reference external" href="https://digitraceslab.github.io/niimpy/about/installation/">installation</a> page for installing <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>.</p>
+<p>This guide provides an example of reading and handling Aware battery data. The tutorial will guide you through 4 basic steps of a data analysis pipeline:</p>
+<ul class="simple">
+<li><p>Reading</p></li>
+<li><p>Preprocessing</p></li>
+<li><p>Visualization</p></li>
+<li><p>Basic analysis</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setting up plotly environment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pio</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;png&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.exploration.eda</span><span class="w"> </span><span class="kn">import</span> <span class="n">punchcard</span><span class="p">,</span> <span class="n">missingness</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">battery</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/u/24/rantahj1/unix/miniconda3/envs/niimpy/lib/python3.12/site-packages/tqdm/auto.py:21: TqdmWarning:
+
+IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+
+</pre></div></div>
+</div>
+<section id="Reading">
+<h2>Reading<a class="headerlink" href="#Reading" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">niimpy</span></code> provides a simple function to read data from csv and sqlite database. We will read a csv file containing 1 month of battery data from an individual.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MULTIUSER_AWARE_BATTERY_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>battery_level</th>
+      <th>battery_status</th>
+      <th>battery_health</th>
+      <th>battery_adaptor</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:20:02.924999952+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>74</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:20:02.924999952+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:21:30.405999899+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>73</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:21:30.405999899+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:24:12.805999994+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>72</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:24:12.805999994+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:35:38.561000109+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>72</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:35:38.561000109+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:35:38.953000069+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>72</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2020-01-09 02:35:38.953000069+02:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Preprocessing">
+<h2>Preprocessing<a class="headerlink" href="#Preprocessing" title="Link to this heading"></a></h2>
+<p>There are various ways to handle battery data. For example, you can extract the gaps between consecutive battery timestamps.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gaps</span> <span class="o">=</span> <span class="n">battery</span><span class="o">.</span><span class="n">battery_gaps</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">gaps</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>battery_gap</th>
+      <th>device</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>0 days 00:00:00</td>
+      <td>i8jmoIuoe12Mo</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:30:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>NaT</td>
+      <td>i8jmoIuoe12Mo</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>NaT</td>
+      <td>i8jmoIuoe12Mo</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:30:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>NaT</td>
+      <td>i8jmoIuoe12Mo</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 16:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>0 days 02:18:38.523000002</td>
+      <td>i8jmoIuoe12Mo</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">niimpy</span></code> can also extract the amount of battery data found within an interval.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">occurrences</span> <span class="o">=</span> <span class="n">battery</span><span class="o">.</span><span class="n">battery_occurrences</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="s2">&quot;1h&quot;</span><span class="p">})</span>
+<span class="n">occurrences</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>occurrences</th>
+      <th>device</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>1</td>
+      <td>i8jmoIuoe12Mo</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+      <td>i8jmoIuoe12Mo</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 16:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>1</td>
+      <td>i8jmoIuoe12Mo</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 17:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>1</td>
+      <td>i8jmoIuoe12Mo</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 18:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>1</td>
+      <td>i8jmoIuoe12Mo</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Visualization">
+<h2>Visualization<a class="headerlink" href="#Visualization" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">niimpy</span></code> provides a selection of visualization tools curated for exploring behavioural data. For example, you can examine the frenquency of battery level in specified interval.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">missingness</span><span class="o">.</span><span class="n">bar_count</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;battery_level&#39;</span><span class="p">],</span> <span class="n">sampling_freq</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/quick-start_10_0.png" src="../_images/quick-start_10_0.png" />
+</div>
+</div>
+<p>In addition, you can analyze the battery level at each sampling interval by using a punchcard plot.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">punchcard</span><span class="o">.</span><span class="n">punchcard_plot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                                   <span class="n">user_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;jd9INuQ5BBlW&#39;</span><span class="p">],</span>
+                                   <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;battery_status&#39;</span><span class="p">,</span> <span class="s1">&#39;battery_level&#39;</span><span class="p">],</span>
+                                   <span class="n">resample</span><span class="o">=</span><span class="s1">&#39;10min&#39;</span><span class="p">,</span>
+                                   <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Battery level&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/quick-start_12_0.png" src="../_images/quick-start_12_0.png" />
+</div>
+</div>
+<p>For more information, refer to the <a class="reference external" href="https://digitraceslab.github.io/niimpy/user_guide/Exploration">Exploration</a> section.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../about/see-also/" class="btn btn-neutral float-left" title="See also" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../user_guide/reading/" class="btn btn-neutral float-right" title="Reading" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

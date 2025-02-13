@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.exploration package &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+    <link rel="next" title="niimpy.exploration.eda package" href="../niimpy.exploration.eda/" />
+    <link rel="prev" title="niimpy.config.config module" href="../niimpy.config.config/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../modules/">niimpy API docs</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../niimpy/">niimpy package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../niimpy/#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.analysis/">niimpy.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.config/">niimpy.config package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">niimpy.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.preprocessing/">niimpy.preprocessing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.reading/">niimpy.reading package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy/#module-niimpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules/">niimpy API docs</a></li>
+          <li class="breadcrumb-item"><a href="../niimpy/">niimpy package</a></li>
+      <li class="breadcrumb-item active">niimpy.exploration package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/niimpy.exploration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="niimpy-exploration-package">
+<h1>niimpy.exploration package<a class="headerlink" href="#niimpy-exploration-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../niimpy.exploration.eda/">niimpy.exploration.eda package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration.eda/#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.exploration.eda.categorical/">niimpy.exploration.eda.categorical module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.categorical/#niimpy.exploration.eda.categorical.categorize_answers"><code class="docutils literal notranslate"><span class="pre">categorize_answers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.categorical/#niimpy.exploration.eda.categorical.get_xticks_"><code class="docutils literal notranslate"><span class="pre">get_xticks_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.categorical/#niimpy.exploration.eda.categorical.plot_categories"><code class="docutils literal notranslate"><span class="pre">plot_categories()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.categorical/#niimpy.exploration.eda.categorical.plot_grouped_categories"><code class="docutils literal notranslate"><span class="pre">plot_grouped_categories()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.categorical/#niimpy.exploration.eda.categorical.question_by_group"><code class="docutils literal notranslate"><span class="pre">question_by_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.categorical/#niimpy.exploration.eda.categorical.questionnaire_grouped_summary"><code class="docutils literal notranslate"><span class="pre">questionnaire_grouped_summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.categorical/#niimpy.exploration.eda.categorical.questionnaire_summary"><code class="docutils literal notranslate"><span class="pre">questionnaire_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.exploration.eda.countplot/">niimpy.exploration.eda.countplot module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.countplot/#niimpy.exploration.eda.countplot.barplot_"><code class="docutils literal notranslate"><span class="pre">barplot_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.countplot/#niimpy.exploration.eda.countplot.boxplot_"><code class="docutils literal notranslate"><span class="pre">boxplot_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.countplot/#niimpy.exploration.eda.countplot.calculate_bins"><code class="docutils literal notranslate"><span class="pre">calculate_bins()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.countplot/#niimpy.exploration.eda.countplot.countplot"><code class="docutils literal notranslate"><span class="pre">countplot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.countplot/#niimpy.exploration.eda.countplot.get_counts"><code class="docutils literal notranslate"><span class="pre">get_counts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.exploration.eda.lineplot/">niimpy.exploration.eda.lineplot module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.lineplot/#niimpy.exploration.eda.lineplot.calculate_averages_"><code class="docutils literal notranslate"><span class="pre">calculate_averages_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.lineplot/#niimpy.exploration.eda.lineplot.plot_averages_"><code class="docutils literal notranslate"><span class="pre">plot_averages_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.lineplot/#niimpy.exploration.eda.lineplot.plot_timeseries_"><code class="docutils literal notranslate"><span class="pre">plot_timeseries_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.lineplot/#niimpy.exploration.eda.lineplot.resample_data_"><code class="docutils literal notranslate"><span class="pre">resample_data_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.lineplot/#niimpy.exploration.eda.lineplot.timeplot"><code class="docutils literal notranslate"><span class="pre">timeplot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.exploration.eda.missingness/">niimpy.exploration.eda.missingness module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.missingness/#niimpy.exploration.eda.missingness.bar"><code class="docutils literal notranslate"><span class="pre">bar()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.missingness/#niimpy.exploration.eda.missingness.bar_count"><code class="docutils literal notranslate"><span class="pre">bar_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.missingness/#niimpy.exploration.eda.missingness.heatmap"><code class="docutils literal notranslate"><span class="pre">heatmap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.missingness/#niimpy.exploration.eda.missingness.matrix"><code class="docutils literal notranslate"><span class="pre">matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../niimpy.exploration.eda.punchcard/">niimpy.exploration.eda.punchcard module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.punchcard/#niimpy.exploration.eda.punchcard.combine_dataframe_"><code class="docutils literal notranslate"><span class="pre">combine_dataframe_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.punchcard/#niimpy.exploration.eda.punchcard.get_timerange_"><code class="docutils literal notranslate"><span class="pre">get_timerange_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.punchcard/#niimpy.exploration.eda.punchcard.punchcard_"><code class="docutils literal notranslate"><span class="pre">punchcard_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../niimpy.exploration.eda.punchcard/#niimpy.exploration.eda.punchcard.punchcard_plot"><code class="docutils literal notranslate"><span class="pre">punchcard_plot()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration.eda/#module-niimpy.exploration.eda">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../niimpy.exploration.missingness/">niimpy.exploration.missingness module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration.missingness/#niimpy.exploration.missingness.missing_data_format"><code class="docutils literal notranslate"><span class="pre">missing_data_format()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration.missingness/#niimpy.exploration.missingness.missing_noise"><code class="docutils literal notranslate"><span class="pre">missing_noise()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration.missingness/#niimpy.exploration.missingness.screen_missing_data"><code class="docutils literal notranslate"><span class="pre">screen_missing_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../niimpy.exploration.setup_dataframe/">niimpy.exploration.setup_dataframe module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_categorical_dataframe"><code class="docutils literal notranslate"><span class="pre">create_categorical_dataframe()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_dataframe"><code class="docutils literal notranslate"><span class="pre">create_dataframe()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_missing_dataframe"><code class="docutils literal notranslate"><span class="pre">create_missing_dataframe()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../niimpy.exploration.setup_dataframe/#niimpy.exploration.setup_dataframe.create_timeindex_dataframe"><code class="docutils literal notranslate"><span class="pre">create_timeindex_dataframe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-niimpy.exploration">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-niimpy.exploration" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../niimpy.config.config/" class="btn btn-neutral float-left" title="niimpy.config.config module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../niimpy.exploration.eda/" class="btn btn-neutral float-right" title="niimpy.exploration.eda package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

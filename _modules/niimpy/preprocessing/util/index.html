@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>niimpy.preprocessing.util &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex/" />
+    <link rel="search" title="Search" href="../../../../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../">Module code</a></li>
+      <li class="breadcrumb-item active">niimpy.preprocessing.util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for niimpy.preprocessing.util</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil.tz</span><span class="w"> </span><span class="kn">import</span> <span class="n">tzlocal</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+
+<div class="viewcode-block" id="ensure_dataframe">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.ensure_dataframe">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">),</span> <span class="s2">&quot;Please input data as a pandas DataFrame type&quot;</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="date_range">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.date_range">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">date_range</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract out a certain date range from a DataFrame.</span>
+
+<span class="sd">    Extract out a certain data range from a dataframe.  The index must be the</span>
+<span class="sd">    dates, and the index must be sorted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: is this needed?  Do normal pandas operation, timestamp</span>
+    <span class="c1"># checking is not really needed (and limits the formats that can</span>
+    <span class="c1"># be used, pandas can take more than pd.Timestamp)</span>
+    <span class="c1"># Move this function to utils</span>
+    <span class="c1"># Deal with pandas timestamp compatibility </span>
+    <span class="k">if</span><span class="p">(</span><span class="n">start</span><span class="o">!=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">),</span><span class="s2">&quot;start not given in timestamp format&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">end</span><span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">),</span><span class="s2">&quot;end not given in timestamp format&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">df_new</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df_new</span></div>
+
+
+<span class="c1">#SYSTEM_TZ = tzlocal()  # the operating system timezone - for sqlite output compat</span>
+<span class="n">SYSTEM_TZ</span> <span class="o">=</span> <span class="s1">&#39;Europe/Helsinki&#39;</span>
+<span class="n">TZ</span> <span class="o">=</span> <span class="n">tzlocal</span><span class="p">()</span>
+<span class="n">TZ</span> <span class="o">=</span> <span class="s1">&#39;Europe/Helsinki&#39;</span>
+
+<div class="viewcode-block" id="set_tz">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.set_tz">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_tz</span><span class="p">(</span><span class="n">tz</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Globally set the preferred local timezone&quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">TZ</span>
+    <span class="n">TZ</span> <span class="o">=</span> <span class="n">tz</span></div>
+
+
+<div class="viewcode-block" id="tmp_timezone">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.tmp_timezone">[docs]</a>
+<span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tmp_timezone</span><span class="p">(</span><span class="n">new_tz</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Temporarily override the global timezone for a black.</span>
+
+<span class="sd">    This is used as a context manager::</span>
+
+<span class="sd">      with tmp_timezone(&#39;Europe/Berlin&#39;):</span>
+<span class="sd">          ....</span>
+
+<span class="sd">    Note: this overrides the global timezone.  In the future, there will</span>
+<span class="sd">    be a way to handle timezones as non-global variables, which should</span>
+<span class="sd">    be preferred.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">TZ</span>
+    <span class="n">old_tz</span> <span class="o">=</span> <span class="n">TZ</span>
+    <span class="n">TZ</span> <span class="o">=</span> <span class="n">new_tz</span>
+    <span class="k">yield</span>
+    <span class="n">TZ</span> <span class="o">=</span> <span class="n">old_tz</span></div>
+
+
+<span class="n">SQLITE3_EXTENSIONS_BASENAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;sqlite-extension-functions.c&#39;</span><span class="p">)</span>
+<span class="n">SQLITE3_EXTENSIONS_FILENAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;sqlite-extension-functions.so&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="install_extensions">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.install_extensions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">install_extensions</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Automatically install sqlite extension functions.</span>
+
+<span class="sd">    Only works on Linux for now, improvements welcome.&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">SQLITE3_EXTENSIONS_BASENAME</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">urllib.request</span>
+        <span class="n">extension_url</span> <span class="o">=</span> <span class="s1">&#39;https://sqlite.org/contrib/download/extension-functions.c?get=25&#39;</span>
+        <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">extension_url</span><span class="p">,</span> <span class="n">SQLITE3_EXTENSIONS_BASENAME</span><span class="p">)</span>
+    <span class="n">expected_digest</span> <span class="o">=</span> <span class="s1">&#39;991b40fe8b2799edc215f7260b890f14a833512c9d9896aa080891330ffe4052&#39;</span>
+    <span class="k">if</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">SQLITE3_EXTENSIONS_BASENAME</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">!=</span> <span class="n">expected_digest</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sqlite-extension-functions.c has wrong sha256 hash&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;cd </span><span class="si">%s</span><span class="s1">; gcc -lm -shared -fPIC sqlite-extension-functions.c -o sqlite-extension-functions.so&#39;</span><span class="o">%</span>
+              <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sqlite extension successfully compiled.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="uninstall_extensions">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.uninstall_extensions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">uninstall_extensions</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Uninstall any installed extensions&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unlink_if_exists</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">unlink_if_exists</span><span class="p">(</span><span class="n">SQLITE3_EXTENSIONS_FILENAME</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="read_preprocess">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.read_preprocess">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_preprocess</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">add_group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Standard preprocessing arguments when reading.</span>
+
+<span class="sd">    This is a preprocessing filter which handles some standard arguments</span>
+<span class="sd">    when reading files.  This should be considered a private, unstable</span>
+<span class="sd">    function.</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    df: pandas.DataFrame</span>
+
+<span class="sd">        Input data frame</span>
+
+<span class="sd">    add_group: string, optional</span>
+
+<span class="sd">        If given, add a new &#39;group&#39; column with all values set to this</span>
+<span class="sd">        given identifier.</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    df: dataframe</span>
+
+<span class="sd">        Resulting dataframe (modified in-place if possible, but may also</span>
+<span class="sd">        be a copy)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">add_group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_group</span>
+        <span class="c1">#df[&#39;group&#39;] = df[&#39;group&#39;].astype(&#39;category&#39;)</span>
+        <span class="c1">#pd.Categorical(add_group)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="df_normalize">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.df_normalize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">df_normalize</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">old_tz</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize a df (from sql) before presenting it to the user.</span>
+
+<span class="sd">    This sets the dataframe index to the time values, and converts times</span>
+<span class="sd">    to pandas.TimeStamp:s.  Modifies the data frame inplace.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">tz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="ne">DeprecationWarning</span><span class="p">(</span><span class="s2">&quot;From now on, you should explicitely specify timezone with e.g. tz=&#39;Europe/Helsinki&#39;.  Specify as part of the reading function.&quot;</span><span class="p">))</span>
+        <span class="n">tz</span> <span class="o">=</span> <span class="n">TZ</span>
+    <span class="k">if</span> <span class="s1">&#39;time&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">])</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span>
+    <span class="k">elif</span> <span class="s1">&#39;day&#39;</span> <span class="ow">in</span> <span class="n">df</span> <span class="ow">and</span> <span class="s1">&#39;hour&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">:00&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">])),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">old_tz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># old_tz is given - e.g. sqlite already converts it to localtime</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="n">old_tz</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="n">tz</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="n">tz</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="to_datetime">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.to_datetime">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">times</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="n">TZ</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">times</span><span class="o">.</span><span class="n">tz_convert</span><span class="p">(</span><span class="n">TZ</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="identifier_columns">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.identifier_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">identifier_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">id_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; build a list of standard Niimpy identifier columns in the </span>
+<span class="sd">    dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">id_columns</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">columns</span></div>
+
+
+
+<div class="viewcode-block" id="select_columns">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.select_columns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">select_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">id_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Select Niimpy identifier columns and listed feature columns &quot;&quot;&quot;</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">identifier_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">id_columns</span> <span class="o">+</span> <span class="n">columns</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="group_data">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.group_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">group_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">additional_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">id_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Group the dataframe by Niimpy standard user identifier columns present in</span>
+<span class="sd">    the dataframe. The columns are &#39;user&#39;, &#39;device&#39;, and &#39;group&#39;. An addional</span>
+<span class="sd">    column may be added and used for grouping.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">additional_columns</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">additional_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">additional_columns</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">additional_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">additional_columns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">identifier_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">id_columns</span> <span class="o">+</span> <span class="n">additional_columns</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="reset_groups">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.reset_groups">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reset_groups</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">additional_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">id_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Reset id columns and optional addional columns in the dataframe index. &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">additional_columns</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">additional_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">additional_columns</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">additional_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">additional_columns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">id_columns</span> <span class="o">+</span> <span class="n">additional_columns</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="set_conserved_index">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.set_conserved_index">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_conserved_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">additional_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">id_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Set standard id columns as index. This allows concatenating dataframes</span>
+<span class="sd">    with different measurements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">additional_columns</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">additional_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">additional_columns</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">additional_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">additional_columns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">index_by</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">id_columns</span> <span class="o">+</span> <span class="n">additional_columns</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">index_by</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="set_encoding">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.set_encoding">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_encoding</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">to_encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">from_encoding</span> <span class="o">=</span> <span class="s1">&#39;iso-8859-1&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Recode the dataframe to a different encoding. This is useful when</span>
+<span class="sd">    the encoding in a data file is set incorrectly and utf characters are</span>
+<span class="sd">    garbled.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        Dataframe to recode</span>
+<span class="sd">    to_encoding : str</span>
+<span class="sd">        Encoding to convert to. Default is &#39;utf-8&#39;.</span>
+<span class="sd">    from_encoding : str</span>
+<span class="sd">        Encoding to convert from. Default is &#39;iso-8859-1&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        Recoded dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">from_encoding</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">to_encoding</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="occurrence">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.occurrence">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">occurrence</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;1h&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Resamples by grouping_width and aggregates by the number of bins</span>
+<span class="sd">    with data.</span>
+<span class="sd">    </span>
+<span class="sd">    With default options, this reproduces the logic of the &quot;occurrence&quot; database</span>
+<span class="sd">    function, without needing the database.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    series : pandas.Series</span>
+<span class="sd">        A pandas series of pandas.Timestamps.</span>
+<span class="sd">    bins : int</span>
+<span class="sd">        The number of bins each time interval is divided into.</span>
+<span class="sd">    interval : str</span>
+<span class="sd">        Length of the time interval. Default is &quot;1h&quot;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        Dataframe with timestamp index and &#39;occurance&#39; column.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input to niimpy.util.occurrence must be a &quot;</span>
+                         <span class="s2">&quot;pandas Series or Index, not a DataFrame.  &quot;</span>
+                         <span class="s2">&quot;(your input type was: </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="o">%</span><span class="nb">type</span><span class="p">(</span><span class="n">series</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">series</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">):</span>
+        <span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
+    <span class="n">bin_width</span> <span class="o">=</span> <span class="n">dt</span><span class="o">/</span><span class="n">bins</span>
+    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">series</span><span class="p">})</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;occurrence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">bin_width</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;occurrence&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="aggregate">
+<a class="viewcode-back" href="../../../../api/niimpy.preprocessing.util/#niimpy.preprocessing.util.aggregate">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">method_numerical</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">method_categorical</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">],</span> <span class="o">**</span><span class="n">resample_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Grouping and resampling the data. This function performs separated resampling</span>
+<span class="sd">    for different types of columns: numerical and categorical.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas Dataframe</span>
+<span class="sd">        Dataframe to resample</span>
+<span class="sd">    freq : string</span>
+<span class="sd">        Frequency to resample the data. Requires the dataframe to have datetime-like index.</span>
+<span class="sd">    method_numerical : str</span>
+<span class="sd">        Resampling method for numerical columns. Possible values:</span>
+<span class="sd">        &#39;sum&#39;, &#39;mean&#39;, &#39;median&#39;. Default value is &#39;mean&#39;.</span>
+<span class="sd">    method_categorical : str</span>
+<span class="sd">        Resampling method for categorical columns. Possible values: &#39;first&#39;, &#39;mode&#39;, &#39;last&#39;.</span>
+<span class="sd">    groups : list</span>
+<span class="sd">        Columns used for groupby operation.</span>
+<span class="sd">    resample_kwargs : dict</span>
+<span class="sd">        keywords to pass pandas resampling function</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        An aggregated and resampled multi-index dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#Groupby user</span>
+    <span class="n">groupby</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span>
+
+    <span class="c1">#Resample numerical columns -&gt; sub_df1</span>
+    <span class="k">assert</span> <span class="n">method_numerical</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">],</span> \
+        <span class="s1">&#39;Cannot recognize sampling method. Possible values: &quot;mean&quot;, &quot;sum&quot;, &quot;median&quot;.&#39;</span>
+    <span class="k">if</span> <span class="n">method_numerical</span> <span class="o">==</span> <span class="s1">&#39;sum&#39;</span><span class="p">:</span>
+        <span class="n">sub_df1</span> <span class="o">=</span> <span class="n">groupby</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="o">**</span><span class="n">resample_kwargs</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method_numerical</span> <span class="o">==</span> <span class="s1">&#39;mean&#39;</span><span class="p">:</span>
+        <span class="n">sub_df1</span> <span class="o">=</span> <span class="n">groupby</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="o">**</span><span class="n">resample_kwargs</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method_numerical</span> <span class="o">==</span> <span class="s1">&#39;median&#39;</span><span class="p">:</span>
+        <span class="n">sub_df1</span> <span class="o">=</span> <span class="n">groupby</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="o">**</span><span class="n">resample_kwargs</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Can&#39;t recognize sampling method&quot;</span><span class="p">)</span>
+
+
+    <span class="c1">#Resample cat columns -&gt; sub_df2</span>
+    <span class="n">cat_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+    <span class="n">cat_cols</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span>
+    <span class="n">cat_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">cat_cols</span><span class="p">))</span>
+
+    <span class="n">groupby</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cat_cols</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">method_categorical</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;first&#39;</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;last&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">method_categorical</span> <span class="o">==</span> <span class="s1">&#39;first&#39;</span><span class="p">:</span>
+        <span class="n">sub_df2</span> <span class="o">=</span> <span class="n">groupby</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="o">**</span><span class="n">resample_kwargs</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">method_categorical</span> <span class="o">==</span> <span class="s1">&#39;last&#39;</span><span class="p">:</span>
+        <span class="n">sub_df2</span> <span class="o">=</span> <span class="n">groupby</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="o">**</span><span class="n">resample_kwargs</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">last</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">method_categorical</span> <span class="o">==</span> <span class="s1">&#39;mode&#39;</span><span class="p">:</span>
+        <span class="n">sub_df2</span> <span class="o">=</span> <span class="n">groupby</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="o">**</span><span class="n">resample_kwargs</span><span class="p">,</span> <span class="n">include_groups</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="c1">#Merge sub_df1 and sub_df2</span>
+    <span class="n">sub_df1</span> <span class="o">=</span> <span class="n">sub_df1</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">groups</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+    <span class="n">sub_df2</span> <span class="o">=</span> <span class="n">sub_df2</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">groups</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+    <span class="n">final_df</span> <span class="o">=</span> <span class="n">sub_df1</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sub_df2</span><span class="p">)</span>
+
+    <span class="c1"># Reset the user index, user should be a column</span>
+    <span class="n">final_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">groups</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">final_df</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

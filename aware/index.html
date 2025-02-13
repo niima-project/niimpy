@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aware &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="niimpy API docs" href="../api/modules/" />
+    <link rel="prev" title="Demo Notebook on Reading and Exploring the Studentlife Dataset" href="../demo/student_life_example/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/preprocessing/">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Aware</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#standard-columns">Standard columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awareaccelerometer">AwareAccelerometer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awareapplicationcrashes">AwareApplicationCrashes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awareapplicationnotifications">AwareApplicationNotifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awarebattery">AwareBattery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awarecalls">AwareCalls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awareesm">AwareESM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awarelocationdayold">AwareLocationDayOld</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awarelocationday">AwareLocationDay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awarelocationsafe">AwareLocationSafe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awaremessagess">AwareMessagess</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awarescreen">AwareScreen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#awaretimestamps">AwareTimestamps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#survey">Survey</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mmmbackgroundanswers-mmmbaselineanswers-mmmdiagnosticpatientanswers-mmmfeedbackpostactiveanswers-mmmpostactiveanswers-mmmsurveyallanswers">MMMBackgroundAnswers, MMMBaselineAnswers, MMMDiagnosticPatientAnswers, MMMFeedbackPostActiveAnswers, MMMPostActiveAnswers, MMMSurveyAllAnswers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mmmbackgroundmeta-mmmbaselinemeta-mmmdiagnosticpatientmeta-mmmfeedbackpostactivemeta-mmmpostactivemeta-mmmsurveyallmeta">MMMBackgroundMeta, MMMBaselineMeta, MMMDiagnosticPatientMeta, MMMFeedbackPostActiveMeta, MMMPostActiveMeta, MMMSurveyAllMeta</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Aware</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/aware.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aware">
+<h1>Aware<a class="headerlink" href="#aware" title="Link to this heading"></a></h1>
+<p>You can read upstream information about Aware sensors from
+<a class="reference external" href="http://www.awareframework.com/sensors/">http://www.awareframework.com/sensors/</a> .  This page elaborates the
+material found there, in particular how the <a class="reference external" href="https://github.com/digitraceslab/koota-server/">koota-server</a> project processes
+the data.  Still, most of this information could be a useful hints to
+others using the Aware data.</p>
+<p>You can find our previous information <a class="reference external" href="https://github.com/digitraceslab/koota-server/wiki/Aware#data-notes">on the koota-server wiki</a>,
+but this information is now being moved here.</p>
+<p>Section names in general correspond to the koota-server converter
+name.</p>
+<section id="standard-columns">
+<h2>Standard columns<a class="headerlink" href="#standard-columns" title="Link to this heading"></a></h2>
+<p>Some columns that are stored in all the tables.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code>: unixtime, time of observation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datetime</span></code>: time when the data instance was collected.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user</span></code>: a unique key to identify a user.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">device</span></code>: a unique key to identify a mobile device.</p></li>
+</ul>
+</section>
+<section id="awareaccelerometer">
+<h2>AwareAccelerometer<a class="headerlink" href="#awareaccelerometer" title="Link to this heading"></a></h2>
+<p>Accelerometer data is collected using the
+phones’ accelerometer sensors. The data is used to measure the acceleration
+of the the phone in any direction of the 3D environment. The
+coordinate-system is defined relative to the screen of the phone in its default
+orientation (facing the user). The axis are not swapped when the
+device’s screen orientation changes. The X axis is horizontal and points
+to the right, the Y axis is vertical and points up and the Z axis points
+towards the outside of the front face of the screen. In this system, coordinates
+behind the screen have negative Z axis. The accelerometer sensor
+measures acceleration and inclues the acceleration due to the force of gravity
+into consideration. So, if the phone is idle, the accelerometer reads the
+acceleration of gravity 9.81m/s and if the phone is in free-fall towards the
+ground, the accelerometer reads 0m/s. The frequency of the data collected can
+vary largely. It can be in the range of 0 to hundreds of data instances per hour.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">double_values_0</span></code>: acceleration values of X axis.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">double_values_1</span></code>: acceleration values of Y axis.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">double_values_2</span></code>: acceleration values of Z axis.</p></li>
+</ul>
+</section>
+<section id="awareapplicationcrashes">
+<h2>AwareApplicationCrashes<a class="headerlink" href="#awareapplicationcrashes" title="Link to this heading"></a></h2>
+<p>Contains information about crashed applications. This data is logged whenever any
+application crashes, which can occur from zero to several times per hour.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">application_name</span></code>: application’s localized name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">package_name</span></code>: application’s package name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">error_short</span></code>: short description of the error.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">error_long</span></code>: more verbose version of the error description.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">application_version</span></code>: version code of the crashed application.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">error_condition</span></code>: type of error has occurred to the application. 1=code error, 2=Application Not Responding (ANR) error</p></li>
+</ul>
+</section>
+<section id="awareapplicationnotifications">
+<h2>AwareApplicationNotifications<a class="headerlink" href="#awareapplicationnotifications" title="Link to this heading"></a></h2>
+<p>Contains the log of notifications the device has received. This data is logged whenever the phone receives a
+notification so the frequency of this data can range from zero to hundreds of times per hour.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">application_name</span></code>: application’s localized name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">package_name</span></code>: application’s package name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sound</span></code>: notification’s sound source.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vibrate</span></code>: notification’s vibration patterns.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">defaults</span></code>: 0=default color, -1=default all, 1=default sound, 2=default vibrate, 3=?, 4=default lights, 6=?, 7=?</p></li>
+</ul>
+</section>
+<section id="awarebattery">
+<h2>AwareBattery<a class="headerlink" href="#awarebattery" title="Link to this heading"></a></h2>
+<p>Provides information about the battery and monitors power related events such as phone
+shutting down or rebooting or charging. The frequency of data sent by battery sensor can be from 0 to tens of times per hour.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">battery_level</span></code>: marks the current percentage of battery charge remaining.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">battery_status</span></code>: 1=unknown, 2=charging, 3=discharging, 4=not charging, 5=full, -1=shut down, -3=reboot.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">battery_health</span></code>: 1=unknown, 2=good, 3=overheat, 4=dead, 5=over voltage, 6=unspecified failure, 7=unknown, 9=?.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">batery_adaptor</span></code>: 0=?, 1=AC, 2=USB, 4=wireless adaptor.</p></li>
+</ul>
+</section>
+<section id="awarecalls">
+<h2>AwareCalls<a class="headerlink" href="#awarecalls" title="Link to this heading"></a></h2>
+<p>Logs incoming and outgoing call details. The frequency of AwareMessages data depends upon number of calls
+the users get so it can be from 0 to tens of times per hour.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">call_type</span></code>: ‘incoming’, ‘outgoing’, ‘missed’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">call_duration</span></code>: call duration in seconds.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trace</span></code>: SHA-1 one-way source/target of the call.</p></li>
+</ul>
+</section>
+<section id="awareesm">
+<h2>AwareESM<a class="headerlink" href="#awareesm" title="Link to this heading"></a></h2>
+<p>This table provides information about the ESM sensor which
+adds support for user-provided context by leveraging mobile Experience
+Sampling Method (ESM). The ESM questionnaires can be triggered by
+context, time or on-demand, locally or remotely (within your study on
+AWARE’s dashboard). Although user-subjective, this sensor allows crowd
+sourcing information that is challenging to instrument with sensors. Depending upon the
+number of time the users attempt to answer the questions, the frequency
+can vary from 0 to tens of times per hour.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">time_asked</span></code>: unixtime of the moment the question was asked.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: the id of the question asked.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">answer</span></code>: the answer to the question asked.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: 1=text, 2=radio buttons, 3=checkbox, 4=likert scale, 5=quich answer, 6=scale, 9=numeric, 10=web.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code>: title of the ESM.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">instructions</span></code>: instructions to answer the ESM.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">submit</span></code>: status of the submission.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">notification_timeout</span></code>: time after which the ESM notification is dismissed and the whole ESM queue</p></li>
+</ul>
+<p>expires (in case expiration threshold is set to 0).</p>
+</section>
+<section id="awarelocationdayold">
+<h2>AwareLocationDayOld<a class="headerlink" href="#awarelocationdayold" title="Link to this heading"></a></h2>
+<p>This table takes one-day chunks of data and does some processing, for cases where we can’t give raw location data. A day goes from 04:00 one day to 04:00 the next day. Since the information is reliant upon location services being enabled, the frequency can range from zero to several thousands per hour.
+* <code class="docutils literal notranslate"><span class="pre">day</span></code>: day which is being analyzed, format YYYY-MM-DD.
+* <code class="docutils literal notranslate"><span class="pre">totdist</span></code>: total distance traveled during the day, meters.
+* <code class="docutils literal notranslate"><span class="pre">locstd</span></code>: radius of gyration (standard deviation of location throughout the day), meters.
+* <code class="docutils literal notranslate"><span class="pre">n_bins</span></code>: number of 10-minute intervals with data, including things.
+* <code class="docutils literal notranslate"><span class="pre">n_bins_nonnan</span></code>: number of these 10-minute intervals with data.
+* <code class="docutils literal notranslate"><span class="pre">transtime</span></code>: does not work (was supposed to be amount of time you are moving between clusters).
+* <code class="docutils literal notranslate"><span class="pre">numclust</span></code>: does not work (number of clusters determined with a k-means algorithm, in other words the number of locations they visited. Number of clusters increased until maximum radius is 500m. But maximum number of clusters is 20. This measure may not be accurate).
+* <code class="docutils literal notranslate"><span class="pre">entropy</span></code>: does not work (was supposed to be p*log(p) of all the cluster memberships.
+* <code class="docutils literal notranslate"><span class="pre">normentropy</span></code>: does not work.</p>
+</section>
+<section id="awarelocationday">
+<h2>AwareLocationDay<a class="headerlink" href="#awarelocationday" title="Link to this heading"></a></h2>
+<p>This table takes one-day chunks of data and does some processing, for cases where we can’t give raw location data. A day goes from 04:00 one day to 04:00 the next day. Since the information is reliant upon location services being enabled, the frequency can range from zero to several thousands per hour.
+* <code class="docutils literal notranslate"><span class="pre">day</span></code>: day which is being analyzed, format YYYY-MM-DD.
+* <code class="docutils literal notranslate"><span class="pre">n_points</span></code>: the number of raw datapoints.
+* <code class="docutils literal notranslate"><span class="pre">n_bins_nonnan</span></code>: number of these 10-minute intervals with data.
+* <code class="docutils literal notranslate"><span class="pre">n_bins_paired</span></code>: the number of bins that also have data right after them.
+* <code class="docutils literal notranslate"><span class="pre">ts_min</span></code>: first timestamp of any data point of the day (unixtime seconds)
+* <code class="docutils literal notranslate"><span class="pre">ts_max</span></code>: last timestamp of any data point of the day (unixtime seconds)” (subtracting these two gives the range of data covered which can be contrasted with the next item)
+* <code class="docutils literal notranslate"><span class="pre">ts_std</span></code>: standard deviation of all timestamps (seconds)”. Note that standard deviations of timestamps doesn’t actually make that much sense, but combined with the range of timestamps can give you an idea of how spread out through the day the data points are.
+* <code class="docutils literal notranslate"><span class="pre">totdist</span></code>: total distance covered throughout the day, looking at only the binned averages. If there are large gaps in data, pretend those gaps don’t exist and find the distances anyway (meters).
+* <code class="docutils literal notranslate"><span class="pre">totdist_raw</span></code>: total distance considering every data point (not binned). Probably larger than totdist, more affected by random fluctuations (meters).
+* <code class="docutils literal notranslate"><span class="pre">locstd</span></code>: Radius of gyration of locations, after the binning (meters).
+* <code class="docutils literal notranslate"><span class="pre">radius_mean</span></code>: this isn’t exactly a radius, but the longest distance between any point and the mean location (both mean location and other points after binning). This measure may not make the most sense, but can be compared to locstd.
+* <code class="docutils literal notranslate"><span class="pre">diameter</span></code>: Not implemented, always nan.
+* <code class="docutils literal notranslate"><span class="pre">n_bins_moving</span></code>: number of bins which are considered to be moving. Each bin is compared to the one after to determine an average speed, and n_bins_moving is the number of bins above some threshold.
+* <code class="docutils literal notranslate"><span class="pre">n_bins_moving_speed</span></code>: number of bins which are moving, using the self-reported speed from Aware. Probably more accurate than the previous.
+* <code class="docutils literal notranslate"><span class="pre">n_points_moving_speed</span></code>: number of data points (non-binned) which are have a speed above the speed threshold.</p>
+</section>
+<section id="awarelocationsafe">
+<h2>AwareLocationSafe<a class="headerlink" href="#awarelocationsafe" title="Link to this heading"></a></h2>
+<p>This table provides information about the users’ current location. Since the information is reliant upon location services being enabled, the frequency can range from zero to several thousands per hour.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">accuracy</span></code>: approximate accuracy of the location in meters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">double_speed</span></code>: users’ speed in meters/second over the ground.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">double_bearing</span></code>: location’s bearing, in degrees.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">provider</span></code>: describes whether the location information was provided by network or GPS.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code>: provides information whether location services was enabled or disabled.</p></li>
+</ul>
+</section>
+<section id="awaremessagess">
+<h2>AwareMessagess<a class="headerlink" href="#awaremessagess" title="Link to this heading"></a></h2>
+<p>Logs incoming and outgoing message details. The frequency of AwareMessages data depends upon number of messages the users get so it can be from 0 to tens of times per hour.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">message_type</span></code>: ‘incoming’, ‘outgoing’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trace</span></code>: SHA-1 one-way source/target of the call.</p></li>
+</ul>
+</section>
+<section id="awarescreen">
+<h2>AwareScreen<a class="headerlink" href="#awarescreen" title="Link to this heading"></a></h2>
+<p>This table provides information about the screen status. The number of times this data is collected can range from zero to several hundreds per hour.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">screen_status</span></code>: 0=off, 1=on, 2=locked, 3=unlocked.</p></li>
+</ul>
+</section>
+<section id="awaretimestamps">
+<h2>AwareTimestamps<a class="headerlink" href="#awaretimestamps" title="Link to this heading"></a></h2>
+<p>This table lists all the timestamps collected from every data packet that was sent. The frequency of data, since logged for every data packet sent, can range from 0 to tens of thousands per hour.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">packet_time</span></code>: the unixtime of the moment each packet was sent.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">table</span></code>: provides information about which table did the data packet belong to. In other words it describes the kind of data that was being transferred in the packet.</p></li>
+</ul>
+</section>
+<section id="survey">
+<h2>Survey<a class="headerlink" href="#survey" title="Link to this heading"></a></h2>
+<p>Provides details about the active data collected from the participants in the form of questionnaires. The survey tables are given below.</p>
+<section id="mmmbackgroundanswers-mmmbaselineanswers-mmmdiagnosticpatientanswers-mmmfeedbackpostactiveanswers-mmmpostactiveanswers-mmmsurveyallanswers">
+<h3>MMMBackgroundAnswers, MMMBaselineAnswers, MMMDiagnosticPatientAnswers, MMMFeedbackPostActiveAnswers, MMMPostActiveAnswers, MMMSurveyAllAnswers<a class="headerlink" href="#mmmbackgroundanswers-mmmbaselineanswers-mmmdiagnosticpatientanswers-mmmfeedbackpostactiveanswers-mmmpostactiveanswers-mmmsurveyallanswers" title="Link to this heading"></a></h3>
+<p>These 6 tables provide details about questions and answers that were asked to the participants of this study. The answers in each of these 6 tables were collected only once per user.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>: uniquely identifies which question was asked to the participant.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">access_time</span></code>: unixtime of the moment when the participant started answering the questions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">question</span></code>: describes the question that was asked.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">answer</span></code>: provides the participants’ answer to the questions. The answers can be of several types.</p></li>
+</ul>
+<p>They can be numbers, small texts or identifier representing a choice for multiple choice questions.
+* <code class="docutils literal notranslate"><span class="pre">order</span></code>: provides an integer value which represents the number of questions asked before that particular question giving the order of the entire questionnaire.
+* <code class="docutils literal notranslate"><span class="pre">choice_text</span></code>: represents the texts in the choices of the multiple choice questions which the users
+selected as answers.</p>
+</section>
+<section id="mmmbackgroundmeta-mmmbaselinemeta-mmmdiagnosticpatientmeta-mmmfeedbackpostactivemeta-mmmpostactivemeta-mmmsurveyallmeta">
+<h3>MMMBackgroundMeta, MMMBaselineMeta, MMMDiagnosticPatientMeta, MMMFeedbackPostActiveMeta, MMMPostActiveMeta, MMMSurveyAllMeta<a class="headerlink" href="#mmmbackgroundmeta-mmmbaselinemeta-mmmdiagnosticpatientmeta-mmmfeedbackpostactivemeta-mmmpostactivemeta-mmmsurveyallmeta" title="Link to this heading"></a></h3>
+<p>These 6 tables provide meta data for their respective set of questionnaires’ answers. Each of these tables summerize the overall information gathered per user for that particular set of questionnaire. All of
+the data in these 6 tables were collected only once.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: the name of the survey.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">access_time</span></code>: unixtime of the moment when the participant started answering the questions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seconds</span></code>: describes the time (in seconds) it took for the user to provide the answers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_questions</span></code>: number of questions to be answered in the survey.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../demo/student_life_example/" class="btn btn-neutral float-left" title="Demo Notebook on Reading and Exploring the Studentlife Dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/modules/" class="btn btn-neutral float-right" title="niimpy API docs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1964 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application data &mdash; Niimpy dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=3c2ae12a"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex/" />
+    <link rel="search" title="Search" href="../../../search/" />
+    <link rel="next" title="Audio Data" href="../audio/" />
+    <link rel="prev" title="Location Data" href="../location/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../" class="icon icon-home">
+            Niimpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/introduction/">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/architecture/">Architecture and workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/schema/">Data schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/contribution_guide/">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/How-to-cite/">How to cite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/see-also/">See also</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quick-start/">Quick start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../reading/">Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic-transformations/">Basic transformations</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">Preprocessing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../location/">Location Data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Application data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.-Read-data">2. Read data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#A-few-words-on-missing-data">A few words on missing data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#A-few-words-on-grouping-the-apps">A few words on grouping the apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#A-few-words-on-the-role-of-the-battery-and-screen">A few words on the role of the battery and screen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#*-TIP!-Data-format-requirements-(or-what-our-data-should-look-like)">* TIP! Data format requirements (or what our data should look like)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#4.-Extracting-features">4. Extracting features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#4.1.1-The-arguments-for-stand-alone-functions-(or-how-we-specify-the-way-a-function-works)">4.1.1 The arguments for stand-alone functions (or how we specify the way a function works)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.1.2-Using-the-functions">4.1.2 Using the functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.2.1-The-argument-dictionary-for-wrapper-(or-how-we-specify-the-way-the-wrapper-works)">4.2.1 The argument dictionary for wrapper (or how we specify the way the wrapper works)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.2.2-Using-the-wrapper">4.2.2 Using the wrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.2.3-Wrapper-and-its-default-option">4.2.3 Wrapper and its default option</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#5.-Implementing-own-features">5. Implementing own features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../audio/">Audio Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../battery/">Battery Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/">Call and Message Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../screen/">Screen On/Off Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../survey/">Survey Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tracker/">Tracker Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Exploration/">Exploration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Analysis/">Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demos</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../demo/student_life_example/">Demo Notebook on Reading and Exploring the Studentlife Dataset</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Data documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../aware/">Aware</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules/">niimpy API docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../">Niimpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../">Preprocessing</a></li>
+      <li class="breadcrumb-item active">Application data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user_guide/preprocessing/application.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Application-data">
+<h1>Application data<a class="headerlink" href="#Application-data" title="Link to this heading"></a></h1>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading"></a></h2>
+<p>Application data refers to the information about which apps are open at a certain time. These data can reveal important information about people’s circadian rhythm, social patterns, and activity. Application data is an event data; this means it cannot be sampled at a regular frequency. Instead, we just have information about the events that occured.</p>
+<p>An application data dataframe contains a list of application events. Each row describes a single event and is indexed by a time stamp. The dataframe contains the following columns (column names can be different, but in that case they must be provided as parameters):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user</span></code>: Subject ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">device</span></code>: Device ID.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">app_column</span></code>: Contains the name of an application used.</p></li>
+</ul>
+<p>There are two main issues with application data (1) missing data detection, and (2) privacy concerns.</p>
+<p>Regarding missing data detection, we may never know if all events were detected and reported. Unfortunately there is little we can do. Nevertheless, we can take into account some factors that may interfere with the correct detection of all events (e.g. when the phone’s battery is depleted). Therefore, to correctly process application data, we need to consider other information like the battery status of the phone. Regarding the privacy concerns, application names can reveal too much about a
+subject, for example, an uncommon app use may help identify a subject. Consequently, we try anonimizing the data by grouping the apps.</p>
+<p>To address both of these issues, <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> includes the function <code class="docutils literal notranslate"><span class="pre">extract_features_app</span></code> to clean, downsample, and extract features from application data while taking into account factors like the battery level and naming groups. In addition, <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> provides a map with some of the common apps for pseudo-anonymization. This function employs other functions to extract the following features:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">app_count</span></code>: number of times an app group has been used</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">app_duration</span></code>: how long an app group has been used</p></li>
+</ul>
+<p>The app module has one internal function that help classify the apps into groups.</p>
+<p>In the following, we will analyze screen data provided by <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> as an example to illustrate the use of application data.</p>
+</section>
+<section id="2.-Read-data">
+<h2>2. Read data<a class="headerlink" href="#2.-Read-data" title="Link to this heading"></a></h2>
+<p>Let’s start by reading the example data provided in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>. These data have already been shaped in a format that meets the requirements of the data schema. Let’s start by importing the needed modules. Firstly we will import the <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> package and then we will import the module we will use (application) and give it a short name for use convenience.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy.preprocessing.application</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">app</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/u/24/rantahj1/unix/miniconda3/envs/niimpy/lib/python3.12/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div></div>
+</div>
+<p>Now let’s read the example data provided in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>. The example data is in <code class="docutils literal notranslate"><span class="pre">csv</span></code> format, so we need to use the <code class="docutils literal notranslate"><span class="pre">read_csv</span></code> function. When reading the data, we can specify the timezone where the data was collected. This will help us handle daylight saving times easier. We can specify the timezone with the argument <strong>tz</strong>. The output is a dataframe. We can also check the number of rows and columns in the dataframe.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">SINGLEUSER_AWARE_APP_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(99, 6)
+</pre></div></div>
+</div>
+<p>The data was succesfully read. We can see that there are 132 datapoints with 6 columns in the dataset. However, we do not know yet what the data really looks like, so let’s have a quick look:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>application_name</th>
+      <th>package_name</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:02:51.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>1.565003e+09</td>
+      <td>Android System</td>
+      <td>android</td>
+      <td>2019-08-05 14:02:51.009999990+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:02:58.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>1.565003e+09</td>
+      <td>Android System</td>
+      <td>android</td>
+      <td>2019-08-05 14:02:58.009999990+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:19:57.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>1.565004e+09</td>
+      <td>Google Play Music</td>
+      <td>com.google.android.music</td>
+      <td>2019-08-05 14:19:57.009999990+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:19:35.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>1.565004e+09</td>
+      <td>Google Play Music</td>
+      <td>com.google.android.music</td>
+      <td>2019-08-05 14:19:35.009999990+03:00</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:20:12.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>1.565004e+09</td>
+      <td>Gmail</td>
+      <td>com.google.android.gm</td>
+      <td>2019-08-05 14:20:12.009999990+03:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>By exploring the head of the dataframe we can form an idea of its entirety. From the data, we can see that:</p>
+<ul class="simple">
+<li><p>rows are observations, indexed by timestamps, i.e. each row represents that an app has been prompted to the smartphone screen</p></li>
+<li><p>columns are characteristics for each observation, for example, the user whose data we are analyzing</p></li>
+<li><p>there is one main column: <code class="docutils literal notranslate"><span class="pre">application_name</span></code>, which stores the Android name for the application.</p></li>
+</ul>
+<section id="A-few-words-on-missing-data">
+<h3>A few words on missing data<a class="headerlink" href="#A-few-words-on-missing-data" title="Link to this heading"></a></h3>
+<p>Missing data for application is difficult to detect. Firstly, this sensor is triggered by events (i.e. not sampled at a fixed frequency). Secondly, different phones, OS, and settings change how easy it is to detect apps. Thirdly, events not related to the application sensor may affect its behavior, e.g. battery running out. Unfortunately, we can only correct missing data for events such as the screen turning off by using data from the screen sensor and the battery level. These can be taken into
+account in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> if we provide the screen and battery data. We will see some examples below.</p>
+</section>
+<section id="A-few-words-on-grouping-the-apps">
+<h3>A few words on grouping the apps<a class="headerlink" href="#A-few-words-on-grouping-the-apps" title="Link to this heading"></a></h3>
+<p>As previously mentioned, the application name may reveal too much about a subject and privacy problems may arise. A possible solution to this problem is to classify the apps into more generic groups. For example, apps like WhatsApp, Signal, Telegram, etc. are commonly used for texting, so we can group them under the label <em>texting</em>. <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> provides a default map, but this should be adapted to the characteristics of the sample, since apps are available depending on countries and populations.</p>
+</section>
+<section id="A-few-words-on-the-role-of-the-battery-and-screen">
+<h3>A few words on the role of the battery and screen<a class="headerlink" href="#A-few-words-on-the-role-of-the-battery-and-screen" title="Link to this heading"></a></h3>
+<p>As mentioned before, sometimes the screen may be OFF and these events will not be caught by the application data sensor. For example, we can open an app and let it remain open until the phone screen turns off automatically. Another example is when the battery is depleted and the phone is shut down automatically. Having this information is crucial for correctly computing how long a subject used each app group. <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s screen module is adapted to take into account both, the screen and battery
+data. For this example, we have both, so let’s load the screen and battery data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bat_data</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MULTIUSER_AWARE_BATTERY_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+<span class="n">screen_data</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MULTIUSER_AWARE_SCREEN_PATH</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s1">&#39;Europe/Helsinki&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bat_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>battery_level</th>
+      <th>battery_status</th>
+      <th>battery_health</th>
+      <th>battery_adaptor</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:20:02.924999952+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>74</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:20:02.924999952+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:21:30.405999899+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>73</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:21:30.405999899+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:24:12.805999994+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578529e+09</td>
+      <td>72</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:24:12.805999994+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:35:38.561000109+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>72</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2020-01-09 02:35:38.561000109+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:35:38.953000069+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3p83yASkOb_B</td>
+      <td>1.578530e+09</td>
+      <td>72</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2020-01-09 02:35:38.953000069+02:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The dataframe looks fine. In this case, we are interested in the battery_status information. This is standard information provided by Android. However, if the dataframe stores this information in a column with a different name, we can use the argument <code class="docutils literal notranslate"><span class="pre">battery_column_name</span></code> and input our custom battery column name (again, we will have an example below).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">screen_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>device</th>
+      <th>time</th>
+      <th>screen_status</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:06:41.573999882+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578528e+09</td>
+      <td>0</td>
+      <td>2020-01-09 02:06:41.573999882+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:09:29.151999950+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578529e+09</td>
+      <td>1</td>
+      <td>2020-01-09 02:09:29.151999950+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:09:32.790999889+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578529e+09</td>
+      <td>3</td>
+      <td>2020-01-09 02:09:32.790999889+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:11:41.996000051+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578529e+09</td>
+      <td>0</td>
+      <td>2020-01-09 02:11:41.996000051+02:00</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:16:19.010999918+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>OWd1Uau8POix</td>
+      <td>1.578529e+09</td>
+      <td>1</td>
+      <td>2020-01-09 02:16:19.010999918+02:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>This dataframe looks fine too. In this case, we are interested in the screen_status information, which is also standardized values provided by Android. The column does not need to be name “screen_status” as we can pass the name later on. We will see an example later.</p>
+</section>
+</section>
+<section id="*-TIP!-Data-format-requirements-(or-what-our-data-should-look-like)">
+<h2>* TIP! Data format requirements (or what our data should look like)<a class="headerlink" href="#*-TIP!-Data-format-requirements-(or-what-our-data-should-look-like)" title="Link to this heading"></a></h2>
+<p>Data can take other shapes and formats. However, the <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> data scheme requires it to be in a certain shape. This means the application dataframe needs to have at least the following characteristics:</p>
+<ol class="arabic simple">
+<li><p>One row per app prompt. Each row should store information about one app prompt only</p></li>
+<li><p>Each row’s index should be a timestamp</p></li>
+<li><p>There should be at least three columns:</p>
+<ul class="simple">
+<li><p>index: date and time when the event happened (timestamp)</p></li>
+<li><p>user: stores the user name whose data is analyzed. Each user should have a unique name or hash (i.e. one hash for each unique user)</p></li>
+<li><p>application_name: stores the Android application name</p></li>
+</ul>
+</li>
+<li><p>Columns additional to those listed in item 3 are allowed</p></li>
+<li><p>The names of the columns do not need to be exactly “user”, and “application_name” as we can pass our own names in an argument (to be explained later).</p></li>
+</ol>
+<p>Below is an example of a dataframe that complies with these minimum requirements</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_dataschema</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;application_name&#39;</span><span class="p">]]</span>
+<span class="n">example_dataschema</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>application_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:02:51.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>Android System</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:02:58.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>Android System</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:19:57.009999990+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>Google Play Music</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Similarly, if we employ screen and battery data, we need to fulfill minimum data scheme requirements. We will briefly show examples of these dataframes that comply with the minimum requirements.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_screen_dataschema</span> <span class="o">=</span> <span class="n">screen_data</span><span class="p">[[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;screen_status&#39;</span><span class="p">]]</span>
+<span class="n">example_screen_dataschema</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>screen_status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:06:41.573999882+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:09:29.151999950+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:09:32.790999889+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_battery_dataschema</span> <span class="o">=</span> <span class="n">bat_data</span><span class="p">[[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;battery_status&#39;</span><span class="p">]]</span>
+<span class="n">example_battery_dataschema</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>battery_status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2020-01-09 02:20:02.924999952+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:21:30.405999899+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2020-01-09 02:24:12.805999994+02:00</th>
+      <td>jd9INuQ5BBlW</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="4.-Extracting-features">
+<h2>4. Extracting features<a class="headerlink" href="#4.-Extracting-features" title="Link to this heading"></a></h2>
+<p>There are two ways to extract features. We could use each function separately or we could use <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s ready-made wrapper. Both ways will require us to specify arguments to pass to the functions/wrapper in order to customize the way the functions work. These arguments are specified in dictionaries. Let’s first understand how to extract features using stand-alone functions.</p>
+<p>We can use <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s functions to compute communication features. Each function will require two inputs:</p>
+<ul class="simple">
+<li><p>(mandatory) dataframe that must comply with the minimum requirements (see ‘* TIP! Data requirements above)</p></li>
+<li><p>(optional) arguments for stand-alone functions</p></li>
+</ul>
+<section id="4.1.1-The-arguments-for-stand-alone-functions-(or-how-we-specify-the-way-a-function-works)">
+<h3>4.1.1 The arguments for stand-alone functions (or how we specify the way a function works)<a class="headerlink" href="#4.1.1-The-arguments-for-stand-alone-functions-(or-how-we-specify-the-way-a-function-works)" title="Link to this heading"></a></h3>
+<p>We can input two types of arguments to customize the way a stand-alone function works:</p>
+<ul class="simple">
+<li><p>the name of the columns to be preprocessed: Since the dataframe may have different columns, we need to specify which column has the data we would like to be preprocessed. To do so, we can simply pass the name of the column to the argument <code class="docutils literal notranslate"><span class="pre">app_column_name</span></code>.</p></li>
+<li><p>the way we resample: resampling options are specified in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code> as a dictionary. <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s resampling and aggregating relies on <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.resample</span></code>, so mastering the use of this pandas function will help us greatly in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s preprocessing. Please familiarize yourself with the pandas resample function before continuing. Briefly, to use the <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.resample</span></code> function, we need a rule. This rule states the intervals we would like to use to resample our data
+(e.g., 15-seconds, 30-minutes, 1-hour). Neverthless, we can input more details into the function to specify the exact sampling we would like. For example, we could use the <em>close</em> argument if we would like to specify which side of the interval is closed, or we could use the <em>offset</em> argument if we would like to start our binning with an offset, etc. There are plenty of options to use this command, so we strongly recommend having <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.resample</span></code> documentation at hand. All
+features for the <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.resample</span></code> will be specified in a dictionary where keys are the arguments’ names for the <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.resample</span></code> function, and the dictionary’s values are the values for each of these selected arguments. This dictionary will be passed as a value to the key <code class="docutils literal notranslate"><span class="pre">resample_args</span></code> in <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>.</p></li>
+</ul>
+<p>Let’s see some examples of these parameters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">app_column_name</span> <span class="o">=</span> <span class="s2">&quot;application_name&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1D&quot;</span><span class="p">})</span>
+<span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">app_column_name</span> <span class="o">=</span> <span class="s2">&quot;other_name&quot;</span><span class="p">,</span> <span class="n">screen_column_name</span> <span class="o">=</span> <span class="s2">&quot;screen_name&quot;</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1D&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Here, we have two feature function calls.</p>
+<ul class="simple">
+<li><p>The first example will analyze the data stored in the column <code class="docutils literal notranslate"><span class="pre">application_name</span></code> in our dataframe. The data will be binned in one day periods</p></li>
+<li><p>The second example will analyze the data stored in the column <code class="docutils literal notranslate"><span class="pre">other_name</span></code> in our dataframe. In addition, we will provide some screen data in the column “screen_name”. The data will be binned in 45-minutes bins, but the binning will start from the last timestamp in the dataframe.</p></li>
+</ul>
+<p><strong>Default values:</strong> if no arguments are passed, <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s default values are “application_name” for the app_column_name, “screen_status” for the screen_column_name, and “battery_status” for the battery_column_name. We will also use the default 30-min aggregation bins.</p>
+</section>
+<section id="4.1.2-Using-the-functions">
+<h3>4.1.2 Using the functions<a class="headerlink" href="#4.1.2-Using-the-functions" title="Link to this heading"></a></h3>
+<p>Now that we understand how the functions are customized, it is time we compute our first application feature. Suppose that we are interested in extracting the number of times each app group has been used within 1-minutes bins. We will need <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s <code class="docutils literal notranslate"><span class="pre">app_count</span></code> function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_app_count</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">bat_data</span><span class="p">,</span>
+    <span class="n">screen_data</span><span class="p">,</span>
+    <span class="n">app_column_name</span> <span class="o">=</span> <span class="s2">&quot;application_name&quot;</span><span class="p">,</span>
+    <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1T&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">my_app_count</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>app_group</th>
+      <th>device</th>
+      <th>user</th>
+      <th>count</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:20:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:21:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:22:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:23:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:24:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>We see that the bins are indeed 1-minutes bins, however, they are adjusted to fixed, predetermined intervals, i.e. the bin does not start on the time of the first datapoint. Instead, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> starts the binning at 00:00:00 of everyday and counts 1-minutes intervals from there.</p>
+<p>If we want the binning to start from the first datapoint in our dataset, we need the origin parameter and a for loop.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="o">==</span><span class="n">user</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="o">==</span><span class="n">user</span><span class="p">],</span>
+        <span class="n">bat_data</span><span class="p">[</span><span class="n">bat_data</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="o">==</span><span class="n">user</span><span class="p">],</span>
+        <span class="n">screen_data</span><span class="p">[</span><span class="n">screen_data</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span><span class="o">==</span><span class="n">user</span><span class="p">],</span>
+        <span class="n">app_column_name</span> <span class="o">=</span> <span class="s2">&quot;application_name&quot;</span><span class="p">,</span>
+        <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1T&quot;</span><span class="p">}</span>
+    <span class="p">))</span>
+<span class="n">my_app_count</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="n">my_app_count</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>app_group</th>
+      <th>device</th>
+      <th>user</th>
+      <th>count</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:20:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:21:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:22:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:23:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:24:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 06:49:00+03:00</th>
+      <td>work</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 06:50:00+03:00</th>
+      <td>work</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 06:51:00+03:00</th>
+      <td>work</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 06:52:00+03:00</th>
+      <td>work</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 06:53:00+03:00</th>
+      <td>work</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>10872 rows × 4 columns</p>
+</div></div>
+</div>
+<p>Compare the timestamps and notice the small difference in this example. In the cell 21, the first timestamp is at 14:02:00, whereas in the new app_count, the first timestamp is at 14:02:42</p>
+<p>The functions can also be called in absence of battery or screen data. In this case the function does not account for when the screen is turned off or then the battery is depleted.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">no_bat</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">screen</span><span class="o">=</span><span class="n">screen_data</span><span class="p">)</span> <span class="c1">#no battery information</span>
+<span class="n">no_screen</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="n">bat_data</span><span class="p">)</span> <span class="c1">#no screen information</span>
+<span class="n">no_bat_no_screen</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="c1">#no battery and no screen information</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">no_bat</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>app_group</th>
+      <th>device</th>
+      <th>user</th>
+      <th>count</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:00:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:30:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:00:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:30:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 16:00:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">no_screen</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>app_group</th>
+      <th>device</th>
+      <th>user</th>
+      <th>count</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:00:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:30:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:00:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:30:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 16:00:00+03:00</th>
+      <td>comm</td>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>We see some small differences between these two dataframes. For example, the no_screen dataframe includes the app_group “off”, as it has taken into account the battery data and knows when the phone has been shut down.</p>
+<section id="4.2-Extract-features-using-the-wrapper">
+<h4>4.2 Extract features using the wrapper<a class="headerlink" href="#4.2-Extract-features-using-the-wrapper" title="Link to this heading"></a></h4>
+<p>We can use <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s ready-made wrapper to extract one or several features at the same time. The wrapper will require two inputs:</p>
+<ul class="simple">
+<li><p>(mandatory) dataframe that must comply with the minimum requirements (see ‘* TIP! Data requirements above)</p></li>
+<li><p>(optional) an argument dictionary for wrapper</p></li>
+</ul>
+</section>
+</section>
+<section id="4.2.1-The-argument-dictionary-for-wrapper-(or-how-we-specify-the-way-the-wrapper-works)">
+<h3>4.2.1 The argument dictionary for wrapper (or how we specify the way the wrapper works)<a class="headerlink" href="#4.2.1-The-argument-dictionary-for-wrapper-(or-how-we-specify-the-way-the-wrapper-works)" title="Link to this heading"></a></h3>
+<p>The argument dictionary contains the arguments for each stand-alone function we would like to employ. Its keys are the feature functions we want to compute. Its values are argument dictionaries created for each stand-alone function we will employ. Let’s see some examples of wrapper dictionaries:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features1</span> <span class="o">=</span> <span class="p">{</span><span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">:{</span><span class="s2">&quot;app_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;application_name&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1T&quot;</span><span class="p">}},</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">app_duration</span><span class="p">:{</span><span class="s2">&quot;app_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;some_name&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;screen_name&quot;</span><span class="p">,</span> <span class="s2">&quot;battery_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;battery_name&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1T&quot;</span><span class="p">}}}</span>
+</pre></div>
+</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wrapper_features1</span></code> will be used to analyze two features, <code class="docutils literal notranslate"><span class="pre">app_count</span></code> and <code class="docutils literal notranslate"><span class="pre">app_duration</span></code>. For the feature app_count, we will use the data stored in the column <code class="docutils literal notranslate"><span class="pre">application_name</span></code> in our dataframe and the data will be binned in one-minute periods. For the feature app_duration, we will use the data stored in the column <code class="docutils literal notranslate"><span class="pre">some_name</span></code> in our dataframe and the data will be binned in one day periods. In addition, we will also employ screen and battery data which are stored in the columns
+<code class="docutils literal notranslate"><span class="pre">screen_name</span></code> and <code class="docutils literal notranslate"><span class="pre">battery_name</span></code>.</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features2</span> <span class="o">=</span> <span class="p">{</span><span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">:{</span><span class="s2">&quot;app_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;application_name&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1T&quot;</span><span class="p">,</span> <span class="s2">&quot;offset&quot;</span><span class="p">:</span><span class="s2">&quot;15S&quot;</span><span class="p">}},</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">app_duration</span><span class="p">:{</span><span class="s2">&quot;app_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;some_name&quot;</span><span class="p">,</span> <span class="s2">&quot;screen_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;screen_name&quot;</span><span class="p">,</span> <span class="s2">&quot;battery_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;battery_name&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30S&quot;</span><span class="p">}}}</span>
+</pre></div>
+</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wrapper_features2</span></code> will be used to analyze two features, <code class="docutils literal notranslate"><span class="pre">app_count</span></code> and <code class="docutils literal notranslate"><span class="pre">app_duration</span></code>. For the feature app_count, we will use the data stored in the column <code class="docutils literal notranslate"><span class="pre">application_name</span></code> in our dataframe and the data will be binned in one-minute periods with a 15-seconds offset. For the feature app_duration, we will use the data stored in the column <code class="docutils literal notranslate"><span class="pre">some_name</span></code> in our dataframe and the data will be binned in 30-second periods. In addition, we will also employ screen and battery data which
+are stored in the columns <code class="docutils literal notranslate"><span class="pre">screen_name</span></code> and <code class="docutils literal notranslate"><span class="pre">battery_name</span></code>.</p></li>
+</ul>
+<p><strong>Default values:</strong> if no arguments are passed, <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s default values are “application_name” for the app_column_name, “screen_status” for the screen_column_name, “battery_status” for the battery_column_name, and 30-min aggregation bins. Moreover, the wrapper will compute all the available functions in absence of the argument dictionary. Similarly to the use of functions, we may input empty dataframes if we do not have screen or battery data.</p>
+</section>
+<section id="4.2.2-Using-the-wrapper">
+<h3>4.2.2 Using the wrapper<a class="headerlink" href="#4.2.2-Using-the-wrapper" title="Link to this heading"></a></h3>
+<p>Now that we understand how the wrapper is customized, it is time we compute our first application feature using the wrapper. Suppose that we are interested in extracting the call total duration every 30 seconds. We will need <code class="docutils literal notranslate"><span class="pre">niimpy</span></code>’s <code class="docutils literal notranslate"><span class="pre">extract_features_apps</span></code> function, the data, and we will also need to create a dictionary to customize our function. Let’s create the dictionary first</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features1</span> <span class="o">=</span> <span class="p">{</span><span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">:{</span><span class="s2">&quot;app_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;application_name&quot;</span><span class="p">,</span> <span class="s2">&quot;group_by_columns&quot;</span><span class="p">:[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;device&#39;</span><span class="p">,</span><span class="s1">&#39;app_group&#39;</span><span class="p">],</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30S&quot;</span><span class="p">}}}</span>
+</pre></div>
+</div>
+</div>
+<p>Now let’s use the wrapper</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_wrapper</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">extract_features_app</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bat_data</span><span class="p">,</span> <span class="n">screen_data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">wrapper_features1</span><span class="p">)</span>
+<span class="n">results_wrapper</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>device</th>
+      <th>user</th>
+      <th>app_group</th>
+      <th>count</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:20:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:20:30+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:21:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:21:30+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:22:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Our first attempt was succesful. Now, let’s try something more. Let’s assume we want to compute the app_count and app_duration in 20-seconds bins. Moreover, let’s assume we do not want to use the screen or battery data this time. Note that the app_duration values are in seconds.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features2</span> <span class="o">=</span> <span class="p">{</span><span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">:{</span><span class="s2">&quot;app_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;application_name&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;20S&quot;</span><span class="p">}},</span>
+                     <span class="n">app</span><span class="o">.</span><span class="n">app_duration</span><span class="p">:{</span><span class="s2">&quot;app_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;application_name&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;1H&quot;</span><span class="p">}}}</span>
+<span class="n">results_wrapper</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">extract_features_app</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">wrapper_features2</span><span class="p">)</span>
+<span class="n">results_wrapper</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(141, 5)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>device</th>
+      <th>user</th>
+      <th>app_group</th>
+      <th>count</th>
+      <th>duration</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:20:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>2.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:20:20+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:20:40+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:21:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:21:20+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Great! Another successful attempt. We see from the results that more columns were added with the required calculations. We also see that some durations are in negative numbers, this may be due to the lack of screen and battery data. This is how the wrapper works when all features are computed with the same bins. Now, let’s see how the wrapper performs when each function has different binning requirements. Let’s assume we need to compute the app_count every 20 seconds, and the app_duration every
+10 seconds.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper_features3</span> <span class="o">=</span> <span class="p">{</span><span class="n">app</span><span class="o">.</span><span class="n">app_count</span><span class="p">:{</span><span class="s2">&quot;app_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;application_name&quot;</span><span class="p">,</span> <span class="s2">&quot;group_by_columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="s1">&#39;device&#39;</span><span class="p">,</span> <span class="s1">&#39;app_group&#39;</span><span class="p">],</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;20S&quot;</span><span class="p">}},</span>
+                     <span class="n">app</span><span class="o">.</span><span class="n">app_duration</span><span class="p">:{</span><span class="s2">&quot;app_column_name&quot;</span><span class="p">:</span><span class="s2">&quot;application_name&quot;</span><span class="p">,</span> <span class="s2">&quot;group_by_columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">,</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="s1">&#39;device&#39;</span><span class="p">],</span> <span class="s2">&quot;resample_args&quot;</span><span class="p">:{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;20S&quot;</span><span class="p">}}}</span>
+<span class="n">results_wrapper</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">extract_features_app</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bat_data</span><span class="p">,</span> <span class="n">screen_data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">wrapper_features3</span><span class="p">)</span>
+<span class="n">results_wrapper</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(161705, 5)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>device</th>
+      <th>user</th>
+      <th>app_group</th>
+      <th>count</th>
+      <th>duration</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:20:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>2.0</td>
+      <td>14.99</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:20:20+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>20.00</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:20:40+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>20.00</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:21:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>20.00</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:21:20+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>20.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_wrapper</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>device</th>
+      <th>user</th>
+      <th>app_group</th>
+      <th>count</th>
+      <th>duration</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-07 03:48:40+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>utility</td>
+      <td>NaN</td>
+      <td>20.00</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 03:49:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>utility</td>
+      <td>NaN</td>
+      <td>20.00</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 03:49:20+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>utility</td>
+      <td>NaN</td>
+      <td>20.00</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 03:49:40+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>utility</td>
+      <td>NaN</td>
+      <td>18.01</td>
+    </tr>
+    <tr>
+      <th>2019-08-07 06:53:20+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>work</td>
+      <td>NaN</td>
+      <td>15.01</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The output is once again a dataframe. In this case, two aggregations are shown. The first one is the 20-seconds aggregation computed for the <code class="docutils literal notranslate"><span class="pre">app_count</span></code> feature (head). The second one is the 10-seconds aggregation period with 5-seconds offset for the <code class="docutils literal notranslate"><span class="pre">app_duration</span></code> (tail). Because the <code class="docutils literal notranslate"><span class="pre">app_count</span></code> feature is not required to be aggregated every 10 seconds, the aggregation timestamps have a NaN value. Similarly, because the <code class="docutils literal notranslate"><span class="pre">app_duration</span></code> is not required to be aggregated in 20-seconds
+windows, its values are NaN for all subjects.</p>
+</section>
+<section id="4.2.3-Wrapper-and-its-default-option">
+<h3>4.2.3 Wrapper and its default option<a class="headerlink" href="#4.2.3-Wrapper-and-its-default-option" title="Link to this heading"></a></h3>
+<p>The default option will compute all features in 30-minute aggregation windows. To use the <code class="docutils literal notranslate"><span class="pre">extract_features_apps</span></code> function with its default options, simply call the function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">default</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">extract_features_app</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bat_data</span><span class="p">,</span> <span class="n">screen_data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(2004, 5)
+</pre></div></div>
+</div>
+<p>The function prints the computed features so you can track its process. Now, let’s have a look at the outputs</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">default</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>device</th>
+      <th>user</th>
+      <th>app_group</th>
+      <th>count</th>
+      <th>duration</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:00:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>2.0</td>
+      <td>594.99</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:30:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>1.0</td>
+      <td>1800.00</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:00:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>1800.00</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:30:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>1800.00</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 16:00:00+03:00</th>
+      <td>i8jmoIuoe12Mo</td>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>0.0</td>
+      <td>1800.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="5.-Implementing-own-features">
+<h2>5. Implementing own features<a class="headerlink" href="#5.-Implementing-own-features" title="Link to this heading"></a></h2>
+<p>If none of the provided functions suits well, We can implement our own customized features easily. To do so, we need to define a function that accepts a dataframe and returns a dataframe. The returned object should be indexed by user and app_groups (multiindex). Let’s assume we need a new function that computes the maximum duration. Let’s first define the function.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">app_max_duration</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">screen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group_map</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">MAP_APP</span><span class="p">,</span> <span class="n">resample_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span><span class="s2">&quot;30T&quot;</span><span class="p">}):</span>
+    <span class="k">if</span> <span class="n">group_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">group_map</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">MAP_APP</span>
+
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">classify_app</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">group_map</span><span class="o">=</span><span class="n">group_map</span><span class="p">)</span>
+    <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+    <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">thr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="s1">&#39;10 hours&#39;</span><span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">duration</span><span class="o">&gt;</span><span class="n">thr</span><span class="p">)]</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">duration</span><span class="o">&gt;</span><span class="n">thr</span><span class="p">)]</span>
+    <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+
+    <span class="n">df2</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">])</span>
+        <span class="n">df2</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;user&quot;</span><span class="p">,</span><span class="s2">&quot;app_group&quot;</span><span class="p">])[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="o">**</span><span class="n">resample_args</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">reset_index</span><span class="p">([</span><span class="s2">&quot;user&quot;</span><span class="p">,</span><span class="s2">&quot;app_group&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<p>Then, we can call our new function in the stand-alone way or using the <code class="docutils literal notranslate"><span class="pre">extract_features_app</span></code> function. Alternatively, we can pass the feature function to the wrapper. Let’s read again the data and assume we want the default behavior of the wrapper.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">customized_features</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">extract_features_app</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bat_data</span><span class="p">,</span> <span class="n">screen_data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">{</span><span class="n">app_max_duration</span><span class="p">:</span> <span class="p">{}})</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">customized_features</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>app_group</th>
+      <th>duration</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-08-05 14:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>997.0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 14:30:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>7018.0</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 15:30:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2019-08-05 16:00:00+03:00</th>
+      <td>dvWdLQesv21a</td>
+      <td>comm</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timestamp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">niimpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">niimpy.preprocessing.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">TZ</span>
+
+<span class="n">df11</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;wAzQNrdKZZax&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;Afxzi7oI0yyp&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;lb983ODxEFUD&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span>
+     <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;iMTB2alwYk1B&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;3Zkk0bhWmyny&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;n8rndM6J5_4B&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span>
+     <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1547709614.05</span><span class="p">,</span> <span class="mf">1547709686.036</span><span class="p">,</span> <span class="mf">1547709722.06</span><span class="p">,</span> <span class="mf">1547710540.99</span><span class="p">,</span> <span class="mf">1547710688.469</span><span class="p">,</span> <span class="mf">1547711339.439</span><span class="p">,</span>
+              <span class="mf">1547711831.275</span><span class="p">,</span> <span class="mf">1547711952.182</span><span class="p">,</span> <span class="mf">1547712028.281</span><span class="p">,</span> <span class="mf">1547713932.182</span><span class="p">],</span>
+     <span class="s2">&quot;battery_level&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">96</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">93</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">92</span><span class="p">],</span>
+     <span class="s2">&quot;battery_status&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;-2&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;-2&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">],</span>
+     <span class="s2">&quot;battery_health&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span>
+     <span class="s2">&quot;battery_adaptor&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">],</span>
+     <span class="s2">&quot;datetime&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2019-01-17 09:20:14.049999872+02:00&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-17 09:21:26.036000+02:00&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;2019-01-17 09:22:02.060000+02:00&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;2019-01-17 09:35:40.990000128+02:00&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-17 09:38:08.469000192+02:00&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;2019-01-17 09:48:59.438999808+02:00&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;2019-01-17 09:57:11.275000064+02:00&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-17 09:59:12.181999872+02:00&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;2019-01-17 10:00:28.280999936+02:00&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-01-17 10:32:12.181999872+02:00&#39;</span>
+                 <span class="p">]</span>
+     <span class="p">})</span>
+<span class="n">df11</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df11</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">])</span>
+<span class="n">df11</span> <span class="o">=</span> <span class="n">df11</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df11</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">battery_gaps</span>
+<span class="n">gaps</span> <span class="o">=</span> <span class="n">niimpy</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">extract_features_battery</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">{}})</span>
+
+<span class="n">gaps</span>
+<br/><br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;function battery_gaps at 0x7c4c4e5663e0&gt; {}
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>device</th>
+      <th>user</th>
+      <th>battery_gap</th>
+    </tr>
+    <tr>
+      <th>datetime</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019-01-17 09:30:00+02:00</th>
+      <td>3Zkk0bhWmyny</td>
+      <td>Afxzi7oI0yyp</td>
+      <td>0 days 00:04:26.149666560</td>
+    </tr>
+    <tr>
+      <th>2019-01-17 09:00:00+02:00</th>
+      <td>iMTB2alwYk1B</td>
+      <td>wAzQNrdKZZax</td>
+      <td>0 days 00:00:36.003333376</td>
+    </tr>
+    <tr>
+      <th>2019-01-17 09:30:00+02:00</th>
+      <td>n8rndM6J5_4B</td>
+      <td>lb983ODxEFUD</td>
+      <td>0 days 00:01:00.453499904</td>
+    </tr>
+    <tr>
+      <th>2019-01-17 10:00:00+02:00</th>
+      <td>n8rndM6J5_4B</td>
+      <td>lb983ODxEFUD</td>
+      <td>0 days 00:01:16.099000064</td>
+    </tr>
+    <tr>
+      <th>2019-01-17 10:30:00+02:00</th>
+      <td>n8rndM6J5_4B</td>
+      <td>lb983ODxEFUD</td>
+      <td>0 days 00:31:43.900999936</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../location/" class="btn btn-neutral float-left" title="Location Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../audio/" class="btn btn-neutral float-right" title="Audio Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, the contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
